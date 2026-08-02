@@ -1,6 +1,6 @@
 # manny-portfolio
 
-Personal portfolio site for Manny Flores — Senior Systems Engineer.
+Personal portfolio site for Manny Flores, Senior Systems Engineer.
 
 **Live:** [mannyflo.com](https://mannyflo.com)
 
@@ -46,26 +46,26 @@ manny-portfolio/
 
 All visual constants live in `src/styles/tokens.css` as CSS custom properties.
 
-- **Color** — `--color-bg`, `--color-surface`, `--color-border`, `--color-text`, `--color-text-muted`, `--color-accent`, `--color-accent-strong`, `--color-success`
-- **Spacing** — `--space-1` (4px) through `--space-10` (80px); 4px base grid
-- **Radius** — `--radius-sm` (4px), `--radius-md` (8px), `--radius-lg` (12px), `--radius-xl` (16px), `--radius-pill` (20px)
-- **Font size** — `--fs-xs` through `--fs-5xl`; mobile inputs use `--fs-base` (16px) to prevent iOS zoom
-- **Shadow** — `--shadow-sm`, `--shadow-md`, `--shadow-glow`
-- **Easing / motion** — `--ease-out`, `--ease-in-out`, `--motion-fast`, `--motion-base`, `--motion-slow`
+- **Color**: `--color-bg`, `--color-surface`, `--color-border`, `--color-text`, `--color-text-muted`, `--color-accent`, `--color-accent-strong`, `--color-success`
+- **Spacing**: `--space-1` (4px) through `--space-10` (80px); 4px base grid
+- **Radius**: `--radius-sm` (4px), `--radius-md` (8px), `--radius-lg` (12px), `--radius-xl` (16px), `--radius-pill` (20px)
+- **Font size**: `--fs-xs` through `--fs-5xl`; mobile inputs use `--fs-base` (16px) to prevent iOS zoom
+- **Shadow**: `--shadow-sm`, `--shadow-md`, `--shadow-glow`
+- **Easing / motion**: `--ease-out`, `--ease-in-out`, `--motion-fast`, `--motion-base`, `--motion-slow`
 
-Add a new token by extending `tokens.css`. Do not introduce new raw hex values in components — reference a token instead.
+Add a new token by extending `tokens.css`. Do not introduce new raw hex values in components: reference a token instead.
 
 ## Component primitives
 
 Defined in `src/styles/app.css`:
 
-- `.card` — surface container (border + subtle bg)
-- `.chip` — pill tag for skills / status tags
-- `.btn` / `.btn-ghost` — primary and outline button
-- `.icon-btn` — square icon-only button (44px hit target)
-- `.dot` — status indicator (paired with `.dot--success`)
-- `.sr-only` — visually-hidden but screen-reader accessible
-- `.tabular` — `font-variant-numeric: tabular-nums` for aligned numbers
+- `.card`: surface container (border + subtle bg)
+- `.chip`: pill tag for skills / status tags
+- `.btn` / `.btn-ghost`: primary and outline button
+- `.icon-btn`: square icon-only button (44px hit target)
+- `.dot`: status indicator (paired with `.dot--success`)
+- `.sr-only`: visually-hidden but screen-reader accessible
+- `.tabular`: `font-variant-numeric: tabular-nums` for aligned numbers
 
 ## Accessibility
 
@@ -75,7 +75,7 @@ Targeting WCAG 2.1 AA.
 - `:focus-visible` on every interactive element
 - `aria-expanded` / `aria-controls` on the mobile menu button
 - `aria-current="page"` on the active nav item
-- `prefers-reduced-motion` respected — animations collapse to 0.01ms
+- `prefers-reduced-motion` respected: animations collapse to 0.01ms
 - Color contrast ≥ 4.5:1 on body text, ≥ 3:1 on large text and UI
 - 16px minimum font size on mobile inputs (none currently, documented as a rule)
 - Semantic landmarks: `<nav>`, `<main>`, `<section>` with `aria-labelledby`, `<footer>`
@@ -96,12 +96,12 @@ Nav buttons update the URL hash (`#expertise`, `#skills`, …) via `history.repl
 
 Configured in `vercel.json`:
 
-- `Content-Security-Policy` — `default-src 'self'`; allows inline styles (required by component-level `style={{...}}`); fonts from `fonts.googleapis.com` + `fonts.gstatic.com`; analytics from `va.vercel-scripts.com` and `vitals.vercel-insights.com`
-- `Strict-Transport-Security` — `max-age=63072000; includeSubDomains; preload`
-- `X-Frame-Options` — `DENY`
-- `X-Content-Type-Options` — `nosniff`
-- `Referrer-Policy` — `strict-origin-when-cross-origin`
-- `Permissions-Policy` — `camera=(), microphone=(), geolocation=(), interest-cohort=()`
+- `Content-Security-Policy`: `default-src 'self'`; allows inline styles (required by component-level `style={{...}}`); fonts self-hosted under `/fonts` (no external font sources); analytics from `va.vercel-scripts.com` and `vitals.vercel-insights.com`
+- `Strict-Transport-Security`: `max-age=63072000; includeSubDomains; preload`
+- `X-Frame-Options`: `DENY`
+- `X-Content-Type-Options`: `nosniff`
+- `Referrer-Policy`: `strict-origin-when-cross-origin`
+- `Permissions-Policy`: `camera=(), microphone=(), geolocation=(), interest-cohort=()`
 
 ## How to add X
 
@@ -120,14 +120,14 @@ Configured in `vercel.json`:
 
 Each axis scored 0–5; targeting ≥ 4.
 
-- **a11y** — WCAG 2.1 AA
-- **perf** — Lighthouse 90+, CWV green
-- **security** — headers configured, no secrets in client, deps audited
-- **ux** — URL state, keyboard shortcuts, clear empty/loading states
-- **tests** — vitest + RTL + jsdom, critical-path coverage
-- **observability** — Vercel Analytics + Speed Insights
-- **docs** — this README
-- **design-system** — tokens + primitives, no raw hex in components
+- **a11y**: WCAG 2.1 AA
+- **perf**: Lighthouse 90+, CWV green
+- **security**: headers configured, no secrets in client, deps audited
+- **ux**: URL state, keyboard shortcuts, clear empty/loading states
+- **tests**: vitest + RTL + jsdom, critical-path coverage
+- **observability**: Vercel Analytics + Speed Insights
+- **docs**: this README
+- **design-system**: tokens + primitives, no raw hex in components
 
 ## Contact
 
