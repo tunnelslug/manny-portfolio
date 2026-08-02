@@ -28,9 +28,9 @@ const Eyebrow = ({ chapter, label }) => (
 
 const NAV_SECTIONS = [
   { id: 'about',      label: 'about' },
-  { id: 'stack',      label: 'stack' },
-  { id: 'projects',   label: 'projects' },
   { id: 'trajectory', label: 'stewardship' },
+  { id: 'projects',   label: 'in the making' },
+  { id: 'stack',      label: 'the platform' },
 ];
 
 const AnimatedUnderline = () => {
@@ -135,7 +135,6 @@ const App = () => {
     return () => window.removeEventListener('keydown', onKey);
   }, [isMenuOpen]);
 
-
   useEffect(() => {
     const hash = window.location.hash.slice(1);
     if (!hash) return;
@@ -221,10 +220,10 @@ const App = () => {
   ];
 
   const stewardship = [
-    { area: 'Okta Identity Infrastructure', desc: 'IAM ownership, Terraform-driven config, lifecycle automation' },
-    { area: 'GCP Governance',                desc: 'Company cloud access, AI workload hosting, sprawl prevention' },
-    { area: 'Google Workspace',              desc: 'DLP, OAuth governance, access policies, Workspace administration' },
-    { area: 'Technical Leadership',          desc: 'Lifecycle governance, technical review authorship, tech debt cleanup' },
+    { area: 'Identity & Access Architecture', desc: 'Zero-trust design, Okta lifecycle automation, and enterprise SSO for the workforce.' },
+    { area: 'Cloud Governance (GCP)',         desc: 'Preventing infrastructure sprawl while enabling engineers to safely deploy AI workloads to production.' },
+    { area: 'Collaboration Security',         desc: 'Google Workspace hardening, OAuth risk management, and Data Loss Prevention (DLP).' },
+    { area: 'Technical Strategy',             desc: 'Leading engineering reviews, resolving high-impact technical debt, and defining roadmap execution.' },
   ];
 
   const now = new Date();
@@ -246,9 +245,9 @@ const App = () => {
 
       {/* Heritage Ribbon · papel-picado color band, once per page */}
       <div className="heritage-ribbon" role="presentation" aria-hidden="true">
-        <span className="ribbon-stack" />
-        <span className="ribbon-making" />
         <span className="ribbon-stewardship" />
+        <span className="ribbon-making" />
+        <span className="ribbon-stack" />
       </div>
 
       {/* Navigation */}
@@ -322,7 +321,7 @@ const App = () => {
           viewport={{ once: true, margin: "-10%" }}
         >
           <div className="hero-grid">
-            <motion.div variants={staggerContainer(shouldReduceMotion)}>
+            <motion.div className="hero-text-block" variants={staggerContainer(shouldReduceMotion)}>
               <motion.div variants={faderVariants(shouldReduceMotion)}>
                 <Eyebrow label="ENGINEER" />
               </motion.div>
@@ -335,42 +334,41 @@ const App = () => {
               </motion.p>
 
               <motion.p className="hero-lede" variants={faderVariants(shouldReduceMotion)}>
-                I run the <span className="accent">identity and corporate apps infrastructure</span>{' '}
-                at Robinhood: Okta, GCP, Google Workspace. Lately my focus has been identity and
-                access management: making AI tooling adoptable across the company without losing
-                control of who can do what.
+                Securing the perimeter and infrastructure for the company's workforce. 
+                I architect the <span className="accent">identity lifecycle and access governance</span>{' '}
+                that allows engineers to adopt AI tooling safely, without compromising zero-trust.
               </motion.p>
+            </motion.div>
 
-              <motion.div className="hero-cta-row" variants={faderVariants(shouldReduceMotion)}>
-                <FramerButton href="mailto:manny@flores.network">
-                  Get in Touch <IconArrow />
-                </FramerButton>
-                <FramerButton
-                  href="https://linkedin.com/in/mannyflores11"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  variant="ghost"
-                >
-                  LinkedIn
-                </FramerButton>
-                <FramerButton
-                  variant="ghost"
-                  onClick={() => setResumeOpen(true)}
-                >
-                  Resume
-                </FramerButton>
-              </motion.div>
+            <motion.div className="hero-cta-row" variants={faderVariants(shouldReduceMotion)}>
+              <FramerButton href="mailto:manny@flores.network">
+                Get in Touch <IconArrow />
+              </FramerButton>
+              <FramerButton
+                href="https://linkedin.com/in/mannyflores11"
+                target="_blank"
+                rel="noopener noreferrer"
+                variant="ghost"
+              >
+                LinkedIn
+              </FramerButton>
+              <FramerButton
+                variant="ghost"
+                onClick={() => setResumeOpen(true)}
+              >
+                Resume
+              </FramerButton>
+            </motion.div>
 
-              <motion.div className="hero-meta" aria-label="Current role and location" variants={faderVariants(shouldReduceMotion)}>
-                <span className="hero-meta-mark" aria-hidden="true">●</span>
-                <span>Robinhood</span>
-                <span className="hero-meta-sep" aria-hidden="true">·</span>
-                <span>Corporate Apps Infra</span>
-                <span className="hero-meta-sep" aria-hidden="true">·</span>
-                <span>SF Bay Area</span>
-                <span className="hero-meta-sep" aria-hidden="true">·</span>
-                <span>2024 to present</span>
-              </motion.div>
+            <motion.div className="hero-meta" aria-label="Current role and location" variants={faderVariants(shouldReduceMotion)}>
+              <span className="hero-meta-mark" aria-hidden="true">●</span>
+              <span>Robinhood</span>
+              <span className="hero-meta-sep" aria-hidden="true">·</span>
+              <span>Corporate Apps Infra</span>
+              <span className="hero-meta-sep" aria-hidden="true">·</span>
+              <span>SF Bay Area</span>
+              <span className="hero-meta-sep" aria-hidden="true">·</span>
+              <span>2024 to present</span>
             </motion.div>
 
             <motion.img
@@ -387,6 +385,71 @@ const App = () => {
           </div>
         </motion.section>
 
+        {/* Trajectory · What I Steward */}
+        <motion.section 
+          id="trajectory" 
+          className="section" 
+          aria-labelledby="trajectory-h"
+          variants={staggerContainer(shouldReduceMotion)}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-10%" }}
+        >
+          <motion.div variants={faderVariants(shouldReduceMotion)}>
+            <Eyebrow chapter="01" label="SCOPE" />
+          </motion.div>
+          <motion.h2 id="trajectory-h" className="section-headline" variants={faderVariants(shouldReduceMotion)}>
+            Stewardship.
+          </motion.h2>
+          <motion.p className="section-lede" variants={faderVariants(shouldReduceMotion)}>
+            I own the identity, cloud, and collaboration stack that the company runs on at Robinhood.
+            The mandate: harden the foundation, make AI tooling adoptable, and keep things from sprawling.
+          </motion.p>
+
+          <motion.div className="steward-grid" variants={staggerContainer(shouldReduceMotion)}>
+            {stewardship.map((item, i) => (
+              <motion.div key={i} variants={faderVariants(shouldReduceMotion)}>
+                <StewardCard
+                  num={String(i + 1).padStart(2, '0')}
+                  area={item.area}
+                  description={item.desc}
+                />
+              </motion.div>
+            ))}
+          </motion.div>
+        </motion.section>
+
+        {/* Projects · Currently Building */}
+        <motion.section 
+          id="projects" 
+          className="section" 
+          aria-labelledby="projects-h"
+          variants={staggerContainer(shouldReduceMotion)}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-10%" }}
+        >
+          <motion.div variants={faderVariants(shouldReduceMotion)}>
+            <Eyebrow chapter="02" label="CURRENT FOCUS" />
+          </motion.div>
+          <motion.h2 id="projects-h" className="section-headline relative inline-block" variants={faderVariants(shouldReduceMotion)}>
+            In the <em>making<AnimatedUnderline /></em>.
+          </motion.h2>
+
+          <motion.div className="project-list" variants={staggerContainer(shouldReduceMotion)}>
+            {currentProjects.map((project, index) => (
+              <motion.div key={index} variants={faderVariants(shouldReduceMotion)}>
+                <ProjectCard
+                  title={project.title}
+                  status={project.status}
+                  description={project.description}
+                  tags={project.tags}
+                />
+              </motion.div>
+            ))}
+          </motion.div>
+        </motion.section>
+
         {/* Stack · Expertise + Tools */}
         <motion.section 
           id="stack" 
@@ -398,7 +461,7 @@ const App = () => {
           viewport={{ once: true, margin: "-10%" }}
         >
           <motion.div variants={faderVariants(shouldReduceMotion)}>
-            <Eyebrow chapter="01" label="STACK" />
+            <Eyebrow chapter="03" label="THE PLATFORM" />
           </motion.div>
           <motion.h2 id="stack-h" className="section-headline" variants={faderVariants(shouldReduceMotion)}>
             Stack.
@@ -445,72 +508,6 @@ const App = () => {
             </motion.div>
           </motion.div>
         </motion.section>
-
-        {/* Projects · Currently Building */}
-        <motion.section 
-          id="projects" 
-          className="section" 
-          aria-labelledby="projects-h"
-          variants={staggerContainer(shouldReduceMotion)}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-10%" }}
-        >
-          <motion.div variants={faderVariants(shouldReduceMotion)}>
-            <Eyebrow chapter="02" label="CURRENT FOCUS" />
-          </motion.div>
-          <motion.h2 id="projects-h" className="section-headline relative inline-block" variants={faderVariants(shouldReduceMotion)}>
-            In the <em>making<AnimatedUnderline /></em>.
-          </motion.h2>
-
-          <motion.div className="project-list" variants={staggerContainer(shouldReduceMotion)}>
-            {currentProjects.map((project, index) => (
-              <motion.div key={index} variants={faderVariants(shouldReduceMotion)}>
-                <ProjectCard
-                  title={project.title}
-                  status={project.status}
-                  description={project.description}
-                  tags={project.tags}
-                />
-              </motion.div>
-            ))}
-          </motion.div>
-        </motion.section>
-
-        {/* Trajectory · What I Steward */}
-        <motion.section 
-          id="trajectory" 
-          className="section" 
-          aria-labelledby="trajectory-h"
-          variants={staggerContainer(shouldReduceMotion)}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-10%" }}
-        >
-          <motion.div variants={faderVariants(shouldReduceMotion)}>
-            <Eyebrow chapter="03" label="SCOPE" />
-          </motion.div>
-          <motion.h2 id="trajectory-h" className="section-headline" variants={faderVariants(shouldReduceMotion)}>
-            Stewardship.
-          </motion.h2>
-          <motion.p className="section-lede" variants={faderVariants(shouldReduceMotion)}>
-            I own the identity, cloud, and collaboration stack that the company runs on at Robinhood.
-            The mandate: harden the foundation, make AI tooling adoptable, and keep things from sprawling.
-          </motion.p>
-
-          <motion.div className="steward-grid" variants={staggerContainer(shouldReduceMotion)}>
-            {stewardship.map((item, i) => (
-              <motion.div key={i} variants={faderVariants(shouldReduceMotion)}>
-                <StewardCard
-                  num={String(i + 1).padStart(2, '0')}
-                  area={item.area}
-                  description={item.desc}
-                />
-              </motion.div>
-            ))}
-          </motion.div>
-        </motion.section>
-
 
       </main>
 

@@ -19,9 +19,9 @@ const StewardCard = ({ num, area, description }) => {
       <span className="steward-num">
         {num}
       </span>
-      <h4 style={{ fontVariationSettings: '"opsz" 18' }}>
+      <h3 style={{ fontVariationSettings: '"opsz" 18' }}>
         {area}
-      </h4>
+      </h3>
       <p>
         {description}
       </p>

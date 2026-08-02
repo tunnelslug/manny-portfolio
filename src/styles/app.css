@@ -286,7 +286,7 @@ button:focus-visible {
   height: 44px;
   background: transparent;
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-none);
+  border-radius: var(--radius-md);
   color: var(--color-text-muted);
   cursor: pointer;
   transition: border-color var(--motion-fast) var(--ease-out),
@@ -657,7 +657,7 @@ button:focus-visible {
 
 /* ── Hero ────────────────────────────────────────── */
 .hero {
-  padding: var(--space-12) var(--space-9) var(--space-10);
+  padding: var(--space-20) var(--space-9) var(--space-14);
   max-width: var(--container-max);
   margin: 0 auto;
   border-bottom: 1px solid var(--color-border);
@@ -666,9 +666,18 @@ button:focus-visible {
 .hero-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 320px;
+  grid-template-areas:
+    "text portrait"
+    "cta  portrait"
+    "meta portrait";
   gap: var(--space-9);
   align-items: end;
 }
+
+.hero-text-block { grid-area: text; }
+.hero-cta-row { grid-area: cta; }
+.hero-meta { grid-area: meta; }
+.hero-portrait { grid-area: portrait; }
 
 .hero-name {
   font-family: var(--font-display);
@@ -758,7 +767,7 @@ button:focus-visible {
 
 /* ── Section ─────────────────────────────────────── */
 .section {
-  padding: var(--space-10) var(--space-9);
+  padding: var(--space-14) var(--space-9);
   max-width: var(--container-max);
   margin: 0 auto;
 }
@@ -837,7 +846,7 @@ button:focus-visible {
   padding: var(--space-7);
 }
 
-.steward-card h4 {
+.steward-card h3 {
   font-family: var(--font-display);
   font-size: var(--fs-2xl);
   font-weight: 700;
@@ -1129,13 +1138,25 @@ a:hover {
   }
   .hero-grid {
     grid-template-columns: 1fr;
-    gap: var(--space-8);
+    grid-template-areas:
+      "text"
+      "cta"
+      "meta"
+      "portrait";
+    gap: var(--space-6);
     text-align: left;
+    align-items: flex-start;
+  }
+  .hero-cta-row {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+    gap: var(--space-3);
   }
   .hero-portrait {
     width: 180px;
     height: 180px;
-    order: -1;
   }
   .section {
     padding: var(--space-10) var(--space-5);
@@ -1161,14 +1182,6 @@ a:hover {
 @media (max-width: 480px) {
   .skills-grid {
     grid-template-columns: 1fr;
-  }
-  .hero-cta-row {
-    flex-direction: column;
-    align-items: stretch;
-  }
-  .hero-cta-row .btn,
-  .hero-cta-row .btn-ghost {
-    justify-content: center;
   }
 }
 

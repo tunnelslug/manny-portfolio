@@ -9,9 +9,7 @@ export default function ThemeToggle() {
       if (stored === 'light' || stored === 'dark') {
         return stored;
       }
-      // If it is 'system' or not set, detect and default to system
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      return prefersDark ? 'dark' : 'light';
+      return 'light';
     }
     return 'light';
   });
@@ -35,24 +33,12 @@ export default function ThemeToggle() {
 
   useEffect(() => {
     applyTheme(theme);
-
-    // Sync with system preferences change if the user hasn't overridden
-    const media = window.matchMedia('(prefers-color-scheme: dark)');
-    const handleSystemThemeChange = (e) => {
-      if (!localStorage.getItem('theme')) {
-        const systemTheme = e.matches ? 'dark' : 'light';
-        setThemeState(systemTheme);
-        applyTheme(systemTheme);
-      }
-    };
-    media.addEventListener('change', handleSystemThemeChange);
-    return () => media.removeEventListener('change', handleSystemThemeChange);
   }, [theme]);
 
   return (
     <button
       onClick={toggleTheme}
-      className="relative flex items-center justify-center w-10 h-10 border rounded-full cursor-pointer select-none bg-bg-2 border-border text-text hover:bg-surface-hover hover:border-border-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-ring transition-colors duration-base ease-out"
+      className="icon-btn"
       aria-label={`Toggle theme (currently ${theme} mode)`}
     >
       <AnimatePresence mode="wait" initial={false}>

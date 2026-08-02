@@ -25,9 +25,8 @@
     <script>
       (function() {
         try {
-          var t = localStorage.getItem('theme') || 'system';
-          var isDark = t === 'dark' || (t === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
-          if (isDark) {
+          var t = localStorage.getItem('theme') || 'light';
+          if (t === 'dark') {
             document.documentElement.classList.add('dark');
             document.documentElement.classList.remove('light');
           } else {
