@@ -12,6 +12,20 @@ dist
 dist-ssr
 *.local
 
+# Secrets — never commit env files (public repo)
+.env
+.env.*
+
+# Local-only: session state, strategy notes, Claude local config
+STATE.md
+REFACTOR.md
+.claude/settings.local.json
+.claude/worktrees/
+
+# Third-party skill packs (impeccable stays tracked)
+.agents/skills/*
+!.agents/skills/impeccable
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

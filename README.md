@@ -132,3 +132,12 @@ Each axis scored 0–5; targeting ≥ 4.
 ## Contact
 
 - [LinkedIn](https://linkedin.com/in/mannyflores11)
+
+## License
+
+Copyright Manny Flores. All rights reserved.
+
+This repository is public so the code can be read, not reused. No license is
+granted for the code, content, images, or resume. The fonts in `public/fonts/`
+are the exception: they are subsets of Petrona, Newsreader, and Cutive Mono,
+redistributed under the SIL Open Font License 1.1 (see `public/fonts/OFL.txt`).
