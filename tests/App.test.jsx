@@ -28,7 +28,7 @@ describe('App', () => {
     const nav = screen.getByRole('navigation', { name: /main navigation/i })
     const navButtons = within(nav).getAllByRole('button')
     const labels = navButtons.map(b => b.textContent.trim().toLowerCase())
-    for (const label of ['about', 'stack', 'projects', 'stewardship']) {
+    for (const label of ['about', 'stewardship', 'in the making', 'the platform']) {
       expect(labels).toContain(label)
     }
   })
@@ -62,7 +62,7 @@ describe('App', () => {
     const user = userEvent.setup()
     render(<App />)
     const nav = screen.getByRole('navigation', { name: /main navigation/i })
-    const stackBtn = within(nav).getByRole('button', { name: 'stack' })
+    const stackBtn = within(nav).getByRole('button', { name: 'the platform' })
     await user.click(stackBtn)
     expect(window.location.hash).toBe('#stack')
   })

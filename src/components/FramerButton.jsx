@@ -34,7 +34,7 @@ const FramerButton = ({
       <motion.span
         className="absolute inset-0 z-0 origin-bottom pointer-events-none"
         style={{
-          backgroundColor: isGhost ? 'var(--color-text)' : 'var(--color-accent)',
+          backgroundColor: isGhost ? 'var(--color-text)' : 'var(--color-accent-strong)',
         }}
         initial={{ scaleY: 0 }}
         animate={{ scaleY: isHovered ? 1 : 0 }}

@@ -126,26 +126,21 @@ button:focus-visible {
   font-variant-numeric: tabular-nums;
 }
 
-/* ── Heritage Ribbon ──────────────────────────────────
-   Papel-picado-derived color band. Appears ONCE per page,
-   directly below the masthead. Never decorative; never repeated.
-   Heritage as palette texture, not costume.
+/* ── Papel Picado Stripe ──────────────────────────────
+   The identity mark — same 7 fixed colors as the favicon.
+   Sits above the masthead, once per page, before anything else.
    ────────────────────────────────────────────────────── */
-.heritage-ribbon {
+.papel-band {
   display: flex;
   width: 100%;
-  height: 6px;
+  height: 5px;
 }
 
-.heritage-ribbon span {
+.papel-band span {
   flex: 1;
   height: 100%;
   display: block;
 }
-
-.heritage-ribbon .ribbon-stack       { background: var(--color-tezontle); }
-.heritage-ribbon .ribbon-making      { background: var(--color-maiz); }
-.heritage-ribbon .ribbon-stewardship { background: var(--color-ceiba); }
 
 /* ── Masthead ─────────────────────────────────────── */
 .masthead {
@@ -185,22 +180,10 @@ button:focus-visible {
   margin-bottom: var(--space-5);
 }
 
-.eyebrow-dot {
-  color: var(--color-tezontle);
-  font-size: 0.875rem;
-  line-height: 1;
-}
-
-/* Per-chapter dot colors mirror the heritage ribbon bands */
-.eyebrow-ch-01 .eyebrow-dot { color: var(--color-tezontle); }
-.eyebrow-ch-02 .eyebrow-dot { color: var(--color-maiz); }
-.eyebrow-ch-03 .eyebrow-dot { color: var(--color-ceiba); }
-
 .section-headline {
   font-family: var(--font-display);
   font-size: var(--fs-4xl);
   font-weight: 400;
-  font-variation-settings: "opsz" 72;
   line-height: 1.05;
   letter-spacing: -0.012em;
   color: var(--color-text);
@@ -380,7 +363,6 @@ button:focus-visible {
   font-family: var(--font-display);
   font-size: var(--fs-2xl);
   font-weight: 700;
-  font-variation-settings: "opsz" 18;
   letter-spacing: -0.005em;
   line-height: 1.2;
   color: var(--color-text);
@@ -452,7 +434,6 @@ button:focus-visible {
   font-family: var(--font-display);
   font-size: var(--fs-3xl);
   font-weight: 700;
-  font-variation-settings: "opsz" 24;
   letter-spacing: -0.012em;
   line-height: 1.15;
   color: var(--color-text);
@@ -657,7 +638,7 @@ button:focus-visible {
 
 /* ── Hero ────────────────────────────────────────── */
 .hero {
-  padding: var(--space-20) var(--space-9) var(--space-14);
+  padding: var(--space-14) var(--space-9) var(--space-14);
   max-width: var(--container-max);
   margin: 0 auto;
   border-bottom: 1px solid var(--color-border);
@@ -668,26 +649,23 @@ button:focus-visible {
   grid-template-columns: minmax(0, 1fr) 320px;
   grid-template-areas:
     "text portrait"
-    "cta  portrait"
-    "meta portrait";
+    "cta  portrait";
   gap: var(--space-9);
   align-items: end;
 }
 
 .hero-text-block { grid-area: text; }
 .hero-cta-row { grid-area: cta; }
-.hero-meta { grid-area: meta; }
-.hero-portrait { grid-area: portrait; }
+.hero-portrait-block { grid-area: portrait; }
 
 .hero-name {
   font-family: var(--font-display);
   font-size: clamp(3rem, 6.5vw, 5.25rem);
   font-weight: 400;
-  font-variation-settings: "opsz" 144;
   line-height: 0.9;
   letter-spacing: -0.025em;
   color: var(--color-text);
-  margin: 0 0 var(--space-3);
+  margin: 0 0 var(--space-5);
   max-width: 14ch;
 }
 
@@ -696,11 +674,10 @@ button:focus-visible {
   font-style: italic;
   font-size: clamp(1.5rem, 2.6vw, 2.25rem);
   font-weight: 400;
-  font-variation-settings: "opsz" 72;
   line-height: 1.15;
   color: var(--color-accent);
   letter-spacing: -0.01em;
-  margin: 0 0 var(--space-8);
+  margin: 0 0 var(--space-6);
 }
 
 .hero-lede {
@@ -717,7 +694,6 @@ button:focus-visible {
   font-family: var(--font-display);
   font-style: italic;
   font-weight: 700;
-  font-variation-settings: "opsz" 18;
   color: var(--color-accent);
 }
 
@@ -732,27 +708,8 @@ button:focus-visible {
   flex-wrap: wrap;
 }
 
-.hero-meta {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  margin-top: var(--space-7);
-  font-family: var(--font-mono);
-  font-size: var(--fs-sm);
-  letter-spacing: 0.10em;
-  text-transform: uppercase;
-  color: var(--color-text-muted);
-  flex-wrap: wrap;
-}
-
-.hero-meta-mark {
-  color: var(--color-tezontle);
-  font-size: 0.875rem;
-  line-height: 1;
-}
-
-.hero-meta-sep {
-  color: var(--color-border);
+.hero-portrait-block {
+  margin: 0;
 }
 
 .hero-portrait {
@@ -763,6 +720,15 @@ button:focus-visible {
   object-fit: cover;
   object-position: center 15%;
   display: block;
+}
+
+.hero-portrait-caption {
+  margin-top: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-subtle);
 }
 
 /* ── Section ─────────────────────────────────────── */
@@ -850,7 +816,6 @@ button:focus-visible {
   font-family: var(--font-display);
   font-size: var(--fs-2xl);
   font-weight: 700;
-  font-variation-settings: "opsz" 18;
   letter-spacing: -0.005em;
   line-height: 1.2;
   color: var(--color-text);
@@ -904,7 +869,6 @@ button:focus-visible {
   font-family: var(--font-display);
   font-size: var(--fs-2xl);
   font-weight: 700;
-  font-variation-settings: "opsz" 18;
   letter-spacing: -0.005em;
   color: var(--color-text);
   margin-bottom: 0;
@@ -954,7 +918,6 @@ button:focus-visible {
   font-style: italic;
   font-size: var(--fs-2xl);
   font-weight: 600;
-  font-variation-settings: "opsz" 18;
   color: var(--color-text);
   line-height: 1.25;
   margin-bottom: var(--space-2);
@@ -1077,11 +1040,6 @@ button:focus-visible {
   border-top: 1px solid var(--color-border);
 }
 
-.colophon-meta .colophon-mark {
-  color: var(--color-tezontle);
-  font-size: 0.875rem;
-}
-
 /* ── Body link styling ────────────────────────────── */
 a {
   color: var(--color-accent);
@@ -1137,26 +1095,31 @@ a:hover {
     padding: var(--space-10) var(--space-5) var(--space-10);
   }
   .hero-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 120px 1fr;
     grid-template-areas:
-      "text"
-      "cta"
-      "meta"
-      "portrait";
-    gap: var(--space-6);
+      "portrait cta"
+      "text     text";
+    gap: var(--space-6) var(--space-4);
     text-align: left;
-    align-items: flex-start;
+    align-items: center;
   }
   .hero-cta-row {
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    align-items: center;
-    gap: var(--space-3);
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+    gap: var(--space-2);
+    width: 100%;
+  }
+  .hero-cta-row .btn,
+  .hero-cta-row .btn-ghost {
+    padding: 10px 16px;
+    font-size: var(--fs-sm);
+    justify-content: center;
+    width: 100%;
   }
   .hero-portrait {
-    width: 180px;
-    height: 180px;
+    width: 120px;
+    height: 120px;
   }
   .section {
     padding: var(--space-10) var(--space-5);

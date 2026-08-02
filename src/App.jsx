@@ -2,6 +2,7 @@ import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import React, { useState, useEffect } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
+import { ArrowRight } from 'lucide-react';
 import ResumeDialog from './components/ResumeDialog';
 import ExpertiseCard from './components/ExpertiseCard';
 import ProjectCard from './components/ProjectCard';
@@ -9,20 +10,11 @@ import StewardCard from './components/StewardCard';
 import ThemeToggle from './components/ThemeToggle';
 import FramerButton from './components/FramerButton';
 
-const IconArrow = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <line x1="5" y1="12" x2="19" y2="12" />
-    <polyline points="12 5 19 12 12 19" />
-  </svg>
-);
+const IconArrow = () => <ArrowRight size={14} strokeWidth={2} aria-hidden="true" />;
 
-const Eyebrow = ({ chapter, label }) => (
-  <div className={`eyebrow${chapter ? ` eyebrow-ch-${chapter}` : ''}`}>
-    <span className="eyebrow-dot" aria-hidden="true">●</span>
-    <span>
-      {chapter ? `CHAPTER ${chapter} · ` : ''}
-      {label}
-    </span>
+const Eyebrow = ({ label }) => (
+  <div className="eyebrow">
+    <span>{label}</span>
   </div>
 );
 
@@ -235,19 +227,23 @@ const App = () => {
     <>
       <a href="#main" className="skip-link">Skip to content</a>
 
+      {/* Papel picado stripe · identity mark, matches the favicon, once at the very top */}
+      <div className="papel-band" role="presentation" aria-hidden="true">
+        <span style={{ background: '#E6376A' }} />
+        <span style={{ background: '#1E4FA6' }} />
+        <span style={{ background: '#D6A03B' }} />
+        <span style={{ background: '#C25425' }} />
+        <span style={{ background: '#4A7F5C' }} />
+        <span style={{ background: '#1F3F8C' }} />
+        <span style={{ background: '#1B1208' }} />
+      </div>
+
       {/* Masthead · magazine top rule */}
       <div className="masthead" role="presentation">
         <span className="masthead-dot" aria-hidden="true">●</span>
         <span>Cuaderno · {year}</span>
         <span className="masthead-spacer" />
         <span>No. {monthNum} · {monthName}</span>
-      </div>
-
-      {/* Heritage Ribbon · papel-picado color band, once per page */}
-      <div className="heritage-ribbon" role="presentation" aria-hidden="true">
-        <span className="ribbon-stewardship" />
-        <span className="ribbon-making" />
-        <span className="ribbon-stack" />
       </div>
 
       {/* Navigation */}
@@ -334,9 +330,9 @@ const App = () => {
               </motion.p>
 
               <motion.p className="hero-lede" variants={faderVariants(shouldReduceMotion)}>
-                Securing the perimeter and infrastructure for the company's workforce. 
-                I architect the <span className="accent">identity lifecycle and access governance</span>{' '}
-                that allows engineers to adopt AI tooling safely, without compromising zero-trust.
+                I run the identity and corporate apps infrastructure at Robinhood: Okta, GCP, Google Workspace.
+                Lately my focus has been <span className="accent">identity and access management</span>:
+                making AI tooling adoptable across the company without losing control of who can do what.
               </motion.p>
             </motion.div>
 
@@ -360,28 +356,20 @@ const App = () => {
               </FramerButton>
             </motion.div>
 
-            <motion.div className="hero-meta" aria-label="Current role and location" variants={faderVariants(shouldReduceMotion)}>
-              <span className="hero-meta-mark" aria-hidden="true">●</span>
-              <span>Robinhood</span>
-              <span className="hero-meta-sep" aria-hidden="true">·</span>
-              <span>Corporate Apps Infra</span>
-              <span className="hero-meta-sep" aria-hidden="true">·</span>
-              <span>SF Bay Area</span>
-              <span className="hero-meta-sep" aria-hidden="true">·</span>
-              <span>2024 to present</span>
-            </motion.div>
-
-            <motion.img
-              src="/profile2.png"
-              alt="Portrait of Manny Flores"
-              className="hero-portrait"
-              width="240"
-              height="240"
-              loading="eager"
-              fetchPriority="high"
-              decoding="async"
-              variants={portraitVariants(shouldReduceMotion)}
-            />
+            <motion.figure className="hero-portrait-block" variants={faderVariants(shouldReduceMotion)}>
+              <motion.img
+                src="/profile2.png"
+                alt="Portrait of Manny Flores"
+                className="hero-portrait"
+                width="240"
+                height="240"
+                loading="eager"
+                fetchPriority="high"
+                decoding="async"
+                variants={portraitVariants(shouldReduceMotion)}
+              />
+              <figcaption className="hero-portrait-caption">SF Bay Area · since 2024</figcaption>
+            </motion.figure>
           </div>
         </motion.section>
 
@@ -396,7 +384,7 @@ const App = () => {
           viewport={{ once: true, margin: "-10%" }}
         >
           <motion.div variants={faderVariants(shouldReduceMotion)}>
-            <Eyebrow chapter="01" label="SCOPE" />
+            <Eyebrow label="SCOPE" />
           </motion.div>
           <motion.h2 id="trajectory-h" className="section-headline" variants={faderVariants(shouldReduceMotion)}>
             Stewardship.
@@ -429,9 +417,6 @@ const App = () => {
           whileInView="visible"
           viewport={{ once: true, margin: "-10%" }}
         >
-          <motion.div variants={faderVariants(shouldReduceMotion)}>
-            <Eyebrow chapter="02" label="CURRENT FOCUS" />
-          </motion.div>
           <motion.h2 id="projects-h" className="section-headline relative inline-block" variants={faderVariants(shouldReduceMotion)}>
             In the <em>making<AnimatedUnderline /></em>.
           </motion.h2>
@@ -460,9 +445,6 @@ const App = () => {
           whileInView="visible"
           viewport={{ once: true, margin: "-10%" }}
         >
-          <motion.div variants={faderVariants(shouldReduceMotion)}>
-            <Eyebrow chapter="03" label="THE PLATFORM" />
-          </motion.div>
           <motion.h2 id="stack-h" className="section-headline" variants={faderVariants(shouldReduceMotion)}>
             Stack.
           </motion.h2>
@@ -529,10 +511,7 @@ const App = () => {
         </dl>
 
         <div className="colophon-meta">
-          <span>
-            <span className="colophon-mark" aria-hidden="true">●</span>{' '}
-            © {year} Manny Flores · SF Bay Area
-          </span>
+          <span>© {year} Manny Flores · SF Bay Area</span>
           <span>FIN.</span>
         </div>
       </footer>

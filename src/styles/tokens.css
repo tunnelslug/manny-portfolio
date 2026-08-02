@@ -70,11 +70,13 @@
 
   /* ──────────────────────────────────────────────
      TYPOGRAPHY · Roma Direction
-     Display: Fraunces · high-opsz editorial serif
-     Body:    Newsreader · running serif, designed for screen
+     Display: Petrona  · editorial serif, deliberately not Fraunces
+     Body:    Newsreader · running serif, chosen for the Cuaderno
+              (notebook) concept — the whole page reads as one
+              continuous serif document, no sans anywhere by design.
      Mono:    Cutive Mono · receipt / metadata / labels
      ────────────────────────────────────────────── */
-  --font-display: "Fraunces", Charter, Georgia, serif;
+  --font-display: "Petrona", Charter, Georgia, serif;
   --font-sans: "Newsreader", Georgia, "Times New Roman", serif;
   --font-mono: "Cutive Mono", ui-monospace, "SF Mono", Menlo, monospace;
 

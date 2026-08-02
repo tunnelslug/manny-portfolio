@@ -5,8 +5,9 @@
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 7 7'%3E%3Crect width='1' height='7' x='0' fill='%23E6376A'/%3E%3Crect width='1' height='7' x='1' fill='%231E4FA6'/%3E%3Crect width='1' height='7' x='2' fill='%23D6A03B'/%3E%3Crect width='1' height='7' x='3' fill='%23C25425'/%3E%3Crect width='1' height='7' x='4' fill='%234A7F5C'/%3E%3Crect width='1' height='7' x='5' fill='%231F3F8C'/%3E%3Crect width='1' height='7' x='6' fill='%231B1208'/%3E%3C/svg%3E" />
     <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 7 7'%3E%3Crect width='1' height='7' x='0' fill='%23E6376A'/%3E%3Crect width='1' height='7' x='1' fill='%231E4FA6'/%3E%3Crect width='1' height='7' x='2' fill='%23D6A03B'/%3E%3Crect width='1' height='7' x='3' fill='%23C25425'/%3E%3Crect width='1' height='7' x='4' fill='%234A7F5C'/%3E%3Crect width='1' height='7' x='5' fill='%231F3F8C'/%3E%3Crect width='1' height='7' x='6' fill='%231B1208'/%3E%3C/svg%3E" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#F4EDE3" />
-    <meta name="color-scheme" content="light" />
+    <meta name="theme-color" content="#F4EDE3" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#2B211B" media="(prefers-color-scheme: dark)" />
+    <meta name="color-scheme" content="light dark" />
     <meta name="description" content="Manny Flores. Senior Systems Engineer at Robinhood. Identity and Access Management, AI-powered lifecycle automation, and corporate applications infrastructure." />
     <meta property="og:title" content="Manny Flores" />
     <meta property="og:description" content="Senior Systems Engineer. IAM, AI-powered identity automation, corporate apps infrastructure." />
@@ -15,13 +16,38 @@
     <meta name="twitter:card" content="summary" />
     <title>Manny Flores. Senior Systems Engineer.</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-
-    <link
-      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Newsreader:ital,opsz,wght@0,6..72,300..800;1,6..72,300..800&family=Cutive+Mono&display=swap"
-      rel="stylesheet"
-    />
+    <link rel="preload" href="/fonts/petrona-latin-v2.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/newsreader-latin-v2.woff2" as="font" type="font/woff2" crossorigin />
+    <style>
+      @font-face {
+        font-family: "Petrona";
+        font-style: normal;
+        font-weight: 100 900;
+        font-display: swap;
+        src: url("/fonts/petrona-latin-v2.woff2") format("woff2");
+      }
+      @font-face {
+        font-family: "Petrona";
+        font-style: italic;
+        font-weight: 100 900;
+        font-display: swap;
+        src: url("/fonts/petrona-italic-latin-v2.woff2") format("woff2");
+      }
+      @font-face {
+        font-family: "Newsreader";
+        font-style: normal;
+        font-weight: 300 800;
+        font-display: swap;
+        src: url("/fonts/newsreader-latin-v2.woff2") format("woff2");
+      }
+      @font-face {
+        font-family: "Cutive Mono";
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: url("/fonts/cutivemono-latin-v2.woff2") format("woff2");
+      }
+    </style>
     <script>
       (function() {
         try {
