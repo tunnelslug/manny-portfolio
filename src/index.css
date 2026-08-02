@@ -3,6 +3,7 @@
 
 @import './styles/tokens.css';
 @import './styles/app.css';
+@import './styles/bio.css';
 
 * {
   margin: 0;
