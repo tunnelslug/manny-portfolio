@@ -19,7 +19,7 @@ const BootCeremony = ({
   domain = 'idp.mannyflo.com',
   prompt = 'guest@mannyflo.com [role:visitor scopes:read.portfolio ttl:24h]',
   speed = 1,
-  holdMs = 900,
+  holdMs = 300,
   oncePerSession = true,
   storageKey = 'mf-boot-seen',
   zIndex = 300,
@@ -33,13 +33,16 @@ const BootCeremony = ({
     { text: `issuer: ${domain} · verified · mfa satisfied`, status: 'step', highlight: 'verified' },
     { text: 'session issued · least privilege applied', status: 'ok' },
   ];
-  const stepMs = 550 / speed;
-  const cardAt = 350 + seq.length * stepMs;
-  const hintAt = cardAt + 400;
+  const stepMs = 480 / speed;
+  const cardAt = 300 + seq.length * stepMs;
+  const hintAt = cardAt + 350;
 
   const finish = (fast) => {
     if (doneRef.current) return;
     doneRef.current = true;
+    // Lift the pre-paint cover as the fade starts so the page is
+    // revealed through the overlay's own crossfade.
+    document.documentElement.classList.remove('booting');
     setPhase('fade');
     // Completion timer lives outside the run-phase effect on purpose:
     // that effect's cleanup fires on the run -> fade transition and must
@@ -50,7 +53,7 @@ const BootCeremony = ({
       }
       setPhase('gone');
       if (onDone) onDone();
-    }, fast ? 180 : 400);
+    }, fast ? 200 : 650);
   };
 
   // Client-only gate: decide after mount, so SSR output stays clean.
@@ -60,12 +63,16 @@ const BootCeremony = ({
     try { seen = oncePerSession && sessionStorage.getItem(storageKey) === '1'; } catch { /* private mode */ }
     if (reduced || seen) {
       doneRef.current = true;
+      document.documentElement.classList.remove('booting');
       setPhase('gone');
       if (onDone) onDone();
       return;
     }
     setPhase('run');
   }, []);
+
+  // Safety: never leave the pre-paint cover behind (HMR, unmount).
+  useEffect(() => () => document.documentElement.classList.remove('booting'), []);
 
   useEffect(() => {
     if (phase !== 'run') return;
@@ -110,19 +117,17 @@ const BootCeremony = ({
         cursor: 'pointer',
         fontFamily: 'var(--font-mono)',
         opacity: phase === 'fade' ? 0 : 1,
-        transition: 'opacity 400ms ease',
-        animation: 'bootFadeIn 200ms ease both',
+        transition: 'opacity 650ms cubic-bezier(0.165, 0.84, 0.44, 1)',
       }}
     >
       <style>{`
-        @keyframes bootFadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes bootLogIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes bootBlink { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
       `}</style>
       <div style={{ width: 'min(640px, 88%)' }}>
         <div style={{ fontSize: '0.82rem', lineHeight: 2.2, color: BODY }}>
           {seq.map((l, i) => (
-            <div key={i} style={{ animation: 'bootLogIn 0.4s both', animationDelay: `${(350 + i * stepMs) / 1000}s` }}>
+            <div key={i} style={{ animation: 'bootLogIn 0.4s both', animationDelay: `${(300 + i * stepMs) / 1000}s` }}>
               <span style={{ color: l.status === 'ok' ? GRANT : DIM }}>{l.status === 'ok' ? '✓ ' : '▸ '}</span>
               {renderText(l)}
             </div>

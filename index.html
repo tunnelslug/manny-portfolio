@@ -95,6 +95,17 @@
         src: url("/fonts/plexmono-latin-500.woff2") format("woff2");
       }
     </style>
+    <style>
+      /* Boot ceremony cover: painted before first paint so the page never
+         flashes ahead of the sign-in sequence. BootCeremony lifts it. */
+      html.booting::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background: oklch(15.5% 0.01 50);
+        z-index: 250;
+      }
+    </style>
     <script>
       (function() {
         try {
@@ -106,6 +117,9 @@
             document.documentElement.classList.add('light');
             document.documentElement.classList.remove('dark');
           }
+          var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          var seen = sessionStorage.getItem('mf-boot-seen') === '1';
+          if (!reduce && !seen) document.documentElement.classList.add('booting');
         } catch (e) {}
       })();
     </script>
