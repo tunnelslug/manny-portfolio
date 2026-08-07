@@ -109,7 +109,7 @@ Flat by default. Hairline borders (`--color-border`, translucent ink) do all str
 - **Scope rows** (`.scope-row`): `num | domain | description | pill` grid rows with hairline tops, not cards. Pills: `operating` grant, `building`/`expanding`/`hardening` pending.
 - **Plan block** (`.plan-block`): panel bg-2, titlebar `terraform plan · career/manny-flores`, mono 13px lines with full-width tinted line backgrounds, `overflow-x: auto`, staggered per-line reveal on view (reduced-motion collapses to instant). Exposed to assistive tech as `role="img"` with a prose `aria-label` summarizing the career facts; the styled lines are `aria-hidden`.
 - **Project cards** (`.project-card`): the only card surface. bg-2, radius 6px, BUILDING pill, sans 600 title, chips (mono, 2px radius rect).
-- **Expertise rows** (`.expertise-row`): `head (num + title) | content (desc + arrow list)` grid rows, hairline tops.
+- **Stack section**: TOOLS chip groups only (four mono-labeled skill groups). The four expertise prose rows were cut on 2026-08-06 as redundant with the scope rows; each section tells its facts once: scope = what is owned, plan = history, current focus = what is moving, stack = what is used. Do not add prose back to Stack.
 - **Footer**: one mono meta line only: copyright left, `exit 0` right. The owner removed the principles/manifesto block entirely ("looks lame") and the Set in / Built with / Built for colophon grid; do not reintroduce either.
 - **Buttons**: primary ink-filled with clay ink-fill hover (FramerButton overlay), ghost 1.5px ink border. 6px radius.
 - **Resume dialog**: unchanged Radix pattern, panel on bg with strong border.

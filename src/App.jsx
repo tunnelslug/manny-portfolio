@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import ResumeDialog from './components/ResumeDialog';
-import ExpertiseCard from './components/ExpertiseCard';
 import ProjectCard from './components/ProjectCard';
 import ThemeToggle from './components/ThemeToggle';
 import FramerButton from './components/FramerButton';
@@ -132,12 +131,12 @@ const App = () => {
     {
       domain: 'Identity & Access Architecture',
       state: 'operating',
-      desc: 'Authentication flows in Okta: SAML, OAuth 2.0, OIDC, plus SCIM for downstream provisioning. The full user lifecycle: birthright access, joiners, movers, leavers, rehires, and service account ownership.',
+      desc: "Authentication flows in Okta: SAML, OAuth 2.0, OIDC, plus SCIM for downstream provisioning. The full user lifecycle: birthright access, joiners, movers, leavers, rehires, service accounts, and the edge cases SCIM can't reach.",
     },
     {
       domain: 'Identity Governance & Audit',
       state: 'operating',
-      desc: 'Led the Okta Identity Governance rollout: access certification campaigns and policy-driven lifecycle controls. Audit responses across SOX controls, access reviews, and service accounts, working directly with external auditors.',
+      desc: 'Led the Okta Identity Governance rollout: access certification campaigns and policy-driven lifecycle controls. Audit responses across SOX controls, access reviews, and service accounts, working directly with external auditors. Identity changes ship through technical reviews I author.',
     },
     {
       domain: 'AI Tooling Governance',
@@ -152,7 +151,7 @@ const App = () => {
     {
       domain: 'Collaboration Security',
       state: 'hardening',
-      desc: 'Google Workspace: access policies, third-party OAuth risk, data loss prevention, audit coverage.',
+      desc: 'The surface where everyone works. Hardened, audited, and watched.',
     },
   ];
 
@@ -175,49 +174,6 @@ const App = () => {
     { category: 'Automation & IaC', items: ['Python', 'Bash', 'Okta Workflows', 'Terraform', 'GCP IAM', 'APIs & Integrations'] },
     { category: 'Corp Apps Infra', items: ['GCP', 'Google Workspace', 'Okta', 'Slack', 'Jira', 'Workday'] },
     { category: 'AI & Governance', items: ['MCP', 'Claude Code', 'ChatGPT', 'Cursor', 'Gemini Enterprise', 'LLM Access Controls'] },
-  ];
-
-  const expertise = [
-    {
-      title: 'Identity & Access Management',
-      description: 'I own the identity stack: how people get in, what they can touch, and how access ends when they leave.',
-      details: [
-        'Okta administration, SAML 2.0, OAuth 2.0, OIDC integrations',
-        'SCIM provisioning and user lifecycle automation',
-        'Zero Trust architecture and RBAC policy design',
-        'SOX compliance and IAM roadmap ownership',
-      ],
-    },
-    {
-      title: 'AI-Powered Identity Automation',
-      description: "Building the identity layer that lets enterprise AI tools work: bridging Okta auth to apps that don't support direct OAuth, and handling the lifecycle edge cases SCIM can't reach.",
-      details: [
-        'Okta MCP integrations enabling enterprise AI tool adoption',
-        'LLM access governance for enterprise AI tools',
-        "Lifecycle edge cases beyond SCIM's reach",
-        'Self-healing identity workflows',
-      ],
-    },
-    {
-      title: 'Automation & Integration Engineering',
-      description: 'Removing repetitive ops work with scripts and integrations built to hold up over time.',
-      details: [
-        'Okta Workflows for identity lifecycle events',
-        'Python and Bash scripting for system automation',
-        'API integrations across SaaS, ITSM, and HRIS platforms',
-        'Terraform for infrastructure-as-code',
-      ],
-    },
-    {
-      title: 'Corporate Applications Infrastructure',
-      description: 'I own the core infrastructure layer the company depends on to build and ship: Okta, GCP, and Google Workspace.',
-      details: [
-        'Okta administration and Terraform-based IaC for identity',
-        'GCP governance aligned to company AI workloads and sprawl prevention',
-        'Google Workspace security hardening and administration',
-        'Technical review authorship for identity changes',
-      ],
-    },
   ];
 
   const currentProjects = [
@@ -537,45 +493,26 @@ const App = () => {
             Stack.
           </motion.h2>
 
-          <motion.div className="expertise-grid" variants={staggerContainer(shouldReduceMotion)}>
-            {expertise.map((item, index) => (
+          <motion.div className="skills-grid" variants={staggerContainer(shouldReduceMotion)}>
+            {skills.map((group, index) => (
               <motion.div key={index} variants={faderVariants(shouldReduceMotion)}>
-                <ExpertiseCard
-                  num={String(index + 1).padStart(2, '0')}
-                  title={item.title}
-                  description={item.description}
-                  details={item.details}
-                />
+                <div className="skill-group-title">
+                  <span className="skill-group-bar" aria-hidden="true" />
+                  {group.category}
+                </div>
+                <motion.div className="flex flex-wrap gap-1" variants={staggerContainer(shouldReduceMotion)}>
+                  {group.items.map((skill, i) => (
+                    <motion.span
+                      key={i}
+                      className="skill-tag"
+                      variants={faderVariants(shouldReduceMotion)}
+                    >
+                      {skill}
+                    </motion.span>
+                  ))}
+                </motion.div>
               </motion.div>
             ))}
-          </motion.div>
-
-          <motion.div className="stack-tools" variants={faderVariants(shouldReduceMotion)}>
-            <div className="stack-tools-label">
-              <span className="stack-tools-label-bar" aria-hidden="true" />
-              TOOLS
-            </div>
-            <motion.div className="skills-grid" variants={staggerContainer(shouldReduceMotion)}>
-              {skills.map((group, index) => (
-                <motion.div key={index} variants={faderVariants(shouldReduceMotion)}>
-                  <div className="skill-group-title">
-                    <span className="skill-group-bar" aria-hidden="true" />
-                    {group.category}
-                  </div>
-                  <motion.div className="flex flex-wrap gap-1" variants={staggerContainer(shouldReduceMotion)}>
-                    {group.items.map((skill, i) => (
-                      <motion.span
-                        key={i}
-                        className="skill-tag"
-                        variants={faderVariants(shouldReduceMotion)}
-                      >
-                        {skill}
-                      </motion.span>
-                    ))}
-                  </motion.div>
-                </motion.div>
-              ))}
-            </motion.div>
           </motion.div>
         </motion.section>
 
