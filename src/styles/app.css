@@ -913,6 +913,31 @@ a.btn-ghost:hover {
   }
   .hamburger { display: flex; }
   .nav-desktop { display: none !important; }
+  /* Phones: denser cards and rows; desktop keeps the airier scale. */
+  .project-card {
+    padding: var(--space-6) var(--space-5);
+  }
+  .project-card h3 {
+    font-size: var(--fs-xl);
+  }
+  .project-card p {
+    font-size: var(--fs-md);
+    margin-bottom: var(--space-4);
+  }
+  .project-status {
+    margin-bottom: var(--space-3);
+  }
+  .project-list {
+    gap: var(--space-4);
+  }
+  .section-lede {
+    font-size: var(--fs-lg);
+    margin-bottom: var(--space-7);
+  }
+  .scope-row {
+    padding: var(--space-5) 0;
+  }
+
   /* Phones: wrap plan lines with a hanging indent instead of
      horizontal scroll (no scrollbar affordance on touch). */
   .plan-line {
