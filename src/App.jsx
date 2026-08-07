@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import ResumeDialog from './components/ResumeDialog';
+import BootCeremony from './components/BootCeremony';
 import ProjectCard from './components/ProjectCard';
 import ThemeToggle from './components/ThemeToggle';
 import FramerButton from './components/FramerButton';
@@ -203,6 +204,8 @@ const App = () => {
 
   return (
     <>
+      <BootCeremony oncePerSession />
+
       <a href="#main" className="skip-link">Skip to content</a>
 
       {/* Papel picado stripe · identity mark, matches the favicon, once at the very top */}
