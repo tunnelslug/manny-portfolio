@@ -1,12 +1,12 @@
 The woff2 files in this directory are subsets of the following typefaces,
 each licensed under the SIL Open Font License, Version 1.1:
 
-- Petrona: Copyright 2020 The Petrona Project Authors
-  (https://github.com/RingoSeeber/Petrona)
-- Newsreader: Copyright 2020 Production Type
-  (https://github.com/productiontype/Newsreader)
-- Cutive Mono: Copyright Vernon Adams
-  (https://github.com/vernnobile/CutiveFont)
+- IBM Plex Sans: Copyright 2017 IBM Corp. All rights reserved.
+  (https://github.com/IBM/plex)
+- IBM Plex Mono: Copyright 2017 IBM Corp. All rights reserved.
+  (https://github.com/IBM/plex)
+
+Subsets obtained via fontsource.org.
 
 This Font Software is licensed under the SIL Open Font License, Version 1.1.
 This license is copied below, and is also available with a FAQ at:
@@ -99,3 +99,9 @@ INCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL
 DAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM
 OTHER DEALINGS IN THE FONT SOFTWARE.
+
+
+--- IBM Plex Sans and IBM Plex Mono ---
+Copyright 2017 IBM Corp. All rights reserved.
+Licensed under the SIL Open Font License, Version 1.1 (same license text as above).
+Source: https://github.com/IBM/plex · subsets via fontsource.org

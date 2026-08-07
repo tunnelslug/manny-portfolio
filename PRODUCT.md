@@ -20,9 +20,9 @@ Three words: **Specific. Dry. Self-aware.**
 
 Voice: dry, direct, slightly self-aware. Specific over abstract. Plain English; no internal jargon, no hedging, no buzzword stacks. Reference: the footer line "Recruiters, peer engineers, and the family who asks what I actually do."
 
-Tone: editorial and matter-of-fact, closer to a thoughtful magazine profile or a craft-studio About page than a SaaS landing.
+Tone: engineering-console and matter-of-fact, closer to a well-kept runbook or a plan review than a SaaS landing. Reads like the tools the audience uses: plans, diffs, audit lines, status pills. Calm, never cosplay.
 
-Cultural lineage: the visual system is Roma, the calm editorial direction from the Feria brand book. Roma is the magazine-serif, warm-parchment cousin of Colonia (the bilingual CDMX direction in the same system). On this site, Roma carries its origin in palette names (Tezontle, Maíz, Ceiba, Cobalto, Rosa) and the "Cuaderno" eyebrow framing. Body copy is English by design — that's the Roma direction, not Colonia. Heritage lives in the form, not the words.
+Cultural lineage: the visual system is Access Plan, the engineering-console successor to the Roma editorial direction (see DESIGN.md). The Feria heritage survives as texture: the Tezontle clay accent, warm clay-tinted neutrals in both themes, and the papel picado stripe + favicon. Heritage lives in the form, not the words. Positioning: the first designed portfolio branded around identity and access management; every claim on the page is resume-verifiable.
 
 ## Anti-references
 

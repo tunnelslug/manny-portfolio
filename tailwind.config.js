@@ -31,19 +31,19 @@ export default {
       "accent-border-strong": "var(--color-accent-border-strong)",
       "accent-ring": "var(--color-accent-ring)",
       tezontle: "var(--color-tezontle)",
-      ceiba: "var(--color-ceiba)",
-      maiz: "var(--color-maiz)",
-      rosa: "var(--color-rosa)",
-      "rosa-deep": "var(--color-rosa-deep)",
-      cobalto: "var(--color-cobalto)",
-      cacao: "var(--color-cacao)",
+      grant: "var(--color-grant)",
+      "grant-bg": "var(--color-grant-bg)",
+      revoke: "var(--color-revoke)",
+      "revoke-bg": "var(--color-revoke-bg)",
+      pending: "var(--color-pending)",
+      "pending-bg": "var(--color-pending-bg)",
       success: "var(--color-success)",
     },
-    // Custom font definitions mapping display, sans, and mono to Fraunces, Newsreader, and Cutive Mono
+    // Custom font definitions mapping display, sans, and mono to IBM Plex
     fontFamily: {
-      display: ["Fraunces", "Charter", "Georgia", "serif"],
-      sans: ["Newsreader", "Georgia", "Times New Roman", "serif"],
-      mono: ["Cutive Mono", "ui-monospace", "SF Mono", "Menlo", "monospace"],
+      display: ["IBM Plex Sans", "ui-sans-serif", "system-ui", "Segoe UI", "sans-serif"],
+      sans: ["IBM Plex Sans", "ui-sans-serif", "system-ui", "Segoe UI", "sans-serif"],
+      mono: ["IBM Plex Mono", "ui-monospace", "SF Mono", "Menlo", "monospace"],
     },
     // Custom radii mapping to design tokens
     borderRadius: {

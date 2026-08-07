@@ -6,7 +6,6 @@ import { ArrowRight } from 'lucide-react';
 import ResumeDialog from './components/ResumeDialog';
 import ExpertiseCard from './components/ExpertiseCard';
 import ProjectCard from './components/ProjectCard';
-import StewardCard from './components/StewardCard';
 import ThemeToggle from './components/ThemeToggle';
 import FramerButton from './components/FramerButton';
 
@@ -19,48 +18,20 @@ const Eyebrow = ({ label }) => (
 );
 
 const NAV_SECTIONS = [
-  { id: 'about',      label: 'about' },
-  { id: 'trajectory', label: 'stewardship' },
-  { id: 'projects',   label: 'in the making' },
-  { id: 'stack',      label: 'the platform' },
+  { id: 'about',    label: 'about' },
+  { id: 'scope',    label: 'scope' },
+  { id: 'plan',     label: 'the plan' },
+  { id: 'projects', label: 'current focus' },
+  { id: 'stack',    label: 'stack' },
 ];
-
-const AnimatedUnderline = () => {
-  const shouldReduceMotion = useReducedMotion();
-  
-  return (
-    <svg 
-      className="absolute left-[-2px] right-[-2px] bottom-[-2px] w-[calc(100%+4px)] h-[5px] pointer-events-none" 
-      viewBox="0 0 100 5" 
-      preserveAspectRatio="none"
-      aria-hidden="true"
-    >
-      <motion.path
-        d="M0,4 C12,1 25,4.5 38,3 C51,1.5 63,4.5 75,3 C85,1.5 93,4 100,3"
-        fill="none"
-        stroke="var(--color-accent)"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        initial={{ pathLength: 0 }}
-        whileInView={{ pathLength: 1 }}
-        viewport={{ once: true, margin: "-5%" }}
-        transition={
-          shouldReduceMotion 
-            ? { duration: 0.01 }
-            : { duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.2 }
-        }
-      />
-    </svg>
-  );
-};
 
 const faderVariants = (shouldReduceMotion) => shouldReduceMotion ? {
   hidden: { opacity: 1, y: 0 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.01 } }
 } : {
   hidden: { opacity: 0, y: 15 },
-  visible: { 
-    opacity: 1, 
+  visible: {
+    opacity: 1,
     y: 0,
     transition: {
       duration: 0.6,
@@ -85,6 +56,24 @@ const portraitVariants = (shouldReduceMotion) => shouldReduceMotion ? {
   hidden: { opacity: 0, scale: 0.96 },
   visible: { opacity: 1, scale: 1, transition: { duration: 0.8, ease: [0.165, 0.84, 0.44, 1] } }
 };
+
+/* Plan lines print like terminal output: quick per-line stagger. */
+const planLineVariants = (shouldReduceMotion) => shouldReduceMotion ? {
+  hidden: { opacity: 1 },
+  visible: { opacity: 1, transition: { duration: 0.01 } }
+} : {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 0.18, ease: 'linear' } }
+};
+
+const planContainer = (shouldReduceMotion) => ({
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: shouldReduceMotion ? 0.01 : 0.14,
+    }
+  }
+});
 
 const App = () => {
   const [activeSection, setActiveSection] = useState('about');
@@ -139,11 +128,53 @@ const App = () => {
     }
   }, []);
 
+  const scope = [
+    {
+      domain: 'Identity & Access Architecture',
+      state: 'operating',
+      desc: 'Authentication flows in Okta: SAML, OAuth 2.0, OIDC, plus SCIM for downstream provisioning. The full user lifecycle: birthright access, joiners, movers, leavers, rehires, and service account ownership.',
+    },
+    {
+      domain: 'Identity Governance & Audit',
+      state: 'operating',
+      desc: 'Led the Okta Identity Governance rollout: access certification campaigns and policy-driven lifecycle controls. Audit responses across SOX controls, access reviews, and service accounts, working directly with external auditors.',
+    },
+    {
+      domain: 'AI Tooling Governance',
+      state: 'expanding',
+      desc: 'The identity side of Claude Code, ChatGPT, Cursor, and Gemini Enterprise: rollout review, access controls, and MCP integration enablement across the SaaS stack. Agents get identities, scopes, and an audit trail.',
+    },
+    {
+      domain: 'Cloud Governance (GCP)',
+      state: 'operating',
+      desc: 'Terraform-managed IAM and project structure, so engineers move AI workloads from prototype to production without creating sprawl.',
+    },
+    {
+      domain: 'Collaboration Security',
+      state: 'hardening',
+      desc: 'Google Workspace: access policies, third-party OAuth risk, data loss prevention, audit coverage.',
+    },
+  ];
+
+  /* The career, written the way the audience reads change. All lines resume-backed. */
+  const planLines = [
+    { type: 'ctx', text: '# career/manny-flores · 10+ years · fintech + healthcare' },
+    { type: 'chg', text: '~ role                = "Systems Administrator" -> "Senior Systems Engineer, team lead"' },
+    { type: 'add', text: '+ okta_identity_governance         # led rollout: certification campaigns, policy lifecycle' },
+    { type: 'add', text: '+ okta_tenant.acquisitions[6]      # Say, X1, Bitstamp, TradePMR, Chartr, WonderFi' },
+    { type: 'add', text: '+ ai_tools.identity_governance[4]  # Claude Code, ChatGPT, Cursor, Gemini Enterprise' },
+    { type: 'add', text: '+ okta_config.terraform            # clicks -> code: drift gone, changes reviewed like PRs' },
+    { type: 'chg', text: '~ access_requests     = "manual tickets" -> "automated fulfillment"' },
+    { type: 'del', text: '- standing_access.unreviewed       # replaced by certification campaigns' },
+    { type: 'ctx', text: '# (unchanged fundamentals hidden: SAML, OAuth 2.0, OIDC, SCIM, Python, Terraform)' },
+    { type: 'out', text: 'Plan: 4 to add, 2 to change, 1 to destroy.' },
+  ];
+
   const skills = [
-    { category: 'Identity & Access', items: ['Okta OIE', 'SAML 2.0', 'OAuth 2.0', 'OIDC', 'SCIM', 'RBAC', 'Zero Trust'] },
+    { category: 'Identity & Access', items: ['Okta OIE', 'OIG', 'SAML 2.0', 'OAuth 2.0', 'OIDC', 'SCIM', 'RBAC', 'Zero Trust'] },
     { category: 'Automation & IaC', items: ['Python', 'Bash', 'Okta Workflows', 'Terraform', 'GCP IAM', 'APIs & Integrations'] },
     { category: 'Corp Apps Infra', items: ['GCP', 'Google Workspace', 'Okta', 'Slack', 'Jira', 'Workday'] },
-    { category: 'AI & Governance', items: ['MCP', 'AI Orchestration', 'LLM Access Controls', 'Sprawl Prevention', 'OIG', 'ABAC'] },
+    { category: 'AI & Governance', items: ['MCP', 'Claude Code', 'ChatGPT', 'Cursor', 'Gemini Enterprise', 'LLM Access Controls'] },
   ];
 
   const expertise = [
@@ -185,7 +216,6 @@ const App = () => {
         'GCP governance aligned to company AI workloads and sprawl prevention',
         'Google Workspace security hardening and administration',
         'Technical review authorship for identity changes',
-        'Lifecycle governance and tech debt execution',
       ],
     },
   ];
@@ -193,35 +223,27 @@ const App = () => {
   const currentProjects = [
     {
       title: 'Terraform Okta: Identity as Code',
-      status: 'Building',
-      description: 'Moving Okta config from clicks to Terraform. Config drift disappears, changes get reviewed like code, and policy stays consistent across the tenant.',
-      tags: ['Okta', 'Terraform', 'IaC', 'Identity Infrastructure', 'Corp Apps'],
+      status: 'Operating',
+      description: 'Okta config lives in Terraform now, not in clicks. Config drift is gone, changes get reviewed like code, and policy stays consistent across the tenant.',
+      tags: ['Okta', 'Terraform', 'IaC', 'Identity Infrastructure'],
     },
     {
       title: 'Secure GCP for AI Workloads',
-      status: 'Building',
-      description: 'Building the GCP foundation that lets engineers ship AI-assisted tools to production safely. Terraform-managed IAM, project structure, and access controls, so teams move from local prototypes to hosted services without creating sprawl.',
-      tags: ['GCP', 'Terraform', 'IAM', 'AI Enablement', 'Sprawl Prevention'],
+      status: 'Operating',
+      description: 'A paved road from local prototype to hosted service. Project factories, IAM bindings, and access controls all live in Terraform, so shipping an AI-assisted tool to production is a reviewed change, not a hand-built exception.',
+      tags: ['GCP', 'Terraform', 'IAM', 'AI Enablement'],
     },
     {
       title: 'Google Workspace Security Hardening',
       status: 'Building',
       description: "Tightening Google Workspace: access policies, DLP, third-party OAuth, audit coverage. The attack surface gets bigger every time someone installs a new AI tool, and that's the part I'm watching.",
-      tags: ['Google Workspace', 'DLP', 'OAuth Governance', 'Security', 'Corp Apps'],
+      tags: ['Google Workspace', 'DLP', 'OAuth Governance', 'Security'],
     },
-  ];
-
-  const stewardship = [
-    { area: 'Identity & Access Architecture', desc: 'Zero-trust design, Okta lifecycle automation, and enterprise SSO for the workforce.' },
-    { area: 'Cloud Governance (GCP)',         desc: 'Preventing infrastructure sprawl while enabling engineers to safely deploy AI workloads to production.' },
-    { area: 'Collaboration Security',         desc: 'Google Workspace hardening, OAuth risk management, and Data Loss Prevention (DLP).' },
-    { area: 'Technical Strategy',             desc: 'Leading engineering reviews, resolving high-impact technical debt, and defining roadmap execution.' },
   ];
 
   const now = new Date();
   const year = now.getFullYear();
   const monthNum = String(now.getMonth() + 1).padStart(2, '0');
-  const monthName = now.toLocaleString('en-US', { month: 'long' });
 
   return (
     <>
@@ -238,12 +260,12 @@ const App = () => {
         <span style={{ background: '#1B1208' }} />
       </div>
 
-      {/* Masthead · magazine top rule */}
+      {/* Masthead · session line */}
       <div className="masthead" role="presentation">
         <span className="masthead-dot" aria-hidden="true">●</span>
-        <span>Cuaderno · {year}</span>
+        <span>session {year}.{monthNum}</span>
         <span className="masthead-spacer" />
-        <span>No. {monthNum} · {monthName}</span>
+        <span>mannyflo.com<span className="masthead-extra"> · access logged</span></span>
       </div>
 
       {/* Navigation */}
@@ -254,7 +276,7 @@ const App = () => {
             onClick={() => scrollToSection('about')}
             aria-label="mannyflo, return to top"
           >
-            mannyflo.
+            mannyflo<span className="wordmark-dot">.</span>
           </button>
 
           <div className="flex items-center gap-4">
@@ -307,9 +329,9 @@ const App = () => {
 
       <main id="main">
         {/* Hero / About */}
-        <motion.section 
-          id="about" 
-          className="hero" 
+        <motion.section
+          id="about"
+          className="hero"
           aria-labelledby="hero-name"
           variants={staggerContainer(shouldReduceMotion)}
           initial="hidden"
@@ -319,21 +341,23 @@ const App = () => {
           <div className="hero-grid">
             <motion.div className="hero-text-block" variants={staggerContainer(shouldReduceMotion)}>
               <motion.div variants={faderVariants(shouldReduceMotion)}>
-                <Eyebrow label="ENGINEER" />
+                <Eyebrow label="IDENTITY & ACCESS MANAGEMENT" />
               </motion.div>
 
               <motion.h1 id="hero-name" className="hero-name" variants={faderVariants(shouldReduceMotion)}>
                 Manny Flores
               </motion.h1>
               <motion.p className="hero-role" variants={faderVariants(shouldReduceMotion)}>
-                Senior Systems Engineer
+                Senior Systems Engineer · Corporate Systems lead, Robinhood
               </motion.p>
 
               <motion.p className="hero-lede" variants={faderVariants(shouldReduceMotion)}>
-                I run the identity and corporate apps infrastructure at Robinhood: Okta, GCP, Google Workspace.
-                Lately my focus has been <span className="accent">identity and access management</span>:
-                making AI tooling adoptable across the company without losing control of who can do what.
+                I run the identity and corporate apps infrastructure: Okta, GCP, Google Workspace.
+                The problem I own right now is giving AI tools a real identity story,
+                so Claude Code, ChatGPT, Cursor, and Gemini Enterprise roll out across the company
+                without losing control of <span className="accent">who, and now what, can do what</span>.
               </motion.p>
+
             </motion.div>
 
             <motion.div className="hero-cta-row" variants={faderVariants(shouldReduceMotion)}>
@@ -347,6 +371,14 @@ const App = () => {
                 variant="ghost"
               >
                 LinkedIn
+              </FramerButton>
+              <FramerButton
+                href="https://github.com/tunnelslug"
+                target="_blank"
+                rel="noopener noreferrer"
+                variant="ghost"
+              >
+                GitHub
               </FramerButton>
               <FramerButton
                 variant="ghost"
@@ -373,11 +405,11 @@ const App = () => {
           </div>
         </motion.section>
 
-        {/* Trajectory · What I Steward */}
-        <motion.section 
-          id="trajectory" 
-          className="section" 
-          aria-labelledby="trajectory-h"
+        {/* Scope · Access domains */}
+        <motion.section
+          id="scope"
+          className="section"
+          aria-labelledby="scope-h"
           variants={staggerContainer(shouldReduceMotion)}
           initial="hidden"
           whileInView="visible"
@@ -386,39 +418,91 @@ const App = () => {
           <motion.div variants={faderVariants(shouldReduceMotion)}>
             <Eyebrow label="SCOPE" />
           </motion.div>
-          <motion.h2 id="trajectory-h" className="section-headline" variants={faderVariants(shouldReduceMotion)}>
-            Stewardship.
+          <motion.h2 id="scope-h" className="section-headline" variants={faderVariants(shouldReduceMotion)}>
+            Access domains.
           </motion.h2>
           <motion.p className="section-lede" variants={faderVariants(shouldReduceMotion)}>
-            I own the identity, cloud, and collaboration stack that the company runs on at Robinhood.
-            The mandate: harden the foundation, make AI tooling adoptable, and keep things from sprawling.
+            The identity, cloud, and collaboration stack the company runs on.
+            The mandate: harden the foundation, make AI tooling adoptable, keep sprawl down.
           </motion.p>
 
-          <motion.div className="steward-grid" variants={staggerContainer(shouldReduceMotion)}>
-            {stewardship.map((item, i) => (
-              <motion.div key={i} variants={faderVariants(shouldReduceMotion)}>
-                <StewardCard
-                  num={String(i + 1).padStart(2, '0')}
-                  area={item.area}
-                  description={item.desc}
-                />
+          <motion.div className="scope-list" variants={staggerContainer(shouldReduceMotion)}>
+            {scope.map((item, i) => (
+              <motion.div key={i} className="scope-row" variants={faderVariants(shouldReduceMotion)}>
+                <span className="scope-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                <div className="scope-body">
+                  <h3>{item.domain}</h3>
+                  <p>{item.desc}</p>
+                </div>
+                <span className={`pill pill--${item.state}`}>{item.state}</span>
               </motion.div>
             ))}
           </motion.div>
         </motion.section>
 
+        {/* Plan · career as a plan diff */}
+        <motion.section
+          id="plan"
+          className="section"
+          aria-labelledby="plan-h"
+          variants={staggerContainer(shouldReduceMotion)}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-10%" }}
+        >
+          <motion.div variants={faderVariants(shouldReduceMotion)}>
+            <Eyebrow label="TRAJECTORY" />
+          </motion.div>
+          <motion.h2 id="plan-h" className="section-headline" variants={faderVariants(shouldReduceMotion)}>
+            The access plan.
+          </motion.h2>
+          <motion.p className="section-lede" variants={faderVariants(shouldReduceMotion)}>
+            A decade of identity work, written the way this audience reads change.
+            Every line is on the <button className="lede-link" onClick={() => setResumeOpen(true)}>resume</button>.
+          </motion.p>
+
+          <motion.div
+            className="plan-block"
+            variants={planContainer(shouldReduceMotion)}
+          >
+            <div className="plan-titlebar" aria-hidden="true">
+              <span>terraform plan</span>
+              <span className="plan-titlebar-right">career/manny-flores</span>
+            </div>
+            <div
+              className="plan-lines"
+              role="img"
+              tabIndex={0}
+              aria-label="Career summary formatted as a Terraform plan: role changed from Systems Administrator to Senior Systems Engineer and team lead; added Okta Identity Governance rollout, six acquisitions merged into one Okta tenant, identity governance for four AI tools, and Okta configuration managed as Terraform code; access requests changed from manual tickets to automated fulfillment; unreviewed standing access removed."
+            >
+              {planLines.map((line, i) => (
+                <motion.div
+                  key={i}
+                  className={`plan-line plan-line--${line.type}`}
+                  variants={planLineVariants(shouldReduceMotion)}
+                >
+                  {line.text}
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        </motion.section>
+
         {/* Projects · Currently Building */}
-        <motion.section 
-          id="projects" 
-          className="section" 
+        <motion.section
+          id="projects"
+          className="section"
           aria-labelledby="projects-h"
           variants={staggerContainer(shouldReduceMotion)}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-10%" }}
         >
-          <motion.h2 id="projects-h" className="section-headline relative inline-block" variants={faderVariants(shouldReduceMotion)}>
-            In the <em>making<AnimatedUnderline /></em>.
+          <motion.div variants={faderVariants(shouldReduceMotion)}>
+            <Eyebrow label="SHIPPED & SHIPPING" />
+          </motion.div>
+          <motion.h2 id="projects-h" className="section-headline" variants={faderVariants(shouldReduceMotion)}>
+            Current focus.
           </motion.h2>
 
           <motion.div className="project-list" variants={staggerContainer(shouldReduceMotion)}>
@@ -436,15 +520,18 @@ const App = () => {
         </motion.section>
 
         {/* Stack · Expertise + Tools */}
-        <motion.section 
-          id="stack" 
-          className="section" 
+        <motion.section
+          id="stack"
+          className="section"
           aria-labelledby="stack-h"
           variants={staggerContainer(shouldReduceMotion)}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-10%" }}
         >
+          <motion.div variants={faderVariants(shouldReduceMotion)}>
+            <Eyebrow label="CAPABILITY" />
+          </motion.div>
           <motion.h2 id="stack-h" className="section-headline" variants={faderVariants(shouldReduceMotion)}>
             Stack.
           </motion.h2>
@@ -476,8 +563,8 @@ const App = () => {
                   </div>
                   <motion.div className="flex flex-wrap gap-1" variants={staggerContainer(shouldReduceMotion)}>
                     {group.items.map((skill, i) => (
-                      <motion.span 
-                        key={i} 
+                      <motion.span
+                        key={i}
                         className="skill-tag"
                         variants={faderVariants(shouldReduceMotion)}
                       >
@@ -495,14 +582,25 @@ const App = () => {
 
       {/* Colophon */}
       <footer className="colophon" aria-label="Site colophon">
+        <div className="colophon-principles" aria-label="Principles">
+          <div className="colophon-principles-label">
+            <span className="colophon-principles-bar" aria-hidden="true" />
+            PRINCIPLES
+          </div>
+          <p>Least privilege by default.</p>
+          <p>Deprovision in minutes, not days.</p>
+          <p>Every grant leaves an audit trail.</p>
+          <p className="principle-accent">Agents are identities too.</p>
+        </div>
+
         <dl className="colophon-grid">
           <div className="colophon-block">
             <dt>Set in</dt>
-            <dd>Fraunces, Newsreader, Cutive Mono.</dd>
+            <dd>IBM Plex Sans and IBM Plex Mono.</dd>
           </div>
           <div className="colophon-block">
             <dt>Built with</dt>
-            <dd>React, Vite, Vercel.</dd>
+            <dd>React, Vite, Vercel. Prerendered, strict CSP, tested.</dd>
           </div>
           <div className="colophon-block">
             <dt>Built for</dt>
@@ -512,7 +610,7 @@ const App = () => {
 
         <div className="colophon-meta">
           <span>© {year} Manny Flores · SF Bay Area</span>
-          <span>FIN.</span>
+          <span className="tabular">exit 0</span>
         </div>
       </footer>
 
