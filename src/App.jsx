@@ -356,7 +356,7 @@ const App = () => {
                 and how access ends when they leave. Ten years of that across fintech
                 and healthcare. Lately the newest users on the network are not people,
                 so the job now is making sure AI tools live by the same rules as
-                everyone else: <span className="accent">who, and now what, can do what</span>.
+                everyone else: <span className="accent">who, and what, can do what</span>.
               </motion.p>
 
             </motion.div>

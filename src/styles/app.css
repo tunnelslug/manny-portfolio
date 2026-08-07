@@ -598,7 +598,7 @@ button:focus-visible {
 
 /* ── Section ─────────────────────────────────────── */
 .section {
-  padding: var(--space-14) var(--space-9);
+  padding: var(--space-12) var(--space-9);
   max-width: var(--container-max);
   margin: 0 auto;
 }
@@ -1010,7 +1010,7 @@ a.btn-ghost:hover {
     height: 120px;
   }
   .section {
-    padding: var(--space-10) var(--space-5);
+    padding: var(--space-9) var(--space-5);
   }
   .colophon {
     padding: var(--space-6) var(--space-5);
