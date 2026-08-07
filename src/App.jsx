@@ -166,12 +166,13 @@ const App = () => {
     { type: 'add', text: '+ okta_config.terraform            # clicks -> code: drift gone, changes reviewed like PRs' },
     { type: 'chg', text: '~ access_requests     = "manual tickets" -> "automated fulfillment"' },
     { type: 'del', text: '- standing_access.unreviewed       # replaced by certification campaigns' },
+    { type: 'del', text: '- entra_id.tenants.acquired        # owned through migration: support, audit, decommission' },
     { type: 'ctx', text: '# (unchanged fundamentals hidden: SAML, OAuth 2.0, OIDC, SCIM, Python, Terraform)' },
-    { type: 'out', text: 'Plan: 4 to add, 2 to change, 1 to destroy.' },
+    { type: 'out', text: 'Plan: 4 to add, 2 to change, 2 to destroy.' },
   ];
 
   const skills = [
-    { category: 'Identity & Access', items: ['Okta OIE', 'OIG', 'SAML 2.0', 'OAuth 2.0', 'OIDC', 'SCIM', 'RBAC', 'Zero Trust'] },
+    { category: 'Identity & Access', items: ['Okta OIE', 'OIG', 'Entra ID', 'SAML 2.0', 'OAuth 2.0', 'OIDC', 'SCIM', 'RBAC', 'Zero Trust'] },
     { category: 'Automation & IaC', items: ['Python', 'Bash', 'Okta Workflows', 'Terraform', 'GCP IAM', 'APIs & Integrations'] },
     { category: 'Corp Apps Infra', items: ['GCP', 'Google Workspace', 'Okta', 'Slack', 'Jira', 'Workday'] },
     { category: 'AI & Governance', items: ['MCP', 'Claude Code', 'ChatGPT', 'Cursor', 'Gemini Enterprise', 'LLM Access Controls'] },
@@ -433,7 +434,7 @@ const App = () => {
               className="plan-lines"
               role="img"
               tabIndex={0}
-              aria-label="Career summary formatted as a Terraform plan: role changed from Systems Administrator to Senior Systems Engineer and team lead; added Okta Identity Governance rollout, six acquisitions merged into one Okta tenant, identity governance for four AI tools, and Okta configuration managed as Terraform code; access requests changed from manual tickets to automated fulfillment; unreviewed standing access removed."
+              aria-label="Career summary formatted as a Terraform plan: role changed from Systems Administrator to Senior Systems Engineer and team lead; added Okta Identity Governance rollout, six acquisitions merged into one Okta tenant, identity governance for four AI tools, and Okta configuration managed as Terraform code; access requests changed from manual tickets to automated fulfillment; unreviewed standing access removed; acquired Entra ID tenants owned through migration and decommissioned."
             >
               {planLines.map((line, i) => (
                 <motion.div
