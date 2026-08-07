@@ -72,7 +72,7 @@ This system replaced the Roma "El Cuaderno" editorial direction (serif magazine,
 - Flat surfaces, hairline borders, generous air. One shadow, hover-only on project cards.
 - The signature motif is the plan diff: the career rendered as `terraform plan` output with a `+/~/-` symbol gutter, old `->` new arrows, muted `#` context lines, and a summary line. Every line is resume-backed fact.
 
-**Physical scene:** A Staff-level hiring manager opens mannyflo.com on a 13 inch laptop in a well-lit office between interviews, deciding in 45 seconds whether Manny can run their identity program. Light theme is the default; dark is a full first-class theme via the toggle and `prefers-color-scheme`.
+**Physical scene:** A Staff-level hiring manager opens mannyflo.com on a 13 inch laptop in a well-lit office between interviews, deciding in 45 seconds whether Manny can run their identity program. Dark theme is the default for new visitors (owner decision, 2026-08-06); light is a full first-class theme via the toggle, and a stored preference always wins.
 
 ## 2. Colors
 
