@@ -142,7 +142,7 @@ const App = () => {
     {
       domain: 'AI Tooling Governance',
       state: 'expanding',
-      desc: 'The identity side of Claude Code, ChatGPT, Cursor, and Gemini Enterprise: rollout review, access controls, and MCP integration enablement across the SaaS stack. Agents get identities, scopes, and an audit trail.',
+      desc: 'The identity side of Claude Code, ChatGPT, Cursor, and Gemini Enterprise: rollout review, access controls, and MCP integration enablement across the SaaS stack. Agents get identities, scopes, and an audit trail. Service accounts authenticate through brokered credentials, checked out from the vault programmatically and returned, never held.',
     },
     {
       domain: 'Cloud Governance (GCP)',
