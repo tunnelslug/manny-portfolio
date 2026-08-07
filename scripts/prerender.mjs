@@ -47,7 +47,7 @@ writeFileSync(
     title: 'Manny Flores · Links',
     description:
       'Links for Manny Flores: personal site, LinkedIn, GitHub, Instagram, and more.',
-    url: 'https://mannyflo.com/bio',
+    url: 'https://www.mannyflo.com/bio',
   }),
 )
 

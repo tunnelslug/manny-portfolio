@@ -343,7 +343,8 @@ const App = () => {
               </FramerButton>
               <FramerButton
                 variant="ghost"
-                onClick={() => setResumeOpen(true)}
+                href="/resume.pdf"
+                onClick={(e) => { e.preventDefault(); setResumeOpen(true); }}
               >
                 Resume
               </FramerButton>
