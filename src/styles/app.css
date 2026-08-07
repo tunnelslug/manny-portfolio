@@ -572,7 +572,9 @@ button:focus-visible {
 }
 
 .hero-portrait-block {
-  margin: 0;
+  /* offset past the eyebrow row so the portrait tops out level with the
+     name's cap height, not its line box */
+  margin: calc(var(--space-9) + 12px) 0 0;
 }
 
 .hero-portrait {
@@ -894,77 +896,13 @@ button:focus-visible {
   flex-wrap: wrap;
 }
 
-/* ── Colophon footer ──────────────────────────────── */
-.colophon-principles {
-  padding-bottom: var(--space-9);
-  margin-bottom: var(--space-9);
-  border-bottom: 1px solid var(--color-border-subtle);
-}
-
-.colophon-principles-label {
-  font-family: var(--font-mono);
-  font-size: var(--fs-sm);
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--color-text-muted);
-  margin-bottom: var(--space-4);
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-}
-
-.colophon-principles-bar {
-  display: inline-block;
-  width: 14px;
-  height: 1.5px;
-  background: var(--color-accent);
-}
-
-.colophon-principles p {
-  font-family: var(--font-sans);
-  font-size: var(--fs-lg);
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  line-height: 1.55;
-  color: var(--color-text-muted);
-  margin: 0;
-  max-width: var(--measure);
-}
-
-.colophon-principles .principle-accent {
-  color: var(--color-accent);
-}
-
+/* ── Footer ───────────────────────────────────────── */
 .colophon {
   border-top: 1px solid var(--color-border);
   background: var(--color-bg);
-  padding: var(--space-12) var(--space-9) var(--space-9);
+  padding: var(--space-8) var(--space-9);
   max-width: var(--container-max);
   margin: 0 auto;
-}
-
-.colophon-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-9);
-  margin-bottom: var(--space-10);
-}
-
-.colophon-block dt {
-  font-family: var(--font-mono);
-  font-size: var(--fs-sm);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--color-text-muted);
-  margin-bottom: var(--space-2);
-}
-
-.colophon-block dd {
-  font-family: var(--font-sans);
-  font-size: var(--fs-md);
-  line-height: 1.5;
-  color: var(--color-text);
-  margin: 0;
 }
 
 .colophon-meta {
@@ -975,8 +913,6 @@ button:focus-visible {
   font-size: var(--fs-sm);
   letter-spacing: 0.06em;
   color: var(--color-text-muted);
-  padding-top: var(--space-5);
-  border-top: 1px solid var(--color-border);
 }
 
 /* ── Body link styling ────────────────────────────── */
@@ -1030,10 +966,6 @@ a.btn-ghost:hover {
   .scope-body h3 { grid-area: title; }
   .scope-body p { grid-area: desc; }
   .scope-row .pill { grid-area: pill; }
-  .colophon-grid {
-    grid-template-columns: 1fr;
-    gap: var(--space-6);
-  }
 }
 
 @media (max-width: 768px) {
@@ -1070,6 +1002,9 @@ a.btn-ghost:hover {
     justify-content: center;
     width: 100%;
   }
+  .hero-portrait-block {
+    margin-top: 0;
+  }
   .hero-portrait {
     width: 120px;
     height: 120px;
@@ -1078,7 +1013,7 @@ a.btn-ghost:hover {
     padding: var(--space-10) var(--space-5);
   }
   .colophon {
-    padding: var(--space-10) var(--space-5) var(--space-8);
+    padding: var(--space-6) var(--space-5);
   }
   .hamburger { display: flex; }
   .nav-desktop { display: none !important; }

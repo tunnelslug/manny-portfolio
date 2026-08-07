@@ -352,10 +352,11 @@ const App = () => {
               </motion.p>
 
               <motion.p className="hero-lede" variants={faderVariants(shouldReduceMotion)}>
-                I run the identity and corporate apps infrastructure: Okta, GCP, Google Workspace.
-                The problem I own right now is giving AI tools a real identity story,
-                so Claude Code, ChatGPT, Cursor, and Gemini Enterprise roll out across the company
-                without losing control of <span className="accent">who, and now what, can do what</span>.
+                Identity has been my whole career: who gets in, what they can touch,
+                and how access ends when they leave. Ten years of that across fintech
+                and healthcare. Lately the newest users on the network are not people,
+                so the job now is making sure AI tools live by the same rules as
+                everyone else: <span className="accent">who, and now what, can do what</span>.
               </motion.p>
 
             </motion.div>
@@ -580,34 +581,8 @@ const App = () => {
 
       </main>
 
-      {/* Colophon */}
-      <footer className="colophon" aria-label="Site colophon">
-        <div className="colophon-principles" aria-label="Principles">
-          <div className="colophon-principles-label">
-            <span className="colophon-principles-bar" aria-hidden="true" />
-            PRINCIPLES
-          </div>
-          <p>Least privilege by default.</p>
-          <p>Deprovision in minutes, not days.</p>
-          <p>Every grant leaves an audit trail.</p>
-          <p className="principle-accent">Agents are identities too.</p>
-        </div>
-
-        <dl className="colophon-grid">
-          <div className="colophon-block">
-            <dt>Set in</dt>
-            <dd>IBM Plex Sans and IBM Plex Mono.</dd>
-          </div>
-          <div className="colophon-block">
-            <dt>Built with</dt>
-            <dd>React, Vite, Vercel. Prerendered, strict CSP, tested.</dd>
-          </div>
-          <div className="colophon-block">
-            <dt>Built for</dt>
-            <dd>Recruiters, peer engineers, and the family who asks what I actually do.</dd>
-          </div>
-        </dl>
-
+      {/* Footer */}
+      <footer className="colophon" aria-label="Site footer">
         <div className="colophon-meta">
           <span>© {year} Manny Flores · SF Bay Area</span>
           <span className="tabular">exit 0</span>

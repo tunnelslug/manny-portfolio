@@ -110,7 +110,7 @@ Flat by default. Hairline borders (`--color-border`, translucent ink) do all str
 - **Plan block** (`.plan-block`): panel bg-2, titlebar `terraform plan · career/manny-flores`, mono 13px lines with full-width tinted line backgrounds, `overflow-x: auto`, staggered per-line reveal on view (reduced-motion collapses to instant). Exposed to assistive tech as `role="img"` with a prose `aria-label` summarizing the career facts; the styled lines are `aria-hidden`.
 - **Project cards** (`.project-card`): the only card surface. bg-2, radius 6px, BUILDING pill, sans 600 title, chips (mono, 2px radius rect).
 - **Expertise rows** (`.expertise-row`): `head (num + title) | content (desc + arrow list)` grid rows, hairline tops.
-- **Colophon**: opens with a compact principles block (mono PRINCIPLES label, four short lines at body-plus scale, final line "Agents are identities too." in clay; deliberately small, the freestanding billboard version read as cheesy and was folded in here), then the dl grid (Set in / Built with / Built for), meta row ends with `exit 0`.
+- **Footer**: one mono meta line only: copyright left, `exit 0` right. The owner removed the principles/manifesto block entirely ("looks lame") and the Set in / Built with / Built for colophon grid; do not reintroduce either.
 - **Buttons**: primary ink-filled with clay ink-fill hover (FramerButton overlay), ghost 1.5px ink border. 6px radius.
 - **Resume dialog**: unchanged Radix pattern, panel on bg with strong border.
 
