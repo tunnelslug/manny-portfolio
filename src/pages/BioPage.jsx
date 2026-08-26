@@ -20,7 +20,7 @@ const faderVariants = (shouldReduceMotion) => shouldReduceMotion ? {
   hidden: { opacity: 1, y: 0 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.01 } }
 } : {
-  hidden: { opacity: 0, y: 12 },
+  hidden: { opacity: 1, y: 0 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.165, 0.84, 0.44, 1] } }
 };
 

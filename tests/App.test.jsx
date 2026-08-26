@@ -1,7 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen, fireEvent, within } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import App from '../src/App.jsx'
+import EssayPage from '../src/pages/EssayPage.jsx'
 
 vi.mock('@vercel/analytics/react', () => ({ Analytics: () => null }))
 vi.mock('@vercel/speed-insights/react', () => ({ SpeedInsights: () => null }))
@@ -23,48 +24,39 @@ describe('App', () => {
     expect(main).not.toBeNull()
   })
 
-  it('renders all nav sections as buttons', () => {
+  it('renders a named human and the identity thesis on first paint', () => {
     render(<App />)
-    const nav = screen.getByRole('navigation', { name: /main navigation/i })
-    const navButtons = within(nav).getAllByRole('button')
-    const labels = navButtons.map(b => b.textContent.trim().toLowerCase())
-    for (const label of ['about', 'scope', 'the plan', 'current focus', 'stack']) {
-      expect(labels).toContain(label)
-    }
+    expect(screen.getByRole('heading', { name: 'Manny Flores' })).toBeInTheDocument()
+    expect(screen.getByText(/Identity engineering, SF Bay/)).toBeInTheDocument()
+    expect(screen.getByText(/who, and what, can do what/)).toBeInTheDocument()
+    expect(screen.getByText(/On leave/)).toBeInTheDocument()
   })
 
-  it('marks the active nav item with aria-current="page"', () => {
+  it('renders work and writing as the only two blocks', () => {
     render(<App />)
-    const aboutButtons = screen.getAllByRole('button', { name: 'about' })
-    expect(aboutButtons.some(b => b.getAttribute('aria-current') === 'page')).toBe(true)
+    expect(screen.getByRole('heading', { name: 'Selected work' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Writing' })).toBeInTheDocument()
+    expect(screen.getByText('Okta as code')).toBeInTheDocument()
+    expect(screen.getByText('A paved road for AI workloads')).toBeInTheDocument()
+    expect(screen.getByText('The collaboration surface')).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Agents are users' })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'RSS' })).toHaveAttribute('href', '/rss.xml')
   })
 
-  it('opens and closes the mobile menu via the hamburger button', async () => {
-    const user = userEvent.setup()
+  it('does not render the retired console costume', () => {
     render(<App />)
-    const hamburger = screen.getByRole('button', { name: /open menu/i })
-    expect(hamburger).toHaveAttribute('aria-expanded', 'false')
-    await user.click(hamburger)
-    expect(hamburger).toHaveAttribute('aria-expanded', 'true')
+    expect(screen.queryByText(/terraform plan/i)).not.toBeInTheDocument()
+    expect(screen.queryByText(/exit 0/i)).not.toBeInTheDocument()
+    expect(screen.queryByText(/access logged/i)).not.toBeInTheDocument()
+    expect(screen.queryByLabelText(/signing you in/i)).not.toBeInTheDocument()
+    expect(screen.queryByText('OPERATING')).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'the plan' })).not.toBeInTheDocument()
   })
 
-  it('closes the mobile menu when Escape is pressed', async () => {
-    const user = userEvent.setup()
-    render(<App />)
-    const hamburger = screen.getByRole('button', { name: /open menu/i })
-    await user.click(hamburger)
-    expect(hamburger).toHaveAttribute('aria-expanded', 'true')
-    fireEvent.keyDown(window, { key: 'Escape' })
-    expect(hamburger).toHaveAttribute('aria-expanded', 'false')
-  })
-
-  it('updates the URL hash when a nav item is clicked', async () => {
-    const user = userEvent.setup()
-    render(<App />)
-    const nav = screen.getByRole('navigation', { name: /main navigation/i })
-    const stackBtn = within(nav).getByRole('button', { name: 'stack' })
-    await user.click(stackBtn)
-    expect(window.location.hash).toBe('#stack')
+  it('keeps hash targets for work and writing', () => {
+    const { container } = render(<App />)
+    expect(container.querySelector('#work')).not.toBeNull()
+    expect(container.querySelector('#writing')).not.toBeNull()
   })
 
   it('renders the footer with the current year', () => {
@@ -73,32 +65,23 @@ describe('App', () => {
     expect(screen.getByText(new RegExp(`© ${year} Manny Flores`))).toBeInTheDocument()
   })
 
-  it('keeps the Access Plan unique items: session, terraform plan, exit 0', () => {
+  it('opens the resume dialog from the masthead', async () => {
+    const user = userEvent.setup()
     render(<App />)
-    expect(screen.getByText(/access logged/)).toBeInTheDocument()
-    expect(screen.getByText('terraform plan')).toBeInTheDocument()
-    expect(screen.getByText('career/manny-flores')).toBeInTheDocument()
-    expect(screen.getByText('exit 0')).toBeInTheDocument()
-    expect(screen.getByRole('heading', { name: 'Manny Flores' })).toBeInTheDocument()
-    expect(screen.getByText(/Corporate Systems lead, Robinhood/)).toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: 'Resume' }))
+    expect(screen.getByTitle('Manny Flores Resume PDF Viewer')).toBeInTheDocument()
+  })
+})
+
+describe('EssayPage', () => {
+  it('renders a verified essay', () => {
+    render(<EssayPage slug="agents-are-users" />)
+    expect(screen.getByRole('heading', { name: 'Agents are users' })).toBeInTheDocument()
+    expect(screen.getByText(/Agents get identities/)).toBeInTheDocument()
   })
 
-  it('renders owned-domain and current-focus copy without waiting on scroll', () => {
-    render(<App />)
-    expect(screen.getByRole('heading', { name: 'Access domains.' })).toBeInTheDocument()
-    expect(screen.getByRole('heading', { name: 'The access plan.' })).toBeInTheDocument()
-    expect(screen.getByRole('heading', { name: 'Current focus.' })).toBeInTheDocument()
-    expect(screen.getByRole('heading', { name: 'Stack.' })).toBeInTheDocument()
-    expect(screen.getByText('Terraform Okta: Identity as Code')).toBeInTheDocument()
-    expect(screen.getByText('Secure GCP for AI Workloads')).toBeInTheDocument()
-    expect(screen.getByText('Google Workspace Security Hardening')).toBeInTheDocument()
-    expect(screen.getByText(/Say, X1, Bitstamp, TradePMR, Chartr, WonderFi/)).toBeInTheDocument()
-  })
-
-  it('keeps hash targets for nav sections', () => {
-    const { container } = render(<App />)
-    for (const id of ['about', 'scope', 'plan', 'projects', 'stack']) {
-      expect(container.querySelector(`#${id}`)).not.toBeNull()
-    }
+  it('renders a missing state for unknown slugs', () => {
+    render(<EssayPage slug="not-a-real-note" />)
+    expect(screen.getByRole('heading', { name: 'Not found' })).toBeInTheDocument()
   })
 })
