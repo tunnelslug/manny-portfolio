@@ -366,19 +366,6 @@ const App = () => {
               <figcaption className="hero-portrait-caption">SF Bay Area · since 2024</figcaption>
             </motion.figure>
           </div>
-
-          <nav className="mandate-index" aria-label="Access domains at a glance">
-            {scope.map((item, i) => (
-              <a
-                key={item.domain}
-                className="mandate-index-item"
-                href={`#scope-${i + 1}`}
-              >
-                <span className="mandate-index-num">{String(i + 1).padStart(2, '0')}</span>
-                <strong>{item.domain}</strong>
-              </a>
-            ))}
-          </nav>
         </motion.section>
 
         {/* Scope · Access domains */}
@@ -404,7 +391,7 @@ const App = () => {
 
           <motion.div className="scope-list" variants={staggerContainer(shouldReduceMotion)}>
             {scope.map((item, i) => (
-              <motion.div key={i} id={`scope-${i + 1}`} className="scope-row" variants={faderVariants(shouldReduceMotion)}>
+              <motion.div key={i} className="scope-row" variants={faderVariants(shouldReduceMotion)}>
                 <span className="scope-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
                 <div className="scope-body">
                   <h3>{item.domain}</h3>

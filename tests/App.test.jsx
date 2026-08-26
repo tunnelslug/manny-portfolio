@@ -95,15 +95,10 @@ describe('App', () => {
     expect(screen.getByText(/Say, X1, Bitstamp, TradePMR, Chartr, WonderFi/)).toBeInTheDocument()
   })
 
-  it('keeps hash targets for nav sections and first-screen domain links', () => {
+  it('keeps hash targets for nav sections', () => {
     const { container } = render(<App />)
     for (const id of ['about', 'scope', 'plan', 'projects', 'stack']) {
       expect(container.querySelector(`#${id}`)).not.toBeNull()
     }
-    for (const n of [1, 2, 3, 4, 5]) {
-      expect(container.querySelector(`#scope-${n}`)).not.toBeNull()
-    }
-    const index = screen.getByRole('navigation', { name: /access domains at a glance/i })
-    expect(within(index).getAllByRole('link')).toHaveLength(5)
   })
 })
