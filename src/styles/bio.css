@@ -45,12 +45,12 @@
 }
 
 .bio-role {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--fs-sm);
-  letter-spacing: 0.08em;
+  font-weight: 500;
+  letter-spacing: 0.02em;
   line-height: 1.7;
-  text-transform: uppercase;
-  color: var(--color-text);
+  color: var(--color-text-muted);
   margin-bottom: var(--space-9);
   overflow-wrap: normal;
   word-break: normal;
@@ -109,16 +109,16 @@
 }
 
 .bio-link-sublabel {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--fs-xs);
-  letter-spacing: 0.04em;
+  letter-spacing: 0.01em;
   color: var(--color-text-subtle);
 }
 
 .bio-footer {
   margin-top: var(--space-9);
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--fs-xs);
-  letter-spacing: 0.06em;
+  letter-spacing: 0.02em;
   color: var(--color-text-subtle);
 }

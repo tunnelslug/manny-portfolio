@@ -20,7 +20,7 @@ const ResumeDialog = ({ open, onOpenChange }) => {
             </Dialog.Description>
  
             <header className="resume-panel-header flex items-center justify-between px-6 py-4 border-b border-border flex-shrink-0">
-              <span className="resume-panel-title font-mono text-sm tracking-[0.10em] uppercase text-text-muted">
+              <span className="resume-panel-title text-sm tracking-[0.04em] text-text-muted">
                 Manny Flores · Resume
               </span>
               

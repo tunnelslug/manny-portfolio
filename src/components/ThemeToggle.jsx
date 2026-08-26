@@ -9,9 +9,9 @@ export default function ThemeToggle() {
       if (stored === 'light' || stored === 'dark') {
         return stored;
       }
-      return 'dark';
+      return 'light';
     }
-    return 'dark';
+    return 'light';
   });
 
   const applyTheme = (themeValue) => {

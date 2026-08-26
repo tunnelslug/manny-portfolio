@@ -45,7 +45,7 @@ const BioPage = () => {
       <motion.div
         className="bio-shell"
         variants={staggerContainer(shouldReduceMotion)}
-        initial="hidden"
+        initial={false}
         animate="visible"
       >
         <motion.img

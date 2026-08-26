@@ -1,10 +1,8 @@
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import React, { useState, useEffect } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import ResumeDialog from './components/ResumeDialog';
-import BootCeremony from './components/BootCeremony';
 import ProjectCard from './components/ProjectCard';
 import ThemeToggle from './components/ThemeToggle';
 import FramerButton from './components/FramerButton';
@@ -20,68 +18,22 @@ const Eyebrow = ({ label }) => (
 const NAV_SECTIONS = [
   { id: 'about',    label: 'about' },
   { id: 'scope',    label: 'scope' },
-  { id: 'plan',     label: 'the plan' },
+  { id: 'plan',     label: 'trajectory' },
   { id: 'projects', label: 'current focus' },
   { id: 'stack',    label: 'stack' },
 ];
 
-const faderVariants = (shouldReduceMotion) => shouldReduceMotion ? {
-  hidden: { opacity: 1, y: 0 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.01 } }
-} : {
-  hidden: { opacity: 0, y: 15 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.6,
-      ease: [0.165, 0.84, 0.44, 1],
-    }
-  }
+const initialSection = () => {
+  if (typeof window === 'undefined') return 'about';
+  const hash = window.location.hash.slice(1);
+  return NAV_SECTIONS.some(s => s.id === hash) ? hash : 'about';
 };
-
-const staggerContainer = (shouldReduceMotion) => ({
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: shouldReduceMotion ? 0.01 : 0.08,
-    }
-  }
-});
-
-const portraitVariants = (shouldReduceMotion) => shouldReduceMotion ? {
-  hidden: { opacity: 1, scale: 1 },
-  visible: { opacity: 1, scale: 1, transition: { duration: 0.01 } }
-} : {
-  hidden: { opacity: 0, scale: 0.96 },
-  visible: { opacity: 1, scale: 1, transition: { duration: 0.8, ease: [0.165, 0.84, 0.44, 1] } }
-};
-
-/* Plan lines print like terminal output: quick per-line stagger. */
-const planLineVariants = (shouldReduceMotion) => shouldReduceMotion ? {
-  hidden: { opacity: 1 },
-  visible: { opacity: 1, transition: { duration: 0.01 } }
-} : {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 0.18, ease: 'linear' } }
-};
-
-const planContainer = (shouldReduceMotion) => ({
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: shouldReduceMotion ? 0.01 : 0.14,
-    }
-  }
-});
 
 const App = () => {
-  const [activeSection, setActiveSection] = useState('about');
+  const [activeSection, setActiveSection] = useState(initialSection);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [resumeOpen, setResumeOpen] = useState(false);
-  const shouldReduceMotion = useReducedMotion();
 
-  // Sync active nav item to scroll position
   useEffect(() => {
     const observers = NAV_SECTIONS.map(({ id }) => {
       const el = document.getElementById(id);
@@ -119,11 +71,10 @@ const App = () => {
   useEffect(() => {
     const hash = window.location.hash.slice(1);
     if (!hash) return;
-    const valid = NAV_SECTIONS.some(s => s.id === hash);
+    const valid = NAV_SECTIONS.some(s => s.id === hash) || document.getElementById(hash);
     if (!valid) return;
     const el = document.getElementById(hash);
     if (el) {
-      setActiveSection(hash);
       requestAnimationFrame(() => el.scrollIntoView({ block: 'start' }));
     }
   }, []);
@@ -156,19 +107,57 @@ const App = () => {
     },
   ];
 
-  /* The career, written the way the audience reads change. All lines resume-backed. */
-  const planLines = [
-    { type: 'ctx', text: '# career/manny-flores · 10+ years · fintech + healthcare' },
-    { type: 'chg', text: '~ role                = "Systems Administrator" -> "Senior Systems Engineer, team lead"' },
-    { type: 'add', text: '+ okta_identity_governance         # led rollout: certification campaigns, policy lifecycle' },
-    { type: 'add', text: '+ okta_tenant.acquisitions[6]      # Say, X1, Bitstamp, TradePMR, Chartr, WonderFi' },
-    { type: 'add', text: '+ ai_tools.identity_governance[4]  # Claude Code, ChatGPT, Cursor, Gemini Enterprise' },
-    { type: 'add', text: '+ okta_config.terraform            # clicks -> code: drift gone, changes reviewed like PRs' },
-    { type: 'chg', text: '~ access_requests     = "manual tickets" -> "automated fulfillment"' },
-    { type: 'del', text: '- standing_access.unreviewed       # replaced by certification campaigns' },
-    { type: 'del', text: '- entra_id.tenants.acquired        # owned through migration: support, audit, decommission' },
-    { type: 'ctx', text: '# (unchanged fundamentals hidden: SAML, OAuth 2.0, OIDC, SCIM, Python, Terraform)' },
-    { type: 'out', text: 'Plan: 4 to add, 2 to change, 2 to destroy.' },
+  const changeLog = [
+    {
+      kind: 'changed',
+      label: 'Changed',
+      items: [
+        {
+          title: 'Role',
+          body: 'Systems Administrator to Senior Systems Engineer, team lead.',
+        },
+        {
+          title: 'Access requests',
+          body: 'Manual tickets to automated fulfillment.',
+        },
+      ],
+    },
+    {
+      kind: 'added',
+      label: 'Added',
+      items: [
+        {
+          title: 'Okta Identity Governance',
+          body: 'Led the rollout: certification campaigns and policy-driven lifecycle controls.',
+        },
+        {
+          title: 'Six acquisitions into one Okta tenant',
+          body: 'Say, X1, Bitstamp, TradePMR, Chartr, WonderFi.',
+        },
+        {
+          title: 'Identity governance for AI tools',
+          body: 'Claude Code, ChatGPT, Cursor, and Gemini Enterprise.',
+        },
+        {
+          title: 'Okta config as Terraform',
+          body: 'Clicks to code: drift gone, changes reviewed like PRs.',
+        },
+      ],
+    },
+    {
+      kind: 'removed',
+      label: 'Removed',
+      items: [
+        {
+          title: 'Unreviewed standing access',
+          body: 'Replaced by certification campaigns.',
+        },
+        {
+          title: 'Acquired Entra ID tenants',
+          body: 'Owned through migration: support, audit, decommission.',
+        },
+      ],
+    },
   ];
 
   const skills = [
@@ -199,17 +188,12 @@ const App = () => {
     },
   ];
 
-  const now = new Date();
-  const year = now.getFullYear();
-  const monthNum = String(now.getMonth() + 1).padStart(2, '0');
+  const year = new Date().getFullYear();
 
   return (
     <>
-      <BootCeremony oncePerSession />
-
       <a href="#main" className="skip-link">Skip to content</a>
 
-      {/* Papel picado stripe · identity mark, matches the favicon, once at the very top */}
       <div className="papel-band" role="presentation" aria-hidden="true">
         <span style={{ background: '#E6376A' }} />
         <span style={{ background: '#1E4FA6' }} />
@@ -220,15 +204,6 @@ const App = () => {
         <span style={{ background: '#1B1208' }} />
       </div>
 
-      {/* Masthead · session line */}
-      <div className="masthead" role="presentation">
-        <span className="masthead-dot" aria-hidden="true">●</span>
-        <span>session {year}.{monthNum}</span>
-        <span className="masthead-spacer" />
-        <span>mannyflo.com<span className="masthead-extra"> · access logged</span></span>
-      </div>
-
-      {/* Navigation */}
       <header className="nav-shell">
         <nav className="nav-row" aria-label="Main navigation">
           <button
@@ -239,7 +214,7 @@ const App = () => {
             mannyflo<span className="wordmark-dot">.</span>
           </button>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <div className="nav-desktop">
               {NAV_SECTIONS.map(({ id, label }) => (
                 <button
@@ -268,7 +243,6 @@ const App = () => {
         </nav>
       </header>
 
-      {/* Mobile nav drawer */}
       <div
         id="mobile-nav"
         className={`nav-mobile ${isMenuOpen ? 'open' : ''}`}
@@ -288,42 +262,42 @@ const App = () => {
       </div>
 
       <main id="main">
-        {/* Hero / About */}
-        <motion.section
+        <section
           id="about"
           className="hero"
           aria-labelledby="hero-name"
-          variants={staggerContainer(shouldReduceMotion)}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-10%" }}
         >
           <div className="hero-grid">
-            <motion.div className="hero-text-block" variants={staggerContainer(shouldReduceMotion)}>
-              <motion.div variants={faderVariants(shouldReduceMotion)}>
-                <Eyebrow label="IDENTITY & ACCESS MANAGEMENT" />
-              </motion.div>
+            <div className="hero-text-block">
+              <Eyebrow label="Identity & access" />
 
-              <motion.h1 id="hero-name" className="hero-name" variants={faderVariants(shouldReduceMotion)}>
+              <h1 id="hero-name" className="hero-name">
                 Manny Flores
-              </motion.h1>
-              <motion.p className="hero-role" variants={faderVariants(shouldReduceMotion)}>
+              </h1>
+              <p className="hero-role">
                 Senior Systems Engineer · Corporate Systems lead, Robinhood
-              </motion.p>
+              </p>
+              <p className="hero-place">SF Bay Area · in role since 2024</p>
 
-              <motion.p className="hero-lede" variants={faderVariants(shouldReduceMotion)}>
+              <p className="hero-lede">
                 Identity has been my whole career: who gets in, what they can touch,
                 and how access ends when they leave. Ten years of that across fintech
                 and healthcare. Lately the newest users on the network are not people,
                 so the job now is making sure AI tools live by the same rules as
-                everyone else: <span className="accent">who, and what, can do what</span>.
-              </motion.p>
+                everyone else:
+                <span className="accent">who, and what, can do what.</span>
+              </p>
+            </div>
 
-            </motion.div>
-
-            <motion.div className="hero-cta-row" variants={faderVariants(shouldReduceMotion)}>
-              <FramerButton href="mailto:manny@flores.network">
-                Get in Touch <IconArrow />
+            <div className="hero-cta-row">
+              <FramerButton
+                href="/resume.pdf"
+                onClick={(e) => { e.preventDefault(); setResumeOpen(true); }}
+              >
+                Resume <IconArrow />
+              </FramerButton>
+              <FramerButton href="mailto:manny@flores.network" variant="ghost">
+                Get in Touch
               </FramerButton>
               <FramerButton
                 href="https://linkedin.com/in/mannyflores11"
@@ -341,193 +315,150 @@ const App = () => {
               >
                 GitHub
               </FramerButton>
-              <FramerButton
-                variant="ghost"
-                href="/resume.pdf"
-                onClick={(e) => { e.preventDefault(); setResumeOpen(true); }}
-              >
-                Resume
-              </FramerButton>
-            </motion.div>
+            </div>
 
-            <motion.figure className="hero-portrait-block" variants={faderVariants(shouldReduceMotion)}>
-              <motion.img
+            <figure className="hero-portrait-block">
+              <img
                 src="/profile2.png"
                 alt="Portrait of Manny Flores"
                 className="hero-portrait"
-                width="240"
-                height="240"
+                width="220"
+                height="220"
                 loading="eager"
                 fetchPriority="high"
                 decoding="async"
-                variants={portraitVariants(shouldReduceMotion)}
               />
               <figcaption className="hero-portrait-caption">SF Bay Area · since 2024</figcaption>
-            </motion.figure>
-          </div>
-        </motion.section>
+            </figure>
 
-        {/* Scope · Access domains */}
-        <motion.section
+            <nav className="mandate-index" aria-label="Access domains at a glance">
+              {scope.map((item, i) => (
+                <a
+                  key={item.domain}
+                  className="mandate-index-item"
+                  href={`#scope-${i + 1}`}
+                >
+                  <span className="mandate-index-num">{String(i + 1).padStart(2, '0')}</span>
+                  <strong>{item.domain}</strong>
+                </a>
+              ))}
+            </nav>
+          </div>
+        </section>
+
+        <section
           id="scope"
           className="section"
           aria-labelledby="scope-h"
-          variants={staggerContainer(shouldReduceMotion)}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-10%" }}
         >
-          <motion.div variants={faderVariants(shouldReduceMotion)}>
-            <Eyebrow label="SCOPE" />
-          </motion.div>
-          <motion.h2 id="scope-h" className="section-headline" variants={faderVariants(shouldReduceMotion)}>
+          <Eyebrow label="Scope" />
+          <h2 id="scope-h" className="section-headline">
             Access domains.
-          </motion.h2>
-          <motion.p className="section-lede" variants={faderVariants(shouldReduceMotion)}>
+          </h2>
+          <p className="section-lede">
             The identity, cloud, and collaboration stack the company runs on.
             The mandate: harden the foundation, make AI tooling adoptable, keep sprawl down.
-          </motion.p>
+          </p>
 
-          <motion.div className="scope-list" variants={staggerContainer(shouldReduceMotion)}>
+          <div className="scope-list">
             {scope.map((item, i) => (
-              <motion.div key={i} className="scope-row" variants={faderVariants(shouldReduceMotion)}>
+              <div key={item.domain} className="scope-row" id={`scope-${i + 1}`}>
                 <span className="scope-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
                 <div className="scope-body">
                   <h3>{item.domain}</h3>
                   <p>{item.desc}</p>
                 </div>
                 <span className={`pill pill--${item.state}`}>{item.state}</span>
-              </motion.div>
+              </div>
             ))}
-          </motion.div>
-        </motion.section>
+          </div>
+        </section>
 
-        {/* Plan · career as a plan diff */}
-        <motion.section
+        <section
           id="plan"
           className="section"
           aria-labelledby="plan-h"
-          variants={staggerContainer(shouldReduceMotion)}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-10%" }}
         >
-          <motion.div variants={faderVariants(shouldReduceMotion)}>
-            <Eyebrow label="TRAJECTORY" />
-          </motion.div>
-          <motion.h2 id="plan-h" className="section-headline" variants={faderVariants(shouldReduceMotion)}>
-            The access plan.
-          </motion.h2>
-          <motion.p className="section-lede" variants={faderVariants(shouldReduceMotion)}>
-            A decade of identity work, written the way this audience reads change.
+          <Eyebrow label="Trajectory" />
+          <h2 id="plan-h" className="section-headline">
+            What changed.
+          </h2>
+          <p className="section-lede">
+            A decade of identity work across fintech and healthcare.
             Every line is on the <button className="lede-link" onClick={() => setResumeOpen(true)}>resume</button>.
-          </motion.p>
+          </p>
 
-          <motion.div
-            className="plan-block"
-            variants={planContainer(shouldReduceMotion)}
-          >
-            <div className="plan-titlebar" aria-hidden="true">
-              <span>terraform plan</span>
-              <span className="plan-titlebar-right">career/manny-flores</span>
-            </div>
-            <div
-              className="plan-lines"
-              role="img"
-              tabIndex={0}
-              aria-label="Career summary formatted as a Terraform plan: role changed from Systems Administrator to Senior Systems Engineer and team lead; added Okta Identity Governance rollout, six acquisitions merged into one Okta tenant, identity governance for four AI tools, and Okta configuration managed as Terraform code; access requests changed from manual tickets to automated fulfillment; unreviewed standing access removed; acquired Entra ID tenants owned through migration and decommissioned."
-            >
-              {planLines.map((line, i) => (
-                <motion.div
-                  key={i}
-                  className={`plan-line plan-line--${line.type}`}
-                  variants={planLineVariants(shouldReduceMotion)}
-                >
-                  {line.text}
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-        </motion.section>
+          <div className="change-log">
+            {changeLog.map((group) => (
+              <div key={group.kind} className={`change-group change-group--${group.kind}`}>
+                <h3 className="change-group-label">{group.label}</h3>
+                {group.items.map((item) => (
+                  <div key={item.title} className="change-item">
+                    <h4>{item.title}</h4>
+                    <p>{item.body}</p>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        </section>
 
-        {/* Projects · Currently Building */}
-        <motion.section
+        <section
           id="projects"
           className="section"
           aria-labelledby="projects-h"
-          variants={staggerContainer(shouldReduceMotion)}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-10%" }}
         >
-          <motion.div variants={faderVariants(shouldReduceMotion)}>
-            <Eyebrow label="SHIPPED & SHIPPING" />
-          </motion.div>
-          <motion.h2 id="projects-h" className="section-headline" variants={faderVariants(shouldReduceMotion)}>
+          <Eyebrow label="Shipped & shipping" />
+          <h2 id="projects-h" className="section-headline">
             Current focus.
-          </motion.h2>
+          </h2>
 
-          <motion.div className="project-list" variants={staggerContainer(shouldReduceMotion)}>
-            {currentProjects.map((project, index) => (
-              <motion.div key={index} variants={faderVariants(shouldReduceMotion)}>
-                <ProjectCard
-                  title={project.title}
-                  status={project.status}
-                  description={project.description}
-                  tags={project.tags}
-                />
-              </motion.div>
+          <div className="project-list">
+            {currentProjects.map((project) => (
+              <ProjectCard
+                key={project.title}
+                title={project.title}
+                status={project.status}
+                description={project.description}
+                tags={project.tags}
+              />
             ))}
-          </motion.div>
-        </motion.section>
+          </div>
+        </section>
 
-        {/* Stack · Expertise + Tools */}
-        <motion.section
+        <section
           id="stack"
           className="section"
           aria-labelledby="stack-h"
-          variants={staggerContainer(shouldReduceMotion)}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-10%" }}
         >
-          <motion.div variants={faderVariants(shouldReduceMotion)}>
-            <Eyebrow label="CAPABILITY" />
-          </motion.div>
-          <motion.h2 id="stack-h" className="section-headline" variants={faderVariants(shouldReduceMotion)}>
+          <Eyebrow label="Capability" />
+          <h2 id="stack-h" className="section-headline">
             Stack.
-          </motion.h2>
+          </h2>
 
-          <motion.div className="skills-grid" variants={staggerContainer(shouldReduceMotion)}>
-            {skills.map((group, index) => (
-              <motion.div key={index} variants={faderVariants(shouldReduceMotion)}>
+          <div className="skills-grid">
+            {skills.map((group) => (
+              <div key={group.category}>
                 <div className="skill-group-title">
-                  <span className="skill-group-bar" aria-hidden="true" />
                   {group.category}
                 </div>
-                <motion.div className="flex flex-wrap gap-1" variants={staggerContainer(shouldReduceMotion)}>
-                  {group.items.map((skill, i) => (
-                    <motion.span
-                      key={i}
-                      className="skill-tag"
-                      variants={faderVariants(shouldReduceMotion)}
-                    >
+                <div className="flex flex-wrap gap-1">
+                  {group.items.map((skill) => (
+                    <span key={skill} className="skill-tag">
                       {skill}
-                    </motion.span>
+                    </span>
                   ))}
-                </motion.div>
-              </motion.div>
+                </div>
+              </div>
             ))}
-          </motion.div>
-        </motion.section>
-
+          </div>
+        </section>
       </main>
 
-      {/* Footer */}
       <footer className="colophon" aria-label="Site footer">
         <div className="colophon-meta">
           <span>© {year} Manny Flores · SF Bay Area</span>
-          <span className="tabular">exit 0</span>
+          <span>mannyflo.com</span>
         </div>
       </footer>
 
