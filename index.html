@@ -2,28 +2,29 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 7 7'%3E%3Crect width='1' height='7' x='0' fill='%23E6376A'/%3E%3Crect width='1' height='7' x='1' fill='%231E4FA6'/%3E%3Crect width='1' height='7' x='2' fill='%23D6A03B'/%3E%3Crect width='1' height='7' x='3' fill='%23C25425'/%3E%3Crect width='1' height='7' x='4' fill='%234A7F5C'/%3E%3Crect width='1' height='7' x='5' fill='%231F3F8C'/%3E%3Crect width='1' height='7' x='6' fill='%231B1208'/%3E%3C/svg%3E" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='16' fill='%23b85c32'/%3E%3C/svg%3E" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="alternate" type="application/rss+xml" title="Manny Flores" href="/rss.xml" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#F9F7F3" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#231F1C" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#F7F3EC" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#2B2620" media="(prefers-color-scheme: dark)" />
     <meta name="color-scheme" content="light dark" />
-    <meta name="description" content="Manny Flores. Senior Systems Engineer and Corporate Systems lead at Robinhood. Identity and access management, Okta identity governance, and the identity side of enterprise AI tooling." />
+    <meta name="description" content="Manny Flores. Identity engineering at Robinhood. Who gets in, what they can touch, and how access ends when they leave. Including the agents." />
     <meta property="og:title" content="Manny Flores" />
-    <meta property="og:description" content="Identity and access engineering: Okta, GCP, Terraform, identity governance, and AI tooling under real access control." />
+    <meta property="og:description" content="Identity engineering. Who, and what, can do what." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://www.mannyflo.com" />
     <meta property="og:site_name" content="Manny Flores" />
     <meta property="og:image" content="https://www.mannyflo.com/og.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Manny Flores. Senior Systems Engineer and Corporate Systems Lead. Identity and access management, governance for AI agents." />
+    <meta property="og:image:alt" content="Manny Flores. Identity engineering." />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Manny Flores" />
-    <meta name="twitter:description" content="Identity and access engineering: Okta, GCP, Terraform, identity governance, and AI tooling under real access control." />
+    <meta name="twitter:description" content="Identity engineering. Who, and what, can do what." />
     <meta name="twitter:image" content="https://www.mannyflo.com/og.png" />
     <link rel="canonical" href="https://www.mannyflo.com" />
-    <title>Manny Flores. Senior Systems Engineer.</title>
+    <title>Manny Flores. Identity engineering.</title>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -37,7 +38,8 @@
         "address": { "@type": "PostalAddress", "addressRegion": "CA", "addressCountry": "US" },
         "sameAs": [
           "https://linkedin.com/in/mannyflores11",
-          "https://github.com/tunnelslug"
+          "https://github.com/tunnelslug",
+          "https://x.com/tunnelslug"
         ],
         "knowsAbout": [
           "Identity and Access Management",
@@ -57,61 +59,49 @@
       }
     </script>
 
-    <link rel="preload" href="/fonts/plexsans-latin-400.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/fonts/plexsans-latin-700.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/fonts/plexmono-latin-400.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/source-serif-4-latin-600.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/source-sans-3-latin-400.woff2" as="font" type="font/woff2" crossorigin />
     <style>
       @font-face {
-        font-family: "IBM Plex Sans";
+        font-family: "Source Serif 4";
         font-style: normal;
         font-weight: 400;
         font-display: swap;
-        src: url("/fonts/plexsans-latin-400.woff2") format("woff2");
+        src: url("/fonts/source-serif-4-latin-400.woff2") format("woff2");
       }
       @font-face {
-        font-family: "IBM Plex Sans";
+        font-family: "Source Serif 4";
         font-style: normal;
         font-weight: 600;
         font-display: swap;
-        src: url("/fonts/plexsans-latin-600.woff2") format("woff2");
+        src: url("/fonts/source-serif-4-latin-600.woff2") format("woff2");
       }
       @font-face {
-        font-family: "IBM Plex Sans";
+        font-family: "Source Serif 4";
         font-style: normal;
         font-weight: 700;
         font-display: swap;
-        src: url("/fonts/plexsans-latin-700.woff2") format("woff2");
+        src: url("/fonts/source-serif-4-latin-700.woff2") format("woff2");
       }
       @font-face {
-        font-family: "IBM Plex Mono";
+        font-family: "Source Sans 3";
         font-style: normal;
         font-weight: 400;
         font-display: swap;
-        src: url("/fonts/plexmono-latin-400.woff2") format("woff2");
+        src: url("/fonts/source-sans-3-latin-400.woff2") format("woff2");
       }
       @font-face {
-        font-family: "IBM Plex Mono";
+        font-family: "Source Sans 3";
         font-style: normal;
-        font-weight: 500;
+        font-weight: 600;
         font-display: swap;
-        src: url("/fonts/plexmono-latin-500.woff2") format("woff2");
-      }
-    </style>
-    <style>
-      /* Boot ceremony cover: painted before first paint so the page never
-         flashes ahead of the sign-in sequence. BootCeremony lifts it. */
-      html.booting::before {
-        content: "";
-        position: fixed;
-        inset: 0;
-        background: oklch(15.5% 0.01 50);
-        z-index: 250;
+        src: url("/fonts/source-sans-3-latin-600.woff2") format("woff2");
       }
     </style>
     <script>
       (function() {
         try {
-          var t = localStorage.getItem('theme') || 'dark';
+          var t = localStorage.getItem('theme') || 'light';
           if (t === 'dark') {
             document.documentElement.classList.add('dark');
             document.documentElement.classList.remove('light');
@@ -119,9 +109,6 @@
             document.documentElement.classList.add('light');
             document.documentElement.classList.remove('dark');
           }
-          var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-          var seen = sessionStorage.getItem('mf-boot-seen') === '1';
-          if (!reduce && !seen) document.documentElement.classList.add('booting');
         } catch (e) {}
       })();
     </script>

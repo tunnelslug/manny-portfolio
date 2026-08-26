@@ -1,50 +1,30 @@
 :root {
-  /* ──────────────────────────────────────────────
-     COLORS · Access Plan console (Light Mode)
-     Warm clay-tinted neutrals · Feria lineage kept
-     in the accent (Tezontle) and the papel band.
-     Strategy: Restrained. One accent. Semantic
-     colors are data (diff/status), never decor.
-     ────────────────────────────────────────────── */
-  --color-bg: oklch(97.8% 0.005 75);           /* warm near-white console paper */
-  --color-bg-2: oklch(95.6% 0.006 75);         /* panel / inset surface */
-  --color-bg-emphasis: oklch(20.5% 0.012 50);  /* inverted surfaces */
+  /* Paper, not a console. Warm off-white, rust orange as the only accent.
+     Strategy: Restrained. Tezontle clay survives as the rust. */
+  --color-bg: oklch(97.2% 0.012 78);
+  --color-bg-2: oklch(94.8% 0.012 78);
+  --color-bg-emphasis: oklch(22% 0.018 48);
 
-  --color-surface: oklch(97.8% 0.005 75);
-  --color-surface-hover: oklch(95.6% 0.006 75);
+  --color-surface: oklch(97.2% 0.012 78);
+  --color-surface-hover: oklch(94.8% 0.012 78);
 
-  --color-border: oklch(20.5% 0.012 50 / 16%);
-  --color-border-subtle: oklch(20.5% 0.012 50 / 9%);
-  --color-border-strong: oklch(20.5% 0.012 50);
+  --color-border: oklch(28% 0.018 48 / 16%);
+  --color-border-subtle: oklch(28% 0.018 48 / 9%);
+  --color-border-strong: oklch(28% 0.018 48);
 
-  --color-text: oklch(21% 0.012 50);           /* warm ink */
-  --color-text-muted: oklch(41% 0.012 50);
-  --color-text-subtle: oklch(52.5% 0.010 55);
-  --color-text-on-emphasis: oklch(97.8% 0.005 75);
+  --color-text: oklch(24% 0.018 48);
+  --color-text-muted: oklch(42% 0.016 48);
+  --color-text-subtle: oklch(54% 0.012 55);
+  --color-text-on-emphasis: oklch(97.2% 0.012 78);
 
-  --color-accent: oklch(56% 0.145 42);         /* Tezontle clay · the one accent */
-  --color-accent-strong: oklch(47.5% 0.130 42);
-  --color-accent-bg: oklch(56% 0.145 42 / 8%);
-  --color-accent-bg-hover: oklch(56% 0.145 42 / 12%);
-  --color-accent-border: oklch(56% 0.145 42 / 30%);
-  --color-accent-border-strong: oklch(56% 0.145 42 / 55%);
-  --color-accent-ring: oklch(56% 0.145 42 / 30%);
+  --color-accent: oklch(52% 0.145 42);
+  --color-accent-strong: oklch(46% 0.135 42);
+  --color-accent-bg: oklch(52% 0.145 42 / 8%);
+  --color-accent-bg-hover: oklch(52% 0.145 42 / 12%);
+  --color-accent-border: oklch(52% 0.145 42 / 30%);
+  --color-accent-border-strong: oklch(52% 0.145 42 / 55%);
+  --color-accent-ring: oklch(52% 0.145 42 / 35%);
 
-  --color-tezontle: oklch(56% 0.145 42);       /* lineage alias */
-
-  /* Semantic data colors · diff grammar + status pills only.
-     grant = added access, revoke = removed, pending = in change. */
-  --color-grant: oklch(46% 0.105 150);
-  --color-grant-bg: oklch(46% 0.105 150 / 9%);
-  --color-revoke: oklch(48% 0.150 27);
-  --color-revoke-bg: oklch(48% 0.150 27 / 8%);
-  --color-pending: oklch(49% 0.105 83);
-  --color-pending-bg: oklch(51% 0.105 83 / 11%);
-  --color-success: oklch(46% 0.105 150);       /* alias */
-
-  /* ──────────────────────────────────────────────
-     SPACING · 4px base
-     ────────────────────────────────────────────── */
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -60,151 +40,86 @@
   --space-20: 120px;
   --space-24: 144px;
 
-  /* ──────────────────────────────────────────────
-     RADII · console: quiet corners
-     ────────────────────────────────────────────── */
   --radius-none: 0;
   --radius-sm: 2px;
-  --radius-md: 6px;
+  --radius-md: 4px;
   --radius-lg: 8px;
   --radius-xl: 10px;
   --radius-pill: 999px;
   --radius-full: 9999px;
 
-  /* ──────────────────────────────────────────────
-     TYPOGRAPHY · Access Plan console
-     Display + body: IBM Plex Sans. One voice,
-     hierarchy from weight and scale.
-     Mono: IBM Plex Mono. Does real work: nav,
-     eyebrows, stat line, plan diff, status,
-     metadata. Never decoration.
-     ────────────────────────────────────────────── */
-  --font-display: "IBM Plex Sans", ui-sans-serif, system-ui, "Segoe UI", Helvetica, Arial, sans-serif;
-  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, "Segoe UI", Helvetica, Arial, sans-serif;
-  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --font-display: "Source Serif 4", "Iowan Old Style", "Palatino Linotype", Palatino, serif;
+  --font-sans: "Source Sans 3", ui-sans-serif, system-ui, "Segoe UI", Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 
-  --fs-xs: 0.7rem;
-  --fs-sm: 0.75rem;
-  --fs-base: 1rem;
-  --fs-md: 0.9375rem;
-  --fs-lg: 1.0625rem;
-  --fs-xl: 1.125rem;
-  --fs-2xl: 1.375rem;
-  --fs-3xl: 1.75rem;
-  --fs-4xl: clamp(1.6rem, 2.9vw, 2.4rem);
-  --fs-5xl: clamp(2.6rem, 5.5vw, 4.25rem);
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.8125rem;
+  --fs-base: 1.0625rem;
+  --fs-md: 1.0625rem;
+  --fs-lg: 1.1875rem;
+  --fs-xl: 1.3125rem;
+  --fs-2xl: 1.5rem;
+  --fs-3xl: 1.875rem;
+  --fs-4xl: clamp(1.75rem, 3vw, 2.25rem);
+  --fs-5xl: clamp(2rem, 4vw, 2.75rem);
 
-  /* ──────────────────────────────────────────────
-     ELEVATION · flat; hairlines do structure
-     ────────────────────────────────────────────── */
-  --shadow-hover: 0 1px 0 oklch(20.5% 0.012 50 / 8%), 0 6px 16px -8px oklch(20.5% 0.012 50 / 14%);
-  --shadow-sm: 0 1px 0 oklch(20.5% 0.012 50 / 7%);
+  --shadow-hover: none;
+  --shadow-sm: none;
 
-  /* ──────────────────────────────────────────────
-     MOTION
-     ────────────────────────────────────────────── */
   --ease-out: cubic-bezier(0.165, 0.84, 0.44, 1);
   --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
   --motion-fast: 160ms;
   --motion-base: 240ms;
   --motion-slow: 480ms;
 
-  /* ──────────────────────────────────────────────
-     LAYOUT
-     ────────────────────────────────────────────── */
-  --nav-height: 65px;
-  --container-max: 1240px;
-  --container-narrow: 720px;
-  --measure: 65ch;
-
-  /* Fallback values for @property animated custom props. */
-  --btn-ink: -2%;
-  --ghost-ink: -2%;
+  --nav-height: 72px;
+  --container-max: 42rem;
+  --container-wide: 52rem;
+  --measure: 62ch;
 }
 
-/* ──────────────────────────────────────────────
-   DARK MODE · Access Plan console (Dark Mode)
-   Warm charcoal, clay accent brightened for AA.
-   No absolute #000 or #fff anywhere.
-   System media query + manual .light/.dark class.
-   ────────────────────────────────────────────── */
 @media (prefers-color-scheme: dark) {
   :root:not(.light) {
-    --color-bg: oklch(15.5% 0.010 50);
-    --color-bg-2: oklch(18.8% 0.011 55);
-    --color-bg-emphasis: oklch(92% 0.010 75);
-
-    --color-surface: oklch(15.5% 0.010 50);
-    --color-surface-hover: oklch(18.8% 0.011 55);
-
-    --color-border: oklch(92% 0.010 75 / 18%);
-    --color-border-subtle: oklch(92% 0.010 75 / 10%);
-    --color-border-strong: oklch(92% 0.010 75);
-
-    --color-text: oklch(92% 0.010 75);
-    --color-text-muted: oklch(73% 0.010 70);
-    --color-text-subtle: oklch(61.5% 0.010 65);
-    --color-text-on-emphasis: oklch(15.5% 0.010 50);
-
-    --color-accent: oklch(70% 0.135 48);
-    --color-accent-strong: oklch(61% 0.140 45);
-    --color-accent-bg: oklch(70% 0.135 48 / 12%);
-    --color-accent-bg-hover: oklch(70% 0.135 48 / 18%);
-    --color-accent-border: oklch(70% 0.135 48 / 35%);
-    --color-accent-border-strong: oklch(70% 0.135 48 / 60%);
-    --color-accent-ring: oklch(70% 0.135 48 / 40%);
-
-    --color-tezontle: oklch(70% 0.135 48);
-
-    --color-grant: oklch(74% 0.125 150);
-    --color-grant-bg: oklch(74% 0.125 150 / 12%);
-    --color-revoke: oklch(70% 0.150 25);
-    --color-revoke-bg: oklch(70% 0.150 25 / 12%);
-    --color-pending: oklch(78% 0.115 85);
-    --color-pending-bg: oklch(78% 0.115 85 / 12%);
-    --color-success: oklch(74% 0.125 150);
-
-    --shadow-hover: 0 1px 0 oklch(92% 0.010 75 / 5%), 0 6px 16px -8px oklch(92% 0.010 75 / 9%);
-    --shadow-sm: 0 1px 0 oklch(92% 0.010 75 / 4%);
+    --color-bg: oklch(22% 0.016 55);
+    --color-bg-2: oklch(26% 0.016 55);
+    --color-bg-emphasis: oklch(93% 0.012 78);
+    --color-surface: oklch(22% 0.016 55);
+    --color-surface-hover: oklch(26% 0.016 55);
+    --color-border: oklch(93% 0.012 78 / 16%);
+    --color-border-subtle: oklch(93% 0.012 78 / 9%);
+    --color-border-strong: oklch(93% 0.012 78 / 28%);
+    --color-text: oklch(93% 0.012 78);
+    --color-text-muted: oklch(76% 0.012 70);
+    --color-text-subtle: oklch(64% 0.010 65);
+    --color-text-on-emphasis: oklch(22% 0.016 55);
+    --color-accent: oklch(72% 0.125 48);
+    --color-accent-strong: oklch(78% 0.120 48);
+    --color-accent-bg: oklch(72% 0.125 48 / 12%);
+    --color-accent-bg-hover: oklch(72% 0.125 48 / 18%);
+    --color-accent-border: oklch(72% 0.125 48 / 35%);
+    --color-accent-border-strong: oklch(72% 0.125 48 / 55%);
+    --color-accent-ring: oklch(72% 0.125 48 / 40%);
   }
 }
 
-/* Manual .dark class override takes absolute precedence */
 .dark, :root.dark {
-  --color-bg: oklch(15.5% 0.010 50);
-  --color-bg-2: oklch(18.8% 0.011 55);
-  --color-bg-emphasis: oklch(92% 0.010 75);
-
-  --color-surface: oklch(15.5% 0.010 50);
-  --color-surface-hover: oklch(18.8% 0.011 55);
-
-  --color-border: oklch(92% 0.010 75 / 18%);
-  --color-border-subtle: oklch(92% 0.010 75 / 10%);
-  --color-border-strong: oklch(92% 0.010 75);
-
-  --color-text: oklch(92% 0.010 75);
-  --color-text-muted: oklch(73% 0.010 70);
-  --color-text-subtle: oklch(57% 0.010 65);
-  --color-text-on-emphasis: oklch(15.5% 0.010 50);
-
-  --color-accent: oklch(70% 0.135 48);
-  --color-accent-strong: oklch(61% 0.140 45);
-  --color-accent-bg: oklch(70% 0.135 48 / 12%);
-  --color-accent-bg-hover: oklch(70% 0.135 48 / 18%);
-  --color-accent-border: oklch(70% 0.135 48 / 35%);
-  --color-accent-border-strong: oklch(70% 0.135 48 / 60%);
-  --color-accent-ring: oklch(70% 0.135 48 / 40%);
-
-  --color-tezontle: oklch(70% 0.135 48);
-
-  --color-grant: oklch(74% 0.125 150);
-  --color-grant-bg: oklch(74% 0.125 150 / 12%);
-  --color-revoke: oklch(70% 0.150 25);
-  --color-revoke-bg: oklch(70% 0.150 25 / 12%);
-  --color-pending: oklch(78% 0.115 85);
-  --color-pending-bg: oklch(78% 0.115 85 / 12%);
-  --color-success: oklch(74% 0.125 150);
-
-  --shadow-hover: 0 1px 0 oklch(92% 0.010 75 / 5%), 0 6px 16px -8px oklch(92% 0.010 75 / 9%);
-  --shadow-sm: 0 1px 0 oklch(92% 0.010 75 / 4%);
+  --color-bg: oklch(22% 0.016 55);
+  --color-bg-2: oklch(26% 0.016 55);
+  --color-bg-emphasis: oklch(93% 0.012 78);
+  --color-surface: oklch(22% 0.016 55);
+  --color-surface-hover: oklch(26% 0.016 55);
+  --color-border: oklch(93% 0.012 78 / 16%);
+  --color-border-subtle: oklch(93% 0.012 78 / 9%);
+  --color-border-strong: oklch(93% 0.012 78 / 28%);
+  --color-text: oklch(93% 0.012 78);
+  --color-text-muted: oklch(76% 0.012 70);
+  --color-text-subtle: oklch(64% 0.010 65);
+  --color-text-on-emphasis: oklch(22% 0.016 55);
+  --color-accent: oklch(72% 0.125 48);
+  --color-accent-strong: oklch(78% 0.120 48);
+  --color-accent-bg: oklch(72% 0.125 48 / 12%);
+  --color-accent-bg-hover: oklch(72% 0.125 48 / 18%);
+  --color-accent-border: oklch(72% 0.125 48 / 35%);
+  --color-accent-border-strong: oklch(72% 0.125 48 / 55%);
+  --color-accent-ring: oklch(72% 0.125 48 / 40%);
 }

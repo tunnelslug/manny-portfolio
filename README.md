@@ -90,7 +90,7 @@ Targeting WCAG 2.1 AA.
 
 ## URL state
 
-Nav buttons update the URL hash (`#expertise`, `#skills`, …) via `history.replaceState` so the active section is shareable without triggering a full scroll reset.
+Nav buttons update the URL hash (`#work`, `#writing`) so the active section is shareable. Content is visible without a scroll-reveal. Writing lives at `/writing/:slug` with `/rss.xml`.
 
 ## Security headers
 
@@ -139,5 +139,5 @@ Copyright Manny Flores. All rights reserved.
 
 This repository is public so the code can be read, not reused. No license is
 granted for the code, content, images, or resume. The fonts in `public/fonts/`
-are the exception: they are subsets of IBM Plex Sans and IBM Plex Mono,
+are the exception: they are latin subsets of Source Serif 4 and Source Sans 3,
 redistributed under the SIL Open Font License 1.1 (see `public/fonts/OFL.txt`).

@@ -6,48 +6,41 @@ brand
 
 ## Users
 
-Mixed audience landing on mannyflo.com: hiring managers and recruiters scanning IAM and Systems Engineer credentials; peer engineers and security folks evaluating depth; prospective collaborators; plus the occasional non-technical reader (family, friends) acknowledged in the footer. Most arrive via LinkedIn, GitHub, referral, or direct URL. They scan first, read second.
+Hiring managers and staff identity / IGA / non-human-identity peers in fintech and enterprise IAM. Recruiters who skim in about six seconds. They land from LinkedIn, GitHub, referral, or the URL. They should meet a person and a point of view before they meet a stack.
 
 ## Product Purpose
 
-mannyflo.com is the brand surface for Manny Flores. Senior Systems Engineer at Robinhood. Owns identity and corporate apps infrastructure: Okta, GCP, Google Workspace. Current focus: making AI tooling adoptable across the company without losing control of who can do what.
+mannyflo.com is the public surface for Manny Flores. Senior Systems Engineer and Corporate Systems lead at Robinhood. Identity engineering in the SF Bay Area. Currently on paternity leave.
 
-The site exists to leave one impression: *"I understand what he does, and he clearly knows it cold."* Design IS the product. The way it looks and reads is the work, and the work is the proof.
+The site exists to leave one impression in a few seconds: this is a named human with a point of view about who, and what, can do what. Staff peers get three case notes and a writing list as proof. Recruiters get a resume link, not a cloned resume.
 
 ## Brand Personality
 
-Three words: **Specific. Dry. Self-aware.**
+Three words: **Specific. Dry. A little dad.**
 
-Voice: dry, direct, slightly self-aware. Specific over abstract. Plain English; no internal jargon, no hedging, no buzzword stacks. Reference: the footer line "Recruiters, peer engineers, and the family who asks what I actually do."
+Voice: SwiftOnSecurity-shaped. Short. Dry. Culture. One point. Plain English. No internal jargon, no hedging, no buzzword stacks.
 
-Tone: engineering-console and matter-of-fact, closer to a well-kept runbook or a plan review than a SaaS landing. Reads like the tools the audience uses: plans, diffs, audit lines, status pills. Calm, never cosplay.
-
-Cultural lineage: the visual system is Access Plan, the engineering-console successor to the Roma editorial direction (see DESIGN.md). The Feria heritage survives as texture: the Tezontle clay accent, warm clay-tinted neutrals in both themes, and the papel picado stripe + favicon. Heritage lives in the form, not the words. Positioning: the first designed portfolio branded around identity and access management; every claim on the page is resume-verifiable.
+Heritage: Tezontle rust orange is the one accent. Warm paper. Type, not UI chrome. Cards, soccer, and running stay a whisper, not a section.
 
 ## Anti-references
 
-Explicitly NOT:
-
-- **AI slop and generative-agency sites.** Gradient blobs, glassmorphism, hero-metric template, identical card grid, "AI-powered" everywhere. The category-reflex tech portfolio.
-- **Cyberpunk and neon-on-black hacker portfolios.** Green-terminal on `#000`, Matrix glyphs, rebel-coder posturing.
-- **Childish or wannabe-gaming aesthetic.** Mascot characters, retro-arcade pixel fonts as personality, RGB underglow, Discord-purple, Twitch-streamer overlay vibes.
-- **SaaS landing clichés.** "Trusted by" logo walls, three-column feature grid, dashboard-screenshot-with-floating-shadow hero, gradient orb backgrounds.
-- **Latin kitsch.** Sombreros, mariachi, Día-de-los-Muertos sugar skulls, agave silhouettes, "fiesta" papel-picado used decoratively without meaning.
-- **Dribbble template.** Generic "modern portfolio" aesthetic that could belong to anyone.
-- **Internal jargon and company-specific acronyms.** Recruiters and peers from other companies shouldn't have to decode internal team names (CorpEng, CAPPS) or process acronyms (EDDs, PRDs, TRA). Spell them out, or pick a public-facing equivalent.
+- 2023 security-portfolio console: boot overlays, session bars, terraform-plan as biography, OPERATING pills, protocol tag soup, exit 0, rainbow chrome.
+- Career-as-running-services IA (scope / the plan / current focus).
+- AI slop, Instagram-grid energy, video/3D avatars, typewriter/CRT motion.
+- On-site AI chat widgets.
+- Latin kitsch.
 
 ## Design Principles
 
-1. **Show, don't tell.** Every claim is provable on the page. The portfolio is the proof, not a description of the proof.
-2. **Specific over abstract.** Concrete claims, named tools, real problems. Generic résumé phrases get cut.
-3. **Craft over density.** One impression, well delivered. Restraint is part of confidence.
-4. **Heritage as texture, not costume.** Roma carries its bilingual origin in palette names, eyebrow framing, and editorial composition. The Spanish-first body voice belongs to Colonia, not Roma. No sombreros, no sugar skulls, no decorative Spanish that doesn't earn its place.
+1. First paint is a named human and a POV, not a dashboard of himself.
+2. Writing is half the site. Work is three numbered case notes. Resume is linked, not cloned.
+3. Every claim is resume-verifiable or already public. Do not invent jobs, employers, metrics, or baby-registry PII.
+4. Paper and type. Mono only inside real code samples.
 
 ## Accessibility & Inclusion
 
-- Target WCAG 2.1 AA across the site.
-- Body text contrast ≥ 4.5:1; large text and UI ≥ 3:1.
-- `prefers-reduced-motion` respected: animations collapse to ~0.01ms, no parallax or scroll-jacking under reduced motion.
-- Keyboard reachable everywhere; visible focus rings on every interactive element.
-- Semantic landmarks (`<main>`, `<nav>`, `<section aria-labelledby>`, `<footer>`) plus skip-link to `#main`.
-- 16px minimum input font on mobile to prevent iOS zoom (rule kept even when no inputs render).
+- Target WCAG 2.1 AA.
+- Body contrast ≥ 4.5:1; large text and UI ≥ 3:1.
+- `prefers-reduced-motion` honored. No motion on load.
+- Keyboard reachable. Visible focus. Skip-link to `#main`.
+- `/bio` stays a private-adjacent link page. Do not leak registry PII onto the public homepage.
