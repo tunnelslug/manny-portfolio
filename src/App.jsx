@@ -46,9 +46,8 @@ const App = () => {
                     <>
                       {' '}
                       <a className="inline-link" href={item.href} target="_blank" rel="noopener noreferrer">
-                        Source
+                        Source on GitHub
                       </a>
-                      .
                     </>
                   )}
                 </p>

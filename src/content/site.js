@@ -27,7 +27,7 @@ export const WORK = [
     shipped:
       'Okta config moved into Terraform. Changes get reviewed like pull requests. Drift is gone.',
     changed:
-      'Access policy is a reviewed artifact, not a console habit. The public foundation for that work is on GitHub.',
+      'Access policy is a reviewed artifact, not a console habit.',
     href: 'https://github.com/tunnelslug/okta-terraform-foundation',
   },
   {
