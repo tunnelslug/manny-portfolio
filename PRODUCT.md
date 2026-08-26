@@ -6,7 +6,7 @@ brand
 
 ## Users
 
-Hiring managers and staff+ identity, security, and corp-systems peers in fintech and enterprise IAM. Recruiters who skim in about eight seconds. People who live in Okta, IGA, Zero Trust, and now non-human and AI identity. Occasional non-technical readers (family, friends) land on `/bio`. Most arrive via LinkedIn, GitHub, referral, or direct URL. They scan first, read second.
+Mixed audience landing on mannyflo.com: hiring managers and recruiters scanning IAM and Systems Engineer credentials; peer engineers and security folks evaluating depth; prospective collaborators; plus the occasional non-technical reader (family, friends) acknowledged in the footer. Most arrive via LinkedIn, GitHub, referral, or direct URL. They scan first, read second.
 
 ## Product Purpose
 
@@ -18,17 +18,16 @@ The site exists to leave one impression: *"I understand what he does, and he cle
 
 Three words: **Specific. Dry. Self-aware.**
 
-Voice: dry, direct, slightly self-aware. Specific over abstract. Plain English; no internal jargon, no hedging, no buzzword stacks.
+Voice: dry, direct, slightly self-aware. Specific over abstract. Plain English; no internal jargon, no hedging, no buzzword stacks. Reference: the footer line "Recruiters, peer engineers, and the family who asks what I actually do."
 
-Tone: an identity brief a staff operator would actually read. Matter-of-fact. The work and the identity thesis carry the personality. Not a console costume, not a magazine, not a CISO keynote.
+Tone: engineering-console and matter-of-fact, closer to a well-kept runbook or a plan review than a SaaS landing. Reads like the tools the audience uses: plans, diffs, audit lines, status pills. Calm, never cosplay.
 
-Cultural lineage: Feria heritage survives as texture: the Tezontle clay accent, warm clay-tinted neutrals in both themes, and the papel picado stripe + favicon. Heritage lives in the form, not the words. Every claim on the page is resume-verifiable.
+Cultural lineage: the visual system is Access Plan, the engineering-console successor to the Roma editorial direction (see DESIGN.md). The Feria heritage survives as texture: the Tezontle clay accent, warm clay-tinted neutrals in both themes, and the papel picado stripe + favicon. Heritage lives in the form, not the words. Positioning: the first designed portfolio branded around identity and access management; every claim on the page is resume-verifiable.
 
 ## Anti-references
 
 Explicitly NOT:
 
-- **Developer-console demos.** OIDC boot overlays, "session issued," terraform plan as career timeline, "exit 0" footers, masthead "access logged" lines. Clever to people already in the joke; to the actual market it reads as a frontend bit.
 - **AI slop and generative-agency sites.** Gradient blobs, glassmorphism, hero-metric template, identical card grid, "AI-powered" everywhere. The category-reflex tech portfolio.
 - **Cyberpunk and neon-on-black hacker portfolios.** Green-terminal on `#000`, Matrix glyphs, rebel-coder posturing.
 - **Childish or wannabe-gaming aesthetic.** Mascot characters, retro-arcade pixel fonts as personality, RGB underglow, Discord-purple, Twitch-streamer overlay vibes.
@@ -36,15 +35,13 @@ Explicitly NOT:
 - **Latin kitsch.** Sombreros, mariachi, Día-de-los-Muertos sugar skulls, agave silhouettes, "fiesta" papel-picado used decoratively without meaning.
 - **Dribbble template.** Generic "modern portfolio" aesthetic that could belong to anyone.
 - **Internal jargon and company-specific acronyms.** Recruiters and peers from other companies shouldn't have to decode internal team names (CorpEng, CAPPS) or process acronyms (EDDs, PRDs, TRA). Spell them out, or pick a public-facing equivalent.
-- **Editorial magazine revival.** Serif mastheads, chapter ribbons, italic emphasis words. El Cuaderno is retired.
 
 ## Design Principles
 
 1. **Show, don't tell.** Every claim is provable on the page. The portfolio is the proof, not a description of the proof.
 2. **Specific over abstract.** Concrete claims, named tools, real problems. Generic résumé phrases get cut.
 3. **Craft over density.** One impression, well delivered. Restraint is part of confidence.
-4. **Heritage as texture, not costume.** Clay, warm paper, and the papel band. No sombreros, no sugar skulls, no decorative Spanish that doesn't earn its place.
-5. **Visible without theater.** Hash links and no-JS visitors see real content. No scroll-reveal that leaves a blank viewport.
+4. **Heritage as texture, not costume.** Roma carries its bilingual origin in palette names, eyebrow framing, and editorial composition. The Spanish-first body voice belongs to Colonia, not Roma. No sombreros, no sugar skulls, no decorative Spanish that doesn't earn its place.
 
 ## Accessibility & Inclusion
 

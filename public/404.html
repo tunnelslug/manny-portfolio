@@ -8,40 +8,35 @@
     <title>404 · Manny Flores</title>
     <style>
       @font-face {
-        font-family: "Schibsted Grotesk";
+        font-family: "IBM Plex Mono";
         font-style: normal;
         font-weight: 400;
         font-display: swap;
-        src: url("/fonts/schibsted-latin-400.woff2") format("woff2");
-      }
-      @font-face {
-        font-family: "Schibsted Grotesk";
-        font-style: normal;
-        font-weight: 700;
-        font-display: swap;
-        src: url("/fonts/schibsted-latin-700.woff2") format("woff2");
+        src: url("/fonts/plexmono-latin-400.woff2") format("woff2");
       }
       :root {
-        --bg: oklch(97.2% 0.008 72);
-        --text: oklch(22% 0.016 48);
-        --muted: oklch(39% 0.014 50);
-        --accent: oklch(52% 0.145 42);
-        --border: oklch(22% 0.016 48 / 14%);
+        --bg: oklch(97.8% 0.005 75);
+        --text: oklch(21% 0.012 50);
+        --muted: oklch(41% 0.012 50);
+        --accent: oklch(56% 0.145 42);
+        --revoke: oklch(48% 0.15 27);
+        --border: oklch(20.5% 0.012 50 / 16%);
       }
       @media (prefers-color-scheme: dark) {
         :root {
-          --bg: oklch(18.5% 0.012 52);
-          --text: oklch(93% 0.012 75);
-          --muted: oklch(74% 0.012 70);
-          --accent: oklch(72% 0.130 48);
-          --border: oklch(93% 0.012 75 / 16%);
+          --bg: oklch(15.5% 0.010 50);
+          --text: oklch(92% 0.010 75);
+          --muted: oklch(73% 0.010 70);
+          --accent: oklch(70% 0.135 48);
+          --revoke: oklch(70% 0.150 25);
+          --border: oklch(92% 0.010 75 / 18%);
         }
       }
       * { margin: 0; padding: 0; box-sizing: border-box; }
       body {
         background: var(--bg);
         color: var(--text);
-        font-family: "Schibsted Grotesk", ui-sans-serif, system-ui, sans-serif;
+        font-family: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
         min-height: 100vh;
         display: flex;
         flex-direction: column;
@@ -55,23 +50,23 @@
         justify-content: center;
         padding: 24px;
       }
-      .panel { max-width: 480px; width: 100%; }
+      .panel { max-width: 560px; width: 100%; }
+      .line { font-size: 0.85rem; line-height: 2.1; color: var(--muted); }
+      .line .deny { color: var(--revoke); }
       .code {
         font-size: clamp(3rem, 12vw, 5rem);
-        font-weight: 700;
-        letter-spacing: -0.04em;
+        font-weight: 500;
+        letter-spacing: -0.02em;
         color: var(--text);
-        line-height: 0.95;
-        margin-bottom: 12px;
+        margin: 12px 0 8px;
       }
-      p { font-size: 1.05rem; color: var(--muted); line-height: 1.55; }
+      p { font-size: 0.9rem; color: var(--muted); line-height: 1.6; }
       a {
         display: inline-block;
         margin-top: 24px;
         color: var(--accent);
         text-decoration: none;
-        font-size: 0.95rem;
-        font-weight: 600;
+        font-size: 0.85rem;
         border-bottom: 1px solid var(--accent);
         padding-bottom: 2px;
       }
@@ -83,9 +78,10 @@
     </div>
     <main>
       <div class="panel">
+        <div class="line">▸ resource lookup · <span class="deny">not_found</span></div>
         <div class="code">404</div>
-        <p>This page is not here. It was never issued, or it moved.</p>
-        <a href="/">Back to mannyflo.com</a>
+        <p>This path has no resource behind it. Not revoked, not denied: it never existed, or it moved.</p>
+        <a href="/">return to mannyflo.com</a>
       </div>
     </main>
   </body>

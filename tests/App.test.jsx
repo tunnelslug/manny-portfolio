@@ -28,7 +28,7 @@ describe('App', () => {
     const nav = screen.getByRole('navigation', { name: /main navigation/i })
     const navButtons = within(nav).getAllByRole('button')
     const labels = navButtons.map(b => b.textContent.trim().toLowerCase())
-    for (const label of ['about', 'scope', 'trajectory', 'current focus', 'stack']) {
+    for (const label of ['about', 'scope', 'the plan', 'current focus', 'stack']) {
       expect(labels).toContain(label)
     }
   })
@@ -73,33 +73,37 @@ describe('App', () => {
     expect(screen.getByText(new RegExp(`© ${year} Manny Flores`))).toBeInTheDocument()
   })
 
-  it('states who he is and what he owns without a console costume', () => {
+  it('keeps the Access Plan unique items: session, terraform plan, exit 0', () => {
     render(<App />)
+    expect(screen.getByText(/access logged/)).toBeInTheDocument()
+    expect(screen.getByText('terraform plan')).toBeInTheDocument()
+    expect(screen.getByText('career/manny-flores')).toBeInTheDocument()
+    expect(screen.getByText('exit 0')).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Manny Flores' })).toBeInTheDocument()
     expect(screen.getByText(/Corporate Systems lead, Robinhood/)).toBeInTheDocument()
-    expect(screen.getAllByText('Identity & Access Architecture').length).toBeGreaterThan(0)
-    expect(screen.getAllByText(/Okta Identity Governance/).length).toBeGreaterThan(0)
-    expect(screen.getByText(/Say, X1, Bitstamp, TradePMR, Chartr, WonderFi/)).toBeInTheDocument()
-    expect(screen.queryByText(/terraform plan/i)).not.toBeInTheDocument()
-    expect(screen.queryByText(/exit 0/i)).not.toBeInTheDocument()
-    expect(screen.queryByText(/access logged/i)).not.toBeInTheDocument()
-    expect(screen.queryByLabelText(/signing you in/i)).not.toBeInTheDocument()
   })
 
   it('renders owned-domain and current-focus copy without waiting on scroll', () => {
     render(<App />)
     expect(screen.getByRole('heading', { name: 'Access domains.' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'The access plan.' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Current focus.' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Stack.' })).toBeInTheDocument()
     expect(screen.getByText('Terraform Okta: Identity as Code')).toBeInTheDocument()
     expect(screen.getByText('Secure GCP for AI Workloads')).toBeInTheDocument()
     expect(screen.getByText('Google Workspace Security Hardening')).toBeInTheDocument()
+    expect(screen.getByText(/Say, X1, Bitstamp, TradePMR, Chartr, WonderFi/)).toBeInTheDocument()
   })
 
-  it('keeps hash targets for nav sections', () => {
+  it('keeps hash targets for nav sections and first-screen domain links', () => {
     const { container } = render(<App />)
     for (const id of ['about', 'scope', 'plan', 'projects', 'stack']) {
       expect(container.querySelector(`#${id}`)).not.toBeNull()
     }
+    for (const n of [1, 2, 3, 4, 5]) {
+      expect(container.querySelector(`#scope-${n}`)).not.toBeNull()
+    }
+    const index = screen.getByRole('navigation', { name: /access domains at a glance/i })
+    expect(within(index).getAllByRole('link')).toHaveLength(5)
   })
 })
