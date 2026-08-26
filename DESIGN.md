@@ -105,7 +105,7 @@ Flat by default. Hairline borders do all structure. `--shadow-hover` exists as a
 - **Hero**: eyebrow, name, role, place, lede (thesis closes on its own line), CTA row with Resume first, portrait, then the mandate index of five owned domains. First screen must communicate who he is and what he owns.
 - **No hero stat strip.** Do not reintroduce counters.
 - **Scope rows**: `num | domain | description | pill` with hairline tops. Pills: `operating` grant, `building`/`expanding`/`hardening` pending.
-- **Change log**: grouped Added / Changed / Removed rows. Plain English. Every line resume-backed. Not a terraform plan.
+- **Change log**: grouped Shifted / Stood up / Retired rows. Plain English. Every line resume-backed. Not a terraform plan.
 - **Work items**: hairline rows, not cards. Status pill, title, description, chips.
 - **Stack**: four labeled tool groups. No extra prose.
 - **Footer**: copyright left, `mannyflo.com` right. No `exit 0`.

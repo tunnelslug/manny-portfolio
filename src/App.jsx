@@ -110,7 +110,7 @@ const App = () => {
   const changeLog = [
     {
       kind: 'changed',
-      label: 'Changed',
+      label: 'Shifted',
       items: [
         {
           title: 'Role',
@@ -124,7 +124,7 @@ const App = () => {
     },
     {
       kind: 'added',
-      label: 'Added',
+      label: 'Stood up',
       items: [
         {
           title: 'Okta Identity Governance',
@@ -146,7 +146,7 @@ const App = () => {
     },
     {
       kind: 'removed',
-      label: 'Removed',
+      label: 'Retired',
       items: [
         {
           title: 'Unreviewed standing access',
@@ -328,7 +328,6 @@ const App = () => {
                 fetchPriority="high"
                 decoding="async"
               />
-              <figcaption className="hero-portrait-caption">SF Bay Area · since 2024</figcaption>
             </figure>
 
             <nav className="mandate-index" aria-label="Access domains at a glance">
