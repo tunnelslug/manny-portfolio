@@ -1,6 +1,6 @@
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import ResumeDialog from './components/ResumeDialog';
@@ -8,6 +8,21 @@ import BootCeremony from './components/BootCeremony';
 import ProjectCard from './components/ProjectCard';
 import ThemeToggle from './components/ThemeToggle';
 import FramerButton from './components/FramerButton';
+import IdentityGraph from './components/IdentityGraph';
+import RoleSwitch from './components/RoleSwitch';
+import AuditLog from './components/AuditLog';
+import { audit } from './lib/audit';
+import { useRole, setStoredRole } from './lib/role';
+import {
+  ROLES,
+  lens,
+  sectionCopy,
+  scope,
+  planLines,
+  planAriaLabel,
+  projects,
+  skills,
+} from './content/portfolio';
 
 const IconArrow = () => <ArrowRight size={14} strokeWidth={2} aria-hidden="true" />;
 
@@ -16,6 +31,10 @@ const Eyebrow = ({ label }) => (
     <span>{label}</span>
   </div>
 );
+
+/* Text that changes with the reader's role. The key remount replays the
+   .lens entrance so the swap reads as a deliberate re-render, not a flicker. */
+const Lens = ({ role, pair }) => <span key={role} className="lens">{lens(role, pair)}</span>;
 
 const NAV_SECTIONS = [
   { id: 'about',    label: 'about' },
@@ -49,14 +68,6 @@ const staggerContainer = (shouldReduceMotion) => ({
   }
 });
 
-const portraitVariants = (shouldReduceMotion) => shouldReduceMotion ? {
-  hidden: { opacity: 1, scale: 1 },
-  visible: { opacity: 1, scale: 1, transition: { duration: 0.01 } }
-} : {
-  hidden: { opacity: 0, scale: 0.96 },
-  visible: { opacity: 1, scale: 1, transition: { duration: 0.8, ease: [0.165, 0.84, 0.44, 1] } }
-};
-
 /* Plan lines print like terminal output: quick per-line stagger. */
 const planLineVariants = (shouldReduceMotion) => shouldReduceMotion ? {
   hidden: { opacity: 1 },
@@ -79,15 +90,41 @@ const App = () => {
   const [activeSection, setActiveSection] = useState('about');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [resumeOpen, setResumeOpen] = useState(false);
+  const [booted, setBooted] = useState(false);
+  const role = useRole();
   const shouldReduceMotion = useReducedMotion();
+  const lastViewed = useRef(null);
+  const sessionIssued = useRef(false);
 
-  // Sync active nav item to scroll position
+  const setRole = useCallback((next) => {
+    if (!ROLES.includes(next) || next === role) return;
+    audit('role.changed', `${role} -> ${next}`);
+    setStoredRole(next);
+  }, [role]);
+
+  // Issue the visitor's session once, after hydration.
+  useEffect(() => {
+    if (sessionIssued.current) return;
+    sessionIssued.current = true;
+    audit('session.issued', `guest@mannyflo.com · role:${role} · ttl:24h`);
+  }, [role]);
+
+  const onBooted = useCallback(() => setBooted(true), []);
+
+  // Sync active nav item to scroll position; log each section entered.
   useEffect(() => {
     const observers = NAV_SECTIONS.map(({ id }) => {
       const el = document.getElementById(id);
       if (!el) return null;
       const obs = new IntersectionObserver(
-        ([entry]) => { if (entry.isIntersecting) setActiveSection(id); },
+        ([entry]) => {
+          if (!entry.isIntersecting) return;
+          setActiveSection(id);
+          if (lastViewed.current !== id) {
+            lastViewed.current = id;
+            audit('section.viewed', `#${id}`);
+          }
+        },
         { rootMargin: '-15% 0px -25% 0px', threshold: 0 }
       );
       obs.observe(el);
@@ -128,84 +165,21 @@ const App = () => {
     }
   }, []);
 
-  const scope = [
-    {
-      domain: 'Identity & Access Architecture',
-      state: 'operating',
-      desc: "Authentication flows in Okta: SAML, OAuth 2.0, OIDC, plus SCIM for downstream provisioning. The full user lifecycle: birthright access, joiners, movers, leavers, rehires, service accounts, and the edge cases SCIM can't reach.",
-    },
-    {
-      domain: 'Identity Governance & Audit',
-      state: 'operating',
-      desc: 'Led the Okta Identity Governance rollout: access certification campaigns and policy-driven lifecycle controls. Audit responses across SOX controls, access reviews, and service accounts, working directly with external auditors. Identity changes ship through technical reviews I author.',
-    },
-    {
-      domain: 'AI Tooling Governance',
-      state: 'expanding',
-      desc: 'The identity side of Claude Code, ChatGPT, Cursor, and Gemini Enterprise: rollout review, access controls, and MCP integration enablement across the SaaS stack. Agents get identities, scopes, and an audit trail. Service accounts authenticate through brokered credentials, checked out from the vault programmatically and returned, never held.',
-    },
-    {
-      domain: 'Cloud Governance (GCP)',
-      state: 'operating',
-      desc: 'Terraform-managed IAM and project structure, so engineers move AI workloads from prototype to production without creating sprawl.',
-    },
-    {
-      domain: 'Collaboration Security',
-      state: 'hardening',
-      desc: 'The surface where everyone works. Hardened, audited, and watched.',
-    },
-  ];
+  const openResume = () => {
+    audit('resume.opened', '/resume.pdf');
+    setResumeOpen(true);
+  };
 
-  /* The career, written the way the audience reads change. All lines resume-backed. */
-  const planLines = [
-    { type: 'ctx', text: '# career/manny-flores · 10+ years · fintech + healthcare' },
-    { type: 'chg', text: '~ role                = "Systems Administrator" -> "Senior Systems Engineer, team lead"' },
-    { type: 'add', text: '+ okta_identity_governance         # led rollout: certification campaigns, policy lifecycle' },
-    { type: 'add', text: '+ okta_tenant.acquisitions[6]      # Say, X1, Bitstamp, TradePMR, Chartr, WonderFi' },
-    { type: 'add', text: '+ ai_tools.identity_governance[4]  # Claude Code, ChatGPT, Cursor, Gemini Enterprise' },
-    { type: 'add', text: '+ okta_config.terraform            # clicks -> code: drift gone, changes reviewed like PRs' },
-    { type: 'chg', text: '~ access_requests     = "manual tickets" -> "automated fulfillment"' },
-    { type: 'del', text: '- standing_access.unreviewed       # replaced by certification campaigns' },
-    { type: 'del', text: '- entra_id.tenants.acquired        # owned through migration: support, audit, decommission' },
-    { type: 'ctx', text: '# (unchanged fundamentals hidden: SAML, OAuth 2.0, OIDC, SCIM, Python, Terraform)' },
-    { type: 'out', text: 'Plan: 4 to add, 2 to change, 2 to destroy.' },
-  ];
-
-  const skills = [
-    { category: 'Identity & Access', items: ['Okta OIE', 'OIG', 'Entra ID', 'SAML 2.0', 'OAuth 2.0', 'OIDC', 'SCIM', 'RBAC', 'Zero Trust'] },
-    { category: 'Automation & IaC', items: ['Python', 'Bash', 'Okta Workflows', 'Terraform', 'GCP IAM', 'APIs & Integrations'] },
-    { category: 'Corp Apps Infra', items: ['GCP', 'Google Workspace', 'Okta', 'Slack', 'Jira', 'Workday'] },
-    { category: 'AI & Governance', items: ['MCP', 'Claude Code', 'ChatGPT', 'Cursor', 'Gemini Enterprise', 'LLM Access Controls'] },
-  ];
-
-  const currentProjects = [
-    {
-      title: 'Terraform Okta: Identity as Code',
-      status: 'Operating',
-      description: 'Okta config lives in Terraform now, not in clicks. Config drift is gone, changes get reviewed like code, and policy stays consistent across the tenant.',
-      tags: ['Okta', 'Terraform', 'IaC', 'Identity Infrastructure'],
-    },
-    {
-      title: 'Secure GCP for AI Workloads',
-      status: 'Operating',
-      description: 'A paved road from local prototype to hosted service. Project factories, IAM bindings, and access controls all live in Terraform, so shipping an AI-assisted tool to production is a reviewed change, not a hand-built exception.',
-      tags: ['GCP', 'Terraform', 'IAM', 'AI Enablement'],
-    },
-    {
-      title: 'Google Workspace Security Hardening',
-      status: 'Building',
-      description: "Tightening Google Workspace: access policies, DLP, third-party OAuth, audit coverage. The attack surface gets bigger every time someone installs a new AI tool, and that's the part I'm watching.",
-      tags: ['Google Workspace', 'DLP', 'OAuth Governance', 'Security'],
-    },
-  ];
+  const followed = (name) => () => audit('link.followed', name);
 
   const now = new Date();
   const year = now.getFullYear();
   const monthNum = String(now.getMonth() + 1).padStart(2, '0');
+  const plain = role === 'anyone';
 
   return (
     <>
-      <BootCeremony oncePerSession />
+      <BootCeremony oncePerSession onDone={onBooted} />
 
       <a href="#main" className="skip-link">Skip to content</a>
 
@@ -220,12 +194,17 @@ const App = () => {
         <span style={{ background: '#1B1208' }} />
       </div>
 
-      {/* Masthead · session line */}
-      <div className="masthead" role="presentation">
-        <span className="masthead-dot" aria-hidden="true">●</span>
-        <span>session {year}.{monthNum}</span>
-        <span className="masthead-spacer" />
-        <span>mannyflo.com<span className="masthead-extra"> · access logged</span></span>
+      {/* Masthead · the visitor's session: who you are here, what you can read, what got logged */}
+      <div className="masthead">
+        <div className="masthead-session">
+          <span className="masthead-dot" aria-hidden="true">●</span>
+          <span>session {year}.{monthNum}</span>
+          <span className="masthead-user">guest@mannyflo.com</span>
+        </div>
+        <div className="masthead-controls">
+          <RoleSwitch role={role} onChange={setRole} />
+          <AuditLog />
+        </div>
       </div>
 
       {/* Navigation */}
@@ -266,6 +245,7 @@ const App = () => {
             </button>
           </div>
         </nav>
+        <div className="nav-progress" aria-hidden="true" />
       </header>
 
       {/* Mobile nav drawer */}
@@ -287,7 +267,7 @@ const App = () => {
         ))}
       </div>
 
-      <main id="main">
+      <main id="main" data-role={role}>
         {/* Hero / About */}
         <motion.section
           id="about"
@@ -318,11 +298,10 @@ const App = () => {
                 so the job now is making sure AI tools live by the same rules as
                 everyone else: <span className="accent">who, and what, can do what</span>.
               </motion.p>
-
             </motion.div>
 
             <motion.div className="hero-cta-row" variants={faderVariants(shouldReduceMotion)}>
-              <FramerButton href="mailto:manny@flores.network">
+              <FramerButton href="mailto:manny@flores.network" onClick={followed('mailto')}>
                 Get in Touch <IconArrow />
               </FramerButton>
               <FramerButton
@@ -330,6 +309,7 @@ const App = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 variant="ghost"
+                onClick={followed('linkedin')}
               >
                 LinkedIn
               </FramerButton>
@@ -338,31 +318,21 @@ const App = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 variant="ghost"
+                onClick={followed('github')}
               >
                 GitHub
               </FramerButton>
               <FramerButton
                 variant="ghost"
                 href="/resume.pdf"
-                onClick={(e) => { e.preventDefault(); setResumeOpen(true); }}
+                onClick={(e) => { e.preventDefault(); openResume(); }}
               >
                 Resume
               </FramerButton>
             </motion.div>
 
-            <motion.figure className="hero-portrait-block" variants={faderVariants(shouldReduceMotion)}>
-              <motion.img
-                src="/profile2.png"
-                alt="Portrait of Manny Flores"
-                className="hero-portrait"
-                width="240"
-                height="240"
-                loading="eager"
-                fetchPriority="high"
-                decoding="async"
-                variants={portraitVariants(shouldReduceMotion)}
-              />
-              <figcaption className="hero-portrait-caption">SF Bay Area · since 2024</figcaption>
+            <motion.figure className="hero-fabric" variants={faderVariants(shouldReduceMotion)}>
+              <IdentityGraph role={role} live={booted} />
             </motion.figure>
           </div>
         </motion.section>
@@ -381,11 +351,10 @@ const App = () => {
             <Eyebrow label="SCOPE" />
           </motion.div>
           <motion.h2 id="scope-h" className="section-headline" variants={faderVariants(shouldReduceMotion)}>
-            Access domains.
+            <Lens role={role} pair={sectionCopy.scope.headline} />
           </motion.h2>
           <motion.p className="section-lede" variants={faderVariants(shouldReduceMotion)}>
-            The identity, cloud, and collaboration stack the company runs on.
-            The mandate: harden the foundation, make AI tooling adoptable, keep sprawl down.
+            <Lens role={role} pair={sectionCopy.scope.lede} />
           </motion.p>
 
           <motion.div className="scope-list" variants={staggerContainer(shouldReduceMotion)}>
@@ -393,8 +362,8 @@ const App = () => {
               <motion.div key={i} className="scope-row" variants={faderVariants(shouldReduceMotion)}>
                 <span className="scope-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
                 <div className="scope-body">
-                  <h3>{item.domain}</h3>
-                  <p>{item.desc}</p>
+                  <h3><Lens role={role} pair={item.title} /></h3>
+                  <p><Lens role={role} pair={item.desc} /></p>
                 </div>
                 <span className={`pill pill--${item.state}`}>{item.state}</span>
               </motion.div>
@@ -416,26 +385,31 @@ const App = () => {
             <Eyebrow label="TRAJECTORY" />
           </motion.div>
           <motion.h2 id="plan-h" className="section-headline" variants={faderVariants(shouldReduceMotion)}>
-            The access plan.
+            <Lens role={role} pair={sectionCopy.plan.headline} />
           </motion.h2>
           <motion.p className="section-lede" variants={faderVariants(shouldReduceMotion)}>
-            A decade of identity work, written the way this audience reads change.
-            Every line is on the <button className="lede-link" onClick={() => setResumeOpen(true)}>resume</button>.
+            <Lens role={role} pair={sectionCopy.plan.lede} />
+            <button className="lede-link" onClick={openResume}>resume</button>.{' '}
+            {plain ? (
+              <button className="lede-link" onClick={() => setRole('engineer')}>Back to the engineer view.</button>
+            ) : (
+              <button className="lede-link" onClick={() => setRole('anyone')}>Not an engineer? Read it in plain English.</button>
+            )}
           </motion.p>
 
           <motion.div
-            className="plan-block"
+            className={`plan-block ${plain ? 'plan-block--annotated' : ''}`}
             variants={planContainer(shouldReduceMotion)}
           >
             <div className="plan-titlebar" aria-hidden="true">
-              <span>terraform plan</span>
+              <span>terraform plan{plain && <span className="plan-titlebar-flag"> · annotated</span>}</span>
               <span className="plan-titlebar-right">career/manny-flores</span>
             </div>
             <div
               className="plan-lines"
               role="img"
               tabIndex={0}
-              aria-label="Career summary formatted as a Terraform plan: role changed from Systems Administrator to Senior Systems Engineer and team lead; added Okta Identity Governance rollout, six acquisitions merged into one Okta tenant, identity governance for four AI tools, and Okta configuration managed as Terraform code; access requests changed from manual tickets to automated fulfillment; unreviewed standing access removed; acquired Entra ID tenants owned through migration and decommissioned."
+              aria-label={planAriaLabel}
             >
               {planLines.map((line, i) => (
                 <motion.div
@@ -443,7 +417,8 @@ const App = () => {
                   className={`plan-line plan-line--${line.type}`}
                   variants={planLineVariants(shouldReduceMotion)}
                 >
-                  {line.text}
+                  <span className="plan-line-text">{line.text}</span>
+                  {plain && <span className="plan-gloss lens">{line.gloss}</span>}
                 </motion.div>
               ))}
             </div>
@@ -464,16 +439,16 @@ const App = () => {
             <Eyebrow label="SHIPPED & SHIPPING" />
           </motion.div>
           <motion.h2 id="projects-h" className="section-headline" variants={faderVariants(shouldReduceMotion)}>
-            Current focus.
+            <Lens role={role} pair={sectionCopy.projects.headline} />
           </motion.h2>
 
           <motion.div className="project-list" variants={staggerContainer(shouldReduceMotion)}>
-            {currentProjects.map((project, index) => (
+            {projects.map((project, index) => (
               <motion.div key={index} variants={faderVariants(shouldReduceMotion)}>
                 <ProjectCard
-                  title={project.title}
+                  title={<Lens role={role} pair={project.title} />}
                   status={project.status}
-                  description={project.description}
+                  description={<Lens role={role} pair={project.desc} />}
                   tags={project.tags}
                 />
               </motion.div>
@@ -481,7 +456,7 @@ const App = () => {
           </motion.div>
         </motion.section>
 
-        {/* Stack · Expertise + Tools */}
+        {/* Stack · Tools */}
         <motion.section
           id="stack"
           className="section"
@@ -495,7 +470,7 @@ const App = () => {
             <Eyebrow label="CAPABILITY" />
           </motion.div>
           <motion.h2 id="stack-h" className="section-headline" variants={faderVariants(shouldReduceMotion)}>
-            Stack.
+            <Lens role={role} pair={sectionCopy.stack.headline} />
           </motion.h2>
 
           <motion.div className="skills-grid" variants={staggerContainer(shouldReduceMotion)}>
@@ -505,6 +480,7 @@ const App = () => {
                   <span className="skill-group-bar" aria-hidden="true" />
                   {group.category}
                 </div>
+                {plain && <p className="skill-group-plain lens">{group.plain}</p>}
                 <motion.div className="flex flex-wrap gap-1" variants={staggerContainer(shouldReduceMotion)}>
                   {group.items.map((skill, i) => (
                     <motion.span

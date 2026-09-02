@@ -15,9 +15,18 @@ const BODY = 'oklch(73% 0.010 70)';
 const GRANT = 'oklch(74% 0.125 150)';
 const CLAY = 'oklch(70% 0.135 48)';
 
+const readRole = () => {
+  try {
+    const r = localStorage.getItem('mf-role');
+    return r === 'anyone' ? 'anyone' : 'engineer';
+  } catch {
+    return 'engineer';
+  }
+};
+
 const BootCeremony = ({
   domain = 'idp.mannyflo.com',
-  prompt = 'guest@mannyflo.com [role:visitor scopes:read.portfolio ttl:24h]',
+  prompt,
   speed = 1,
   holdMs = 300,
   oncePerSession = true,
@@ -26,6 +35,7 @@ const BootCeremony = ({
   onDone,
 }) => {
   const [phase, setPhase] = useState('idle'); // idle -> run -> fade -> gone
+  const [resolvedPrompt, setResolvedPrompt] = useState(prompt ?? '');
   const doneRef = useRef(false);
 
   const seq = [
@@ -68,6 +78,9 @@ const BootCeremony = ({
       if (onDone) onDone();
       return;
     }
+    if (!prompt) {
+      setResolvedPrompt(`guest@mannyflo.com [role:${readRole()} scopes:read.portfolio ttl:24h]`);
+    }
     setPhase('run');
   }, []);
 
@@ -101,9 +114,9 @@ const BootCeremony = ({
     return l.text;
   };
 
-  const bracket = prompt.indexOf(' [');
-  const userPart = bracket > 0 ? prompt.slice(0, bracket) : prompt;
-  const metaPart = bracket > 0 ? prompt.slice(bracket) : '';
+  const bracket = resolvedPrompt.indexOf(' [');
+  const userPart = bracket > 0 ? resolvedPrompt.slice(0, bracket) : resolvedPrompt;
+  const metaPart = bracket > 0 ? resolvedPrompt.slice(bracket) : '';
 
   return (
     <div
