@@ -71,6 +71,7 @@ This system replaced the Roma "El Cuaderno" editorial direction (serif magazine,
 - IBM Plex Sans carries display and body; IBM Plex Mono does real work: masthead session line, nav, eyebrows, stat line, plan diff, pills, chips, metadata, colophon meta. Mono is never decoration and never body prose.
 - Flat surfaces, hairline borders, generous air. One shadow, hover-only on project cards.
 - The signature motif is the plan diff: the career rendered as `terraform plan` output with a `+/~/-` symbol gutter, old `->` new arrows, muted `#` context lines, and a summary line. Every line is resume-backed fact.
+- Since 2026-09-02 the site performs access control on the visitor instead of describing it (see Section 5: Masthead, Role lens, Access fabric, Audit log). The visitor gets a session, a role that scopes the language, and an audit trail of their own visit. Same restraint: hairlines, mono, one accent.
 
 **Physical scene:** A Staff-level hiring manager opens mannyflo.com on a 13 inch laptop in a well-lit office between interviews, deciding in 45 seconds whether Manny can run their identity program. Dark theme is the default for new visitors (owner decision, 2026-08-06); light is a full first-class theme via the toggle, and a stored preference always wins.
 
@@ -102,14 +103,18 @@ Flat by default. Hairline borders (`--color-border`, translucent ink) do all str
 
 ## 5. Components
 
-- **Masthead**: mono session line `● session YYYY.MM · mannyflo.com · access logged`, clay dot.
+- **Masthead** (`.masthead`): the visitor's session as a status bar. Left: `● session YYYY.MM · guest@mannyflo.com`. Right: the Role lens and the Audit log toggle. Wraps to two rows on phones; the user string hides under 768px.
+- **Role lens** (`.role-switch`, `RoleSwitch.jsx`, `src/lib/role.js`): `read as  [engineer] [anyone]`. Least privilege applied to jargon. Engineer is the console voice; anyone is plain English. Every lensed string lives in `src/content/portfolio.js` as an `{ eng, plain }` pair, rendered through `<Lens>` (a keyed span whose remount replays the 360ms `.lens` fade). Persisted in `localStorage` (`mf-role`) through `useSyncExternalStore`, so prerendered HTML hydrates as engineer and re-renders into the stored role without a mismatch. The plan lede also carries an inline switch ("Not an engineer? Read it in plain English.") so the lens is discoverable mid-page. The boot ceremony's session card reads the stored role.
+- **Access fabric** (`.ig`, `IdentityGraph.jsx`): the hero figure. Portrait = operator node at the center of a 420x440 SVG; seven system nodes hang off it on 1px `--color-border` edges with mono labels (name 11px/500, sub 9.5px). Node data (`fabricNodes`) is limited to systems that already appear in scope rows or stack chips. Pulses are SMIL `animateMotion` circles: clay outward for systems he configures (Okta, GCP, Workspace, SaaS), muted inward for identities requesting access (service accounts, AI agents). Retired Entra ID is a dashed edge and dashed dot, no pulse. Hover or focus a node for a one-line brief in the readout under the graph; click pins it (`aria-pressed`) and logs `graph.inspected`. Draw-in (edges trace via `stroke-dasharray: var(--len)`, nodes fade) runs when `live` flips, which App sets from the boot ceremony's `onDone`, so it is never hidden behind the boot overlay. `useReducedMotion` renders no pulses and no draw-in. On phones the hero restacks text, fabric, CTAs, with label sizes bumped to stay legible at 335px.
+- **Audit log** (`.audit`, `AuditLog.jsx`, `src/lib/audit.js`): `access logged · N` made literal. A module store (`audit(action, detail)`) feeds a panel under the masthead listing the visitor's own events, oldest first: `session.issued`, `role.changed`, `theme.changed`, `section.viewed`, `resume.opened`, `link.followed`, `graph.inspected`. Client-side only, capped at 60, footer says so. Closes on Escape or outside click. Time column is tabular mono; action is clay; detail is muted.
+- **Reading hairline** (`.nav-progress`): a 1px clay line under the sticky nav that fills with `animation-timeline: scroll(root)`. No JS; absent where scroll timelines are unsupported.
 - **Nav**: sticky, wordmark `mannyflo.` in mono with clay period; lowercase mono items with clay underline for hover/active (scroll-spy via IntersectionObserver, `aria-current="page"`).
 - **Eyebrow**: 14px clay dash + uppercase mono label. One per section: IDENTITY & ACCESS MANAGEMENT, SCOPE, TRAJECTORY, SHIPPED & SHIPPING, CAPABILITY.
 - **No hero stat strip.** The owner rejected both a 4-up big-number strip ("too grabby") and a quiet mono fact line in the hero. Quantified evidence lives in the plan diff and scope rows instead; do not reintroduce hero counters. The hero is: eyebrow, name, mono role line, lede, CTA row, portrait top-aligned with the text.
 - **Scope rows** (`.scope-row`): `num | domain | description | pill` grid rows with hairline tops, not cards. Pills: `operating` grant, `building`/`expanding`/`hardening` pending.
-- **Plan block** (`.plan-block`): panel bg-2, titlebar `terraform plan · career/manny-flores`, mono 13px lines with full-width tinted line backgrounds, `overflow-x: auto`, staggered per-line reveal on view (reduced-motion collapses to instant). Exposed to assistive tech as `role="img"` with a prose `aria-label` summarizing the career facts; the styled lines are `aria-hidden`.
+- **Plan block** (`.plan-block`): panel bg-2, titlebar `terraform plan · career/manny-flores`, mono 13px lines with full-width tinted line backgrounds, `overflow-x: auto`, staggered per-line reveal on view (reduced-motion collapses to instant). Exposed to assistive tech as `role="img"` with a prose `aria-label` summarizing the career facts; the styled lines are `aria-hidden`. In the anyone lens it becomes `.plan-block--annotated`: titlebar gains a clay `· annotated` flag, lines wrap with a hanging indent, and each carries a sans `.plan-gloss` beneath it (72ch measure). Every line has a gloss; a line without one does not ship.
 - **Project cards** (`.project-card`): the only card surface. bg-2, radius 6px, BUILDING pill, sans 600 title, chips (mono, 2px radius rect).
-- **Stack section**: TOOLS chip groups only (four mono-labeled skill groups). The four expertise prose rows were cut on 2026-08-06 as redundant with the scope rows; each section tells its facts once: scope = what is owned, plan = history, current focus = what is moving, stack = what is used. Do not add prose back to Stack.
+- **Stack section**: TOOLS chip groups only (four mono-labeled skill groups). The four expertise prose rows were cut on 2026-08-06 as redundant with the scope rows; each section tells its facts once: scope = what is owned, plan = history, current focus = what is moving, stack = what is used. Do not add prose back to Stack in the engineer lens. The anyone lens shows one short sans caption per group (`.skill-group-plain`), a translation of the group name, not new prose.
 - **Footer**: one mono meta line only: copyright left, `exit 0` right. The owner removed the principles/manifesto block entirely ("looks lame") and the Set in / Built with / Built for colophon grid; do not reintroduce either.
 - **Buttons**: primary ink-filled with clay ink-fill hover (FramerButton overlay), ghost 1.5px ink border. 6px radius.
 - **Resume dialog**: unchanged Radix pattern, panel on bg with strong border.
@@ -123,6 +128,9 @@ Flat by default. Hairline borders (`--color-border`, translucent ink) do all str
 - **Do** keep both themes first-class; check AA contrast (4.5:1 body, 3:1 large/UI) whenever a token moves.
 - **Do** honor `useReducedMotion` in every animated component and keep the global reduced-motion kill switch in app.css.
 - **Do** keep the papel band + striped favicon paired; changing one means changing both.
+- **Do** write both sides of every `{ eng, plain }` pair when adding content. The plain side translates; it never adds a claim the engineer side lacks (tests enforce presence, the author enforces parity).
+- **Do** keep the access fabric to systems already named elsewhere on the page. A node is a cross-reference, not a new claim.
+- **Do** keep the audit log honest: it records real visitor actions in this tab and nothing else. No fabricated entries, no network.
 
 ### Don't:
 - **Don't** reintroduce serif faces, the magazine masthead, chapter ribbons, or italic emphasis words. El Cuaderno is retired; its history lives in git.
@@ -133,3 +141,5 @@ Flat by default. Hairline borders (`--color-border`, translucent ink) do all str
 - **Don't** use em dashes anywhere in copy. Commas, colons, periods, parentheses.
 - **Don't** use internal company acronyms in user-facing copy; spell out public-facing equivalents.
 - **Don't** add a third background level or a second accent.
+- **Don't** use the semantic data colors in the access fabric. The graph is structure; pulses are clay (outbound) and muted ink (inbound), never grant green or revoke red.
+- **Don't** add a third role. Engineer and anyone cover the audience; more lenses multiply copy without adding clarity.

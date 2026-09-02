@@ -20,6 +20,16 @@ manny-portfolio/
 │   ├── App.jsx          Single-page portfolio component
 │   ├── main.jsx         React entry
 │   ├── index.css        Global reset
+│   ├── content/
+│   │   └── portfolio.js Page content as { eng, plain } pairs, plan lines, fabric nodes
+│   ├── lib/
+│   │   ├── audit.js     Client-side session audit store (useAuditLog, audit())
+│   │   └── role.js      Reader role store (useRole, setStoredRole), localStorage-backed
+│   ├── components/
+│   │   ├── IdentityGraph.jsx  Hero access fabric (SVG, SMIL pulses, hover/pin readout)
+│   │   ├── RoleSwitch.jsx     read as: engineer | anyone
+│   │   ├── AuditLog.jsx       "access logged · N" toggle + panel
+│   │   └── ...
 │   └── styles/
 │       ├── tokens.css   Design tokens (color, spacing, radius, shadow, easing, motion)
 │       └── app.css      Component primitives + app-specific styles
@@ -92,6 +102,12 @@ Targeting WCAG 2.1 AA.
 
 Nav buttons update the URL hash (`#expertise`, `#skills`, …) via `history.replaceState` so the active section is shareable without triggering a full scroll reset.
 
+## Reader role, audit log, access fabric
+
+- **Role** (`read as: engineer | anyone` in the masthead): scopes the language. Stored in `localStorage` under `mf-role`; read through `useSyncExternalStore` in `src/lib/role.js`. Every lensed string is an `{ eng, plain }` pair in `src/content/portfolio.js`, rendered by `<Lens role pair />` in `App.jsx`.
+- **Audit log** (`access logged · N`): a real, client-side list of this tab's events. Call `audit('some.action', 'detail')` from anywhere; `useAuditLog()` subscribes. Nothing is persisted or sent.
+- **Access fabric** (hero): `fabricNodes` in `portfolio.js` drives the SVG in `IdentityGraph.jsx`. Positions are in a 420x440 viewBox. `flow: 'out' | 'in' | 'none'` sets pulse direction; `retired: true` draws the dashed treatment.
+
 ## Security headers
 
 Configured in `vercel.json`:
@@ -110,11 +126,13 @@ Configured in `vercel.json`:
 2. Add a `<section id={id}>` inside `<main>`.
 3. IntersectionObserver will sync the active state automatically.
 
-**Add a skill group**: append to the `skills` array in `App.jsx`.
+**Add a skill group**: append to the `skills` array in `src/content/portfolio.js` (include the one-line `plain` caption).
 
-**Add a project card**: append to the `currentProjects` array in `App.jsx`.
+**Add a project card**: append to the `projects` array in `src/content/portfolio.js` with `title` and `desc` as `{ eng, plain }` pairs.
 
-**Add a writing card**: edit the posts array inside the Writing `<section>` in `App.jsx`. Set `WRITING_ENABLED = false` at the top of the file to hide the section entirely.
+**Add a plan line**: append to `planLines` in `src/content/portfolio.js`. Every line needs a `gloss`; update `planAriaLabel` to match.
+
+**Add a fabric node**: append to `fabricNodes` in `src/content/portfolio.js`. Only systems already named in a scope row or stack chip; pick `x, y` inside the 420x440 viewBox and a `labelPos` (`above`, `below`, `left`, `right`).
 
 ## Polish rubric
 
