@@ -65,6 +65,14 @@ describe('reader role lens', () => {
   })
 })
 
+describe('plan diff integrity', () => {
+  it('summary line counts match the add / change / destroy lines', () => {
+    const count = (t) => planLines.filter(l => l.type === t).length
+    const out = planLines.find(l => l.type === 'out')
+    expect(out.text).toBe(`Plan: ${count('add')} to add, ${count('chg')} to change, ${count('del')} to destroy.`)
+  })
+})
+
 describe('session audit log', () => {
   beforeEach(() => {
     localStorage.clear()
