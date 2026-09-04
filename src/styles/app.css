@@ -737,7 +737,7 @@ button:focus-visible {
   border-bottom: 1px solid var(--color-border-subtle);
 }
 
-.nav-mobile .nav-item:last-child {
+.nav-mobile .nav-item:last-of-type {
   border-bottom: none;
 }
 
@@ -1353,27 +1353,50 @@ a.btn-ghost:hover {
   .nav-row {
     padding: var(--space-3) var(--space-5);
   }
+  /* Phones: no masthead. The role switch and audit log move into the menu
+     drawer; the session line still opens the boot ceremony and the log. */
   .masthead {
-    padding: var(--space-2) var(--space-5);
-    font-size: 0.6875rem;
-    gap: var(--space-2) var(--space-4);
-  }
-  /* Phones: the masthead is one row (role switch + audit count). The
-     session line still opens the audit log and the boot ceremony. */
-  .masthead-session,
-  .masthead-user {
     display: none;
   }
-  .masthead-controls {
-    width: 100%;
+  .nav-mobile {
+    padding: var(--space-3) var(--space-5) var(--space-5);
+    max-height: calc(100dvh - var(--nav-height));
+    overflow-y: auto;
+  }
+  .nav-mobile-tools {
+    display: flex;
+    align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-4);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-border);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.08em;
+    text-transform: lowercase;
+    color: var(--color-text-muted);
   }
-  .role-option {
-    min-height: 32px;
-    padding: 6px 12px;
+  .nav-mobile .role-switch-label {
+    display: inline;
   }
-  .audit-toggle {
-    min-height: 32px;
+  .nav-mobile .role-option {
+    min-height: 36px;
+    padding: 6px 14px;
+  }
+  .nav-mobile .audit-toggle {
+    min-height: 36px;
+  }
+  .nav-mobile .audit {
+    width: 100%;
+  }
+  /* In the drawer the log opens in place instead of floating. */
+  .nav-mobile .audit-panel {
+    position: static;
+    width: 100%;
+    margin-top: var(--space-2);
+    box-shadow: none;
   }
   .hero {
     padding: var(--space-7) var(--space-5) var(--space-9);

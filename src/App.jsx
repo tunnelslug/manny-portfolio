@@ -265,6 +265,7 @@ const App = () => {
         id="mobile-nav"
         className={`nav-mobile ${isMenuOpen ? 'open' : ''}`}
         aria-hidden={!isMenuOpen}
+        inert={!isMenuOpen}
       >
         {NAV_SECTIONS.map(({ id, label }) => (
           <button
@@ -277,6 +278,11 @@ const App = () => {
             {label}
           </button>
         ))}
+        {/* On phones the masthead is hidden; its controls live here. */}
+        <div className="nav-mobile-tools">
+          <RoleSwitch role={role} onChange={setRole} />
+          <AuditLog />
+        </div>
       </div>
 
       <main id="main" data-role={role}>
