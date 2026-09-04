@@ -116,7 +116,7 @@ export const planLines = [
   {
     type: 'chg',
     text: '~ acquisition_intake  = "per-deal" -> "company standard: apps + idp"',
-    gloss: 'Bringing an acquired company in used to be worked out deal by deal. Now there is one standard way to take in their apps and their sign-in system.',
+    gloss: 'Bringing an acquired company in used to be worked out deal by deal. Now there is one standard way to take in their apps and their sign-in system: unify it into Okta, and merge anything we already run (a second Google Workspace, say) into ours.',
   },
   {
     type: 'del',
@@ -125,8 +125,8 @@ export const planLines = [
   },
   {
     type: 'del',
-    text: '- acquired_idps[*]                 # each unified into okta, then retired; entra id the largest',
-    gloss: 'Every acquired company came with its own sign-in system. Each one was folded into Okta and then shut down; Microsoft Entra ID was the biggest of them.',
+    text: '- acquired_idps.standalone         # unified into okta, then retired; entra id the largest',
+    gloss: 'Acquired companies arrive with their own sign-in systems. The standalone ones are folded into Okta and then shut down; Microsoft Entra ID was the biggest of those. Systems we already run, like Google Workspace, are merged into ours instead.',
   },
   {
     type: 'ctx',
@@ -141,7 +141,7 @@ export const planLines = [
 ];
 
 export const planAriaLabel =
-  'Career summary formatted as a Terraform plan: role changed from Systems Administrator to Senior Systems Engineer and team lead; added Okta Identity Governance rollout, six acquisitions merged into one Okta tenant, identity governance for four AI tools, and Okta configuration managed as Terraform code; access requests changed from manual tickets to automated fulfillment; acquisition intake changed from per-deal to a company standard covering apps and identity providers; unreviewed standing access removed; acquired identity providers, Entra ID the largest, unified into Okta and retired.';
+  'Career summary formatted as a Terraform plan: role changed from Systems Administrator to Senior Systems Engineer and team lead; added Okta Identity Governance rollout, six acquisitions merged into one Okta tenant, identity governance for four AI tools, and Okta configuration managed as Terraform code; access requests changed from manual tickets to automated fulfillment; acquisition intake changed from per-deal to a company standard covering apps and identity providers, merging duplicates of systems already run; unreviewed standing access removed; standalone acquired identity providers, Entra ID the largest, unified into Okta and retired.';
 
 export const projects = [
   {
@@ -218,8 +218,8 @@ export const fabricNodes = [
     labelPos: 'above',
     flow: 'in',
     detail: {
-      eng: 'Six acquisitions, each with its own identity provider and app stack. Every one brought onto the company standard in Okta, then the old IdP retired. Entra ID was the largest of them.',
-      plain: 'Companies we bought arrived with their own sign-in systems and apps. Each was moved onto our standard setup in Okta, then the old system was shut down. Microsoft Entra ID was the biggest of them.',
+      eng: 'Six acquisitions, each with its own identity provider and app stack. Every one brought onto the company standard in Okta. Standalone IdPs retired after, Entra ID the largest; duplicates of systems already in the fabric (a second Google Workspace) merged into ours.',
+      plain: 'Companies we bought arrived with their own sign-in systems and apps. Each was moved onto our standard setup in Okta. Systems we did not already have were then shut down, Microsoft Entra ID the biggest of them; ones we did have, like a second Google Workspace, were merged into ours.',
     },
   },
   {
