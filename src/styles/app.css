@@ -1436,7 +1436,8 @@ a.btn-ghost:hover {
     grid-template-columns: minmax(0, 1fr);
     grid-template-areas:
       "text"
-      "cta";
+      "cta"
+      "next";
     gap: var(--space-6);
     text-align: left;
   }
@@ -1491,6 +1492,42 @@ a.btn-ghost:hover {
   .hero-cta-row .btn {
     grid-column: 1 / -1;
   }
+  /* Section index under the actions: the scroll cue, made useful. */
+  .hero-next {
+    grid-area: next;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0 var(--space-2);
+    margin-top: calc(-1 * var(--space-2));
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.08em;
+    text-transform: lowercase;
+    color: var(--color-text-subtle);
+  }
+  .hero-next-arrow {
+    color: var(--color-accent);
+    animation: hero-next-nudge 2.4s var(--ease-out) infinite;
+  }
+  .hero-next-item {
+    min-height: 32px;
+    padding: 0;
+    background: none;
+    border: none;
+    border-bottom: 1px solid transparent;
+    font: inherit;
+    letter-spacing: inherit;
+    text-transform: inherit;
+    color: var(--color-text-muted);
+    cursor: pointer;
+  }
+  .hero-next-item:hover,
+  .hero-next-item:focus-visible {
+    color: var(--color-text);
+    border-bottom-color: var(--color-accent);
+    outline: none;
+  }
   .section {
     padding: var(--space-8) var(--space-5);
   }
@@ -1537,10 +1574,23 @@ a.btn-ghost:hover {
   }
 }
 
+@keyframes hero-next-nudge {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(3px); }
+}
+
 @media (max-width: 380px) {
-  /* Narrow phones: keep the actions inside the first screen. */
+  /* Narrow phones: keep the actions inside the first screen, and the
+     section index on one line. */
   .hero-lede {
     font-size: var(--fs-md);
+  }
+  .hero-next {
+    gap: 0 var(--space-3);
+    letter-spacing: 0.05em;
+  }
+  .hero-next-sep {
+    display: none;
   }
 }
 

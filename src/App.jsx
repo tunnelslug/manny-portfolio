@@ -371,6 +371,22 @@ const App = () => {
               </FramerButton>
             </motion.div>
 
+            {phone && (
+              /* The buttons are the last thing in a phone's first screen and
+                 read like the end of the page. This says what follows. */
+              <motion.nav className="hero-next" aria-label="Sections below" variants={faderVariants(shouldReduceMotion)}>
+                <span className="hero-next-arrow" aria-hidden="true">↓</span>
+                {NAV_SECTIONS.filter((s) => s.id !== 'about').map((s, i) => (
+                  <React.Fragment key={s.id}>
+                    {i > 0 && <span className="hero-next-sep" aria-hidden="true">·</span>}
+                    <button type="button" className="hero-next-item" onClick={() => scrollToSection(s.id)}>
+                      {s.label}
+                    </button>
+                  </React.Fragment>
+                ))}
+              </motion.nav>
+            )}
+
             {!phone && (
               <motion.figure className="hero-fabric" variants={faderVariants(shouldReduceMotion)}>
                 <IdentityGraph role={role} live={booted} />
