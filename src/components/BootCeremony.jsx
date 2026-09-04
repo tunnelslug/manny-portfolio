@@ -18,7 +18,7 @@ const CLAY = 'oklch(70% 0.135 48)';
 const readRole = () => {
   try {
     const r = localStorage.getItem('mf-role');
-    return r === 'anyone' ? 'anyone' : 'engineer';
+    return r === 'recruiter' || r === 'anyone' ? 'recruiter' : 'engineer';
   } catch {
     return 'engineer';
   }

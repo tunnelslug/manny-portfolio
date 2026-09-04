@@ -191,7 +191,7 @@ const App = () => {
   const now = new Date();
   const year = now.getFullYear();
   const monthNum = String(now.getMonth() + 1).padStart(2, '0');
-  const plain = role === 'anyone';
+  const recruiter = role === 'recruiter';
 
   return (
     <>
@@ -448,19 +448,19 @@ const App = () => {
           <motion.p className="section-lede" variants={faderVariants(shouldReduceMotion)}>
             <Lens role={role} pair={sectionCopy.plan.lede} />
             <button className="lede-link" onClick={openResume}>resume</button>.{' '}
-            {plain ? (
+            {recruiter ? (
               <button className="lede-link" onClick={() => setRole('engineer')}>Back to the engineer view.</button>
             ) : (
-              <button className="lede-link" onClick={() => setRole('anyone')}>Not an engineer? Read it in plain English.</button>
+              <button className="lede-link" onClick={() => setRole('recruiter')}>Hiring? Read it as a recruiter.</button>
             )}
           </motion.p>
 
           <motion.div
-            className={`plan-block ${plain ? 'plan-block--annotated' : ''}`}
+            className={`plan-block ${recruiter ? 'plan-block--annotated' : ''}`}
             variants={planContainer(shouldReduceMotion)}
           >
             <div className="plan-titlebar" aria-hidden="true">
-              <span>terraform plan{plain && <span className="plan-titlebar-flag"> · annotated</span>}</span>
+              <span>terraform plan{recruiter && <span className="plan-titlebar-flag"> · annotated</span>}</span>
               <span className="plan-titlebar-right">career/manny-flores</span>
             </div>
             <div
@@ -476,7 +476,7 @@ const App = () => {
                   variants={planLineVariants(shouldReduceMotion)}
                 >
                   <span className="plan-line-text">{line.text}</span>
-                  {plain && <span className="plan-gloss lens">{line.gloss}</span>}
+                  {recruiter && <span className="plan-gloss lens">{line.gloss}</span>}
                 </motion.div>
               ))}
             </div>
@@ -538,7 +538,7 @@ const App = () => {
                   <span className="skill-group-bar" aria-hidden="true" />
                   {group.category}
                 </div>
-                {plain && <p className="skill-group-plain lens">{group.plain}</p>}
+                {recruiter && <p className="skill-group-note lens">{group.rec}</p>}
                 <motion.div className="flex flex-wrap gap-1" variants={staggerContainer(shouldReduceMotion)}>
                   {group.items.map((skill, i) => (
                     <motion.span

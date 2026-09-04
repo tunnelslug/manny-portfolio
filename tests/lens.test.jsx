@@ -20,31 +20,31 @@ describe('reader role lens', () => {
     const group = screen.getByRole('group', { name: /read as/i })
     expect(within(group).getByRole('button', { name: 'engineer' })).toHaveAttribute('aria-pressed', 'true')
     expect(screen.getByText(scope[0].title.eng)).toBeInTheDocument()
-    expect(screen.queryByText(scope[0].title.plain)).not.toBeInTheDocument()
+    expect(screen.queryByText(scope[0].title.rec)).not.toBeInTheDocument()
   })
 
-  it('switches every lensed surface to plain English and persists the choice', async () => {
+  it('switches every lensed surface to the recruiter lens and persists the choice', async () => {
     const user = userEvent.setup()
     render(<App />)
-    await user.click(screen.getByRole('button', { name: 'anyone' }))
+    await user.click(screen.getByRole('button', { name: 'recruiter' }))
 
-    expect(screen.getByText(scope[0].title.plain)).toBeInTheDocument()
-    expect(screen.getByText(projects[0].title.plain)).toBeInTheDocument()
+    expect(screen.getByText(scope[0].title.rec)).toBeInTheDocument()
+    expect(screen.getByText(projects[0].title.rec)).toBeInTheDocument()
     expect(screen.getByText(planLines[1].gloss)).toBeInTheDocument()
-    expect(localStorage.getItem('mf-role')).toBe('anyone')
+    expect(localStorage.getItem('mf-role')).toBe('recruiter')
   })
 
   it('restores a stored role on load', () => {
-    localStorage.setItem('mf-role', 'anyone')
+    localStorage.setItem('mf-role', 'recruiter')
     render(<App />)
-    expect(screen.getByRole('button', { name: 'anyone' })).toHaveAttribute('aria-pressed', 'true')
-    expect(screen.getByText(scope[2].title.plain)).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'recruiter' })).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.getByText(scope[2].title.rec)).toBeInTheDocument()
   })
 
-  it('offers the plain-English switch inline in the plan lede', async () => {
+  it('offers the recruiter switch inline in the plan lede', async () => {
     const user = userEvent.setup()
     render(<App />)
-    await user.click(screen.getByRole('button', { name: /read it in plain english/i }))
+    await user.click(screen.getByRole('button', { name: /read it as a recruiter/i }))
     expect(screen.getByText(planLines[0].gloss)).toBeInTheDocument()
     await user.click(screen.getByRole('button', { name: /back to the engineer view/i }))
     expect(screen.queryByText(planLines[0].gloss)).not.toBeInTheDocument()
@@ -53,14 +53,14 @@ describe('reader role lens', () => {
   it('never lets a lens carry a fact the other lacks: every pair has both sides', () => {
     for (const row of scope) {
       expect(row.title.eng.length).toBeGreaterThan(0)
-      expect(row.title.plain.length).toBeGreaterThan(0)
+      expect(row.title.rec.length).toBeGreaterThan(0)
       expect(row.desc.eng.length).toBeGreaterThan(0)
-      expect(row.desc.plain.length).toBeGreaterThan(0)
+      expect(row.desc.rec.length).toBeGreaterThan(0)
     }
     for (const line of planLines) expect(line.gloss.length).toBeGreaterThan(0)
     for (const n of fabricNodes) {
       expect(n.detail.eng.length).toBeGreaterThan(0)
-      expect(n.detail.plain.length).toBeGreaterThan(0)
+      expect(n.detail.rec.length).toBeGreaterThan(0)
     }
   })
 })
@@ -90,14 +90,14 @@ describe('session audit log', () => {
   it('opens the panel and records role changes', async () => {
     const user = userEvent.setup()
     render(<App />)
-    await user.click(screen.getByRole('button', { name: 'anyone' }))
+    await user.click(screen.getByRole('button', { name: 'recruiter' }))
     await user.click(screen.getByRole('button', { name: /access logged/i }))
 
     const list = screen.getByRole('list', { name: /session events/i })
     const rows = within(list).getAllByRole('listitem')
     expect(rows[0]).toHaveTextContent('session.issued')
     expect(rows[rows.length - 1]).toHaveTextContent('role.changed')
-    expect(rows[rows.length - 1]).toHaveTextContent('engineer -> anyone')
+    expect(rows[rows.length - 1]).toHaveTextContent('engineer -> recruiter')
   })
 
   it('closes on Escape', async () => {

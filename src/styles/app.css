@@ -177,7 +177,7 @@ button:focus-visible {
   gap: var(--space-5);
 }
 
-/* ── Role switch · read as engineer | anyone ──────── */
+/* ── Role switch · read as engineer | recruiter ───── */
 .role-switch {
   display: inline-flex;
   align-items: center;
@@ -1190,7 +1190,7 @@ button:focus-visible {
   color: var(--color-accent);
 }
 
-/* Annotated plan (anyone lens): each mono line carries its plain reading.
+/* Annotated plan (recruiter lens): each mono line carries its outcome.
    Lines wrap with a hanging indent instead of scrolling. */
 .plan-block--annotated .plan-line {
   white-space: pre-wrap;
@@ -1225,7 +1225,7 @@ button:focus-visible {
   font-weight: 400;
 }
 
-.skill-group-plain {
+.skill-group-note {
   margin: calc(-1 * var(--space-2)) 0 var(--space-4);
   font-family: var(--font-sans);
   font-size: var(--fs-md);

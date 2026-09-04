@@ -11,6 +11,7 @@ const listeners = new Set();
 const read = () => {
   try {
     const stored = localStorage.getItem(ROLE_STORAGE_KEY);
+    if (stored === 'anyone') return 'recruiter'; // pre-rename value
     return ROLES.includes(stored) ? stored : DEFAULT_ROLE;
   } catch {
     return DEFAULT_ROLE;

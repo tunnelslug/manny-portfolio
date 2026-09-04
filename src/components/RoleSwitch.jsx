@@ -1,9 +1,8 @@
 import React from 'react';
 import { ROLES } from '../content/portfolio';
 
-/* The reader's role. The page applies least privilege to jargon: the
-   engineer lens reads like a console, the anyone lens reads like a
-   conversation. Same facts in both. */
+/* The reader's role. The engineer lens says how it is built; the
+   recruiter lens says what was owned and what came of it. Same facts. */
 const RoleSwitch = ({ role, onChange, compact = false }) => (
   <div className={`role-switch ${compact ? 'role-switch--compact' : ''}`} role="group" aria-label="Read as">
     <span className="role-switch-label" aria-hidden="true">read as</span>
@@ -14,7 +13,7 @@ const RoleSwitch = ({ role, onChange, compact = false }) => (
         className={`role-option ${role === r ? 'is-active' : ''}`}
         aria-pressed={role === r}
         onClick={() => onChange(r)}
-        title={r === 'anyone' ? 'Plain English, no jargon' : 'Engineering console voice'}
+        title={r === 'recruiter' ? 'Ownership, scale, outcomes' : 'How it is built'}
       >
         {r}
       </button>

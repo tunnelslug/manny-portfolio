@@ -21,13 +21,13 @@ manny-portfolio/
 │   ├── main.jsx         React entry
 │   ├── index.css        Global reset
 │   ├── content/
-│   │   └── portfolio.js Page content as { eng, plain } pairs, plan lines, fabric nodes
+│   │   └── portfolio.js Page content as { eng, rec } pairs, plan lines, fabric nodes
 │   ├── lib/
 │   │   ├── audit.js     Client-side session audit store (useAuditLog, audit())
 │   │   └── role.js      Reader role store (useRole, setStoredRole), localStorage-backed
 │   ├── components/
 │   │   ├── IdentityGraph.jsx  Hero access fabric (SVG, SMIL pulses, hover/pin readout)
-│   │   ├── RoleSwitch.jsx     read as: engineer | anyone
+│   │   ├── RoleSwitch.jsx     read as: engineer | recruiter
 │   │   ├── AuditLog.jsx       "access logged · N" toggle + panel
 │   │   └── ...
 │   └── styles/
@@ -104,7 +104,7 @@ Nav buttons update the URL hash (`#expertise`, `#skills`, …) via `history.repl
 
 ## Reader role, audit log, access fabric
 
-- **Role** (`read as: engineer | anyone` in the masthead): scopes the language. Stored in `localStorage` under `mf-role`; read through `useSyncExternalStore` in `src/lib/role.js`. Every lensed string is an `{ eng, plain }` pair in `src/content/portfolio.js`, rendered by `<Lens role pair />` in `App.jsx`.
+- **Role** (`read as: engineer | recruiter` in the masthead): scopes the language. Stored in `localStorage` under `mf-role`; read through `useSyncExternalStore` in `src/lib/role.js`. Every lensed string is an `{ eng, rec }` pair in `src/content/portfolio.js`, rendered by `<Lens role pair />` in `App.jsx`.
 - **Audit log** (`access logged · N`): a real, client-side list of this tab's events. Call `audit('some.action', 'detail')` from anywhere; `useAuditLog()` subscribes. Nothing is persisted or sent.
 - **Access fabric** (hero): `fabricNodes` in `portfolio.js` drives the SVG in `IdentityGraph.jsx`. Positions are in a 420x440 viewBox. `flow: 'out' | 'in' | 'none'` sets pulse direction; `retired: true` draws the dashed treatment.
 
@@ -126,9 +126,9 @@ Configured in `vercel.json`:
 2. Add a `<section id={id}>` inside `<main>`.
 3. IntersectionObserver will sync the active state automatically.
 
-**Add a skill group**: append to the `skills` array in `src/content/portfolio.js` (include the one-line `plain` caption).
+**Add a skill group**: append to the `skills` array in `src/content/portfolio.js` (include the one-line `rec` caption).
 
-**Add a project card**: append to the `projects` array in `src/content/portfolio.js` with `title` and `desc` as `{ eng, plain }` pairs.
+**Add a project card**: append to the `projects` array in `src/content/portfolio.js` with `title` and `desc` as `{ eng, rec }` pairs.
 
 **Add a plan line**: append to `planLines` in `src/content/portfolio.js`. Every line needs a `gloss`; update `planAriaLabel` to match.
 
