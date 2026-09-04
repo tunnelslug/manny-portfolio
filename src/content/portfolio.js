@@ -199,10 +199,13 @@ export const skills = [
 /* Nodes of the access fabric drawn in the hero. Positions are in the
    graph's 420 x 440 viewBox; the operator (portrait) sits at the center.
    Every node and relation is a scope row or stack chip elsewhere on the page. */
+/* x/y: full layout (420x440 viewBox). compact: phone layout (360x196),
+   portrait on the left and every node fanned into one column on the right. */
 export const fabricNodes = [
   {
     id: 'okta',
     x: 210, y: 44,
+    compact: { x: 196, y: 22 },
     label: 'okta', sub: 'idp · saml · oidc · scim',
     labelPos: 'above',
     flow: 'out',
@@ -214,6 +217,7 @@ export const fabricNodes = [
   {
     id: 'mna',
     x: 74, y: 96,
+    compact: { x: 196, y: 124 },
     label: 'm&a intake', sub: '6 acquired · idps -> okta',
     labelPos: 'above',
     flow: 'in',
@@ -225,6 +229,7 @@ export const fabricNodes = [
   {
     id: 'gcp',
     x: 346, y: 96,
+    compact: { x: 196, y: 47.5 },
     label: 'gcp', sub: 'terraform',
     labelPos: 'right',
     flow: 'out',
@@ -236,6 +241,7 @@ export const fabricNodes = [
   {
     id: 'workspace',
     x: 56, y: 240,
+    compact: { x: 196, y: 73 },
     label: 'workspace', sub: 'scim · oauth',
     labelPos: 'below',
     flow: 'out',
@@ -247,6 +253,7 @@ export const fabricNodes = [
   {
     id: 'saas',
     x: 364, y: 240,
+    compact: { x: 196, y: 98.5 },
     label: 'saas apps', sub: 'scim · saml',
     labelPos: 'below',
     flow: 'out',
@@ -258,6 +265,7 @@ export const fabricNodes = [
   {
     id: 'svc',
     x: 110, y: 388,
+    compact: { x: 196, y: 149.5 },
     label: 'service accounts', sub: 'brokered creds',
     labelPos: 'below',
     flow: 'in',
@@ -269,6 +277,7 @@ export const fabricNodes = [
   {
     id: 'agents',
     x: 310, y: 388,
+    compact: { x: 196, y: 175 },
     label: 'ai agents', sub: 'scoped · audited',
     labelPos: 'below',
     flow: 'in',

@@ -133,4 +133,75 @@ describe('access fabric', () => {
     expect(okta).toHaveAttribute('aria-pressed', 'true')
     expect(screen.getByText(fabricNodes[0].detail.eng, { exact: false })).toBeInTheDocument()
   })
+
+  it('every node carries a compact (phone) position', () => {
+    for (const n of fabricNodes) {
+      expect(n.compact).toEqual({ x: expect.any(Number), y: expect.any(Number) })
+    }
+    const ys = fabricNodes.map(n => n.compact.y).sort((a, b) => a - b)
+    for (let i = 1; i < ys.length; i++) expect(ys[i] - ys[i - 1]).toBeGreaterThanOrEqual(24)
+  })
+
+  it('switches to the compact layout on phone widths', () => {
+    const mm = window.matchMedia
+    window.matchMedia = vi.fn().mockImplementation(query => ({
+      ...mm(query),
+      matches: query === '(max-width: 768px)',
+    }))
+    render(<App />)
+    expect(screen.getByAltText(/portrait of manny flores/i).closest('.ig')).toHaveAttribute('data-layout', 'compact')
+    window.matchMedia = mm
+  })
+})
+
+describe('mobile dock', () => {
+  let observers
+  let RealIO
+
+  beforeEach(() => {
+    localStorage.clear()
+    sessionStorage.setItem('mf-boot-seen', '1')
+    resetAudit()
+    observers = []
+    RealIO = window.IntersectionObserver
+    window.IntersectionObserver = class {
+      constructor(cb) { this.cb = cb; this.targets = []; observers.push(this) }
+      observe(el) { this.targets.push(el) }
+      unobserve() {}
+      disconnect() {}
+      takeRecords() { return [] }
+    }
+  })
+
+  const observerFor = (className) =>
+    observers.find(o => o.targets.some(t => t.classList?.contains(className)))
+
+  it('stays hidden while the hero actions are on screen, then docks when they leave', async () => {
+    render(<App />)
+    const dock = screen.getByTestId('mobile-dock')
+    expect(dock).toHaveAttribute('aria-hidden', 'true')
+
+    const io = observerFor('hero-cta-row')
+    expect(io).toBeTruthy()
+    const { act } = await import('@testing-library/react')
+    act(() => io.cb([{ isIntersecting: false }]))
+    expect(dock).toHaveAttribute('aria-hidden', 'false')
+    expect(within(dock).getByRole('link', { name: /get in touch/i })).toHaveAttribute('href', 'mailto:manny@flores.network')
+    expect(within(dock).getByRole('button', { name: /resume/i })).toBeInTheDocument()
+
+    act(() => io.cb([{ isIntersecting: true }]))
+    expect(dock).toHaveAttribute('aria-hidden', 'true')
+  })
+
+  it('hides while the resume dialog is open', async () => {
+    const user = userEvent.setup()
+    render(<App />)
+    const io = observerFor('hero-cta-row')
+    const { act } = await import('@testing-library/react')
+    act(() => io.cb([{ isIntersecting: false }]))
+    const dock = screen.getByTestId('mobile-dock')
+    await user.click(within(dock).getByRole('button', { name: /resume/i }))
+    expect(dock).toHaveAttribute('aria-hidden', 'true')
+    window.IntersectionObserver = RealIO
+  })
 })

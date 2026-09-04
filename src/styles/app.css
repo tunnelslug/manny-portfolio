@@ -1343,6 +1343,9 @@ a.btn-ghost:hover {
     font-size: 0.6875rem;
     gap: var(--space-2) var(--space-4);
   }
+  /* Phones: the masthead is one row (role switch + audit count). The
+     session line still opens the audit log and the boot ceremony. */
+  .masthead-session,
   .masthead-user {
     display: none;
   }
@@ -1358,28 +1361,44 @@ a.btn-ghost:hover {
     min-height: 32px;
   }
   .hero {
-    padding: var(--space-9) var(--space-5);
+    padding: var(--space-7) var(--space-5) var(--space-9);
   }
+  /* Phones: fabric first, actions right under it (both inside the first
+     screen), then the name and lede. */
   .hero-grid {
     grid-template-columns: minmax(0, 1fr);
     grid-template-areas:
-      "text"
       "fabric"
-      "cta";
-    gap: var(--space-8);
+      "cta"
+      "text";
+    gap: var(--space-6);
     text-align: left;
   }
   .hero-fabric {
-    margin: 0 auto;
-    width: min(100%, 380px);
+    margin: 0;
+    width: 100%;
+  }
+  .hero-text-block {
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-border-subtle);
+  }
+  /* The compact fabric is wide and short. The box is sized here (not from
+     the inline viewBox) so the prerendered desktop SVG, hidden until the
+     client picks the compact layout, never reserves the tall height. */
+  .ig-graph {
+    aspect-ratio: 360 / 196;
+  }
+  .ig[data-layout="full"] .ig-svg,
+  .ig[data-layout="full"] .ig-portrait {
+    visibility: hidden;
   }
   /* SVG text scales with the viewBox; hold the labels legible on phones */
   .ig-name { font-size: 12.5px; }
-  .ig-sub  { font-size: 11px; }
   .ig-readout {
-    text-align: center;
-    margin-left: auto;
-    margin-right: auto;
+    max-width: none;
+    min-height: 2.9em;
+    letter-spacing: 0.06em;
+    text-wrap: balance;
   }
   .hero-cta-row {
     display: grid;
@@ -1401,7 +1420,8 @@ a.btn-ghost:hover {
     padding: var(--space-8) var(--space-5);
   }
   .colophon {
-    padding: var(--space-6) var(--space-5);
+    /* room for the docked action bar */
+    padding: var(--space-6) var(--space-5) calc(var(--space-6) + 78px + env(safe-area-inset-bottom, 0px));
   }
   .hamburger { display: flex; }
   .nav-desktop { display: none !important; }
@@ -1449,6 +1469,88 @@ a.btn-ghost:hover {
   .role-switch-label {
     display: none;
   }
+}
+
+/* ── Mobile dock · hero actions, thumb-reachable ──
+   Phone-only. Slides up once the hero CTAs scroll away. */
+.dock {
+  display: flex;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 98;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3) calc(var(--space-2) + env(safe-area-inset-bottom, 0px));
+  background: var(--color-bg);
+  border-top: 1px solid var(--color-border);
+  transform: translateY(110%);
+  transition: transform 360ms var(--ease-out);
+}
+
+.dock.is-visible {
+  transform: translateY(0);
+}
+
+.dock-primary {
+  flex: 1 1 auto;
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: 0 var(--space-4);
+  background: var(--color-text);
+  color: var(--color-bg);
+  font-family: var(--font-sans);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: var(--radius-md);
+}
+
+.dock-item {
+  flex: 0 0 auto;
+  min-width: 60px;
+  min-height: 48px;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 0 var(--space-2);
+  background: transparent;
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 0.5625rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: color var(--motion-fast) var(--ease-out),
+              border-color var(--motion-fast) var(--ease-out);
+}
+
+.dock-item:hover,
+.dock-item:focus-visible {
+  color: var(--color-text);
+  border-color: var(--color-border-strong);
+}
+
+.dock-primary:focus-visible,
+.dock-item:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+@media (min-width: 769px) {
+  .dock { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dock { transition: none; }
 }
 
 /* ── Resume Modal ────────────────────────────────── */

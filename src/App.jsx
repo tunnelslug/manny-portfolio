@@ -11,6 +11,7 @@ import FramerButton from './components/FramerButton';
 import IdentityGraph from './components/IdentityGraph';
 import RoleSwitch from './components/RoleSwitch';
 import AuditLog from './components/AuditLog';
+import MobileDock from './components/MobileDock';
 import { audit } from './lib/audit';
 import { useRole, setStoredRole } from './lib/role';
 import {
@@ -91,10 +92,21 @@ const App = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [resumeOpen, setResumeOpen] = useState(false);
   const [booted, setBooted] = useState(false);
+  const [ctaOnScreen, setCtaOnScreen] = useState(true);
   const role = useRole();
   const shouldReduceMotion = useReducedMotion();
   const lastViewed = useRef(null);
   const sessionIssued = useRef(false);
+  const ctaRef = useRef(null);
+
+  // The docked bar takes over once the hero CTAs leave the viewport.
+  useEffect(() => {
+    const el = ctaRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(([entry]) => setCtaOnScreen(entry.isIntersecting));
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
 
   const setRole = useCallback((next) => {
     if (!ROLES.includes(next) || next === role) return;
@@ -300,7 +312,7 @@ const App = () => {
               </motion.p>
             </motion.div>
 
-            <motion.div className="hero-cta-row" variants={faderVariants(shouldReduceMotion)}>
+            <motion.div ref={ctaRef} className="hero-cta-row" variants={faderVariants(shouldReduceMotion)}>
               <FramerButton href="mailto:manny@flores.network" onClick={followed('mailto')}>
                 Get in Touch <IconArrow />
               </FramerButton>
@@ -506,6 +518,12 @@ const App = () => {
           <span className="tabular">exit 0</span>
         </div>
       </footer>
+
+      <MobileDock
+        visible={booted && !ctaOnScreen && !resumeOpen && !isMenuOpen}
+        onResume={openResume}
+        onFollow={followed}
+      />
 
       <Analytics />
       <SpeedInsights />
