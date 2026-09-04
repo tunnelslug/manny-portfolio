@@ -91,10 +91,7 @@ const IdentityGraph = ({ role = 'engineer', live = false }) => {
 
   const activeId = pinned ?? hovered;
   const active = fabricNodes.find((n) => n.id === activeId);
-  const intro = compact && !active;
-  const readout = active
-    ? lens(role, active.detail)
-    : lens(role, compact ? fabricIntro : fabricDefaultReadout);
+  const idle = compact ? fabricIntro : fabricDefaultReadout;
 
   const togglePin = (id) => {
     setPinned((p) => {
@@ -167,6 +164,20 @@ const IdentityGraph = ({ role = 'engineer', live = false }) => {
             );
           })}
 
+          {/* the chosen edge carries a fast pulse while it is active:
+              access visibly flowing to (or from) that one system */}
+          {active && !reduce && active.flow !== 'none' && (
+            <circle
+              key={`fast-${active.id}`}
+              className={`ig-pulse ig-pulse--fast ${active.flow === 'in' ? 'ig-pulse--in' : ''}`}
+              r="3"
+            >
+              <animateMotion dur="1.1s" repeatCount="indefinite">
+                <mpath href={`#${uid}-edge-${active.id}`} />
+              </animateMotion>
+            </circle>
+          )}
+
           {/* nodes */}
           {fabricNodes.map((n, i) => {
             const p = L.pos(n);
@@ -195,6 +206,7 @@ const IdentityGraph = ({ role = 'engineer', live = false }) => {
                 ) : (
                   <circle className="ig-hit" cx={p.x} cy={p.y} r={NODE_HIT_R} />
                 )}
+                {isActive && <circle className="ig-halo" cx={p.x} cy={p.y} r={L.nodeR + 6} />}
                 <circle className="ig-dot" cx={p.x} cy={p.y} r={L.nodeR} />
                 <text className="ig-name" x={l.nx} y={compact ? p.y + 4 : l.ny} textAnchor={l.anchor}>{n.label}</text>
                 {!compact && (
@@ -218,11 +230,30 @@ const IdentityGraph = ({ role = 'engineer', live = false }) => {
         />
       </div>
 
-      <p className={`ig-readout ${active ? 'is-detail' : ''} ${intro ? 'is-intro' : ''}`} aria-live="polite">
-        {active && <span className="ig-readout-key">{active.label} · </span>}
-        {intro && <span className="ig-readout-name">{fabricIntro.name}. </span>}
-        {readout}
-      </p>
+      {/* Every readout is rendered in the same grid cell; only the current
+          one is visible. The block is always as tall as its tallest text,
+          so picking a node never moves what sits below the graph. */}
+      <div className="ig-readouts" aria-live="polite">
+        <p
+          className={`ig-readout ${compact ? 'is-intro' : ''} ${active ? '' : 'is-shown'}`}
+          aria-hidden={Boolean(active)}
+        >
+          {compact && <span className="ig-readout-name">{fabricIntro.name}. </span>}
+          {lens(role, idle)}
+        </p>
+        {fabricNodes.map((n) => (
+          <p
+            key={n.id}
+            className={`ig-readout is-detail ${activeId === n.id ? 'is-shown' : ''}`}
+            aria-hidden={activeId !== n.id}
+          >
+            <span className="ig-readout-key">
+              {n.label}<span className="ig-readout-sub"> · {n.sub}</span>
+            </span>
+            {lens(role, n.detail)}
+          </p>
+        ))}
+      </div>
     </div>
   );
 };

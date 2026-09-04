@@ -222,8 +222,8 @@ export const fabricNodes = [
     labelPos: 'above',
     flow: 'in',
     detail: {
-      eng: 'Six acquisitions, each with its own identity provider and app stack. Every one brought onto the company standard in Okta. Standalone IdPs retired after, Entra ID the largest; duplicates of systems already in the fabric (a second Google Workspace) merged into ours.',
-      plain: 'Companies we bought arrived with their own sign-in systems and apps. Each was moved onto our standard setup in Okta. Systems we did not already have were then shut down, Microsoft Entra ID the biggest of them; ones we did have, like a second Google Workspace, were merged into ours.',
+      eng: 'Six acquisitions, each with its own IdP and app stack, brought onto the Okta standard. Standalone IdPs retired after, Entra ID the largest; duplicates of systems we already run, merged into ours.',
+      plain: 'Companies we bought came with their own sign-in systems and apps. Each moved onto our Okta standard; the leftover systems were shut down (Entra ID the biggest) or merged into ours.',
     },
   },
   {

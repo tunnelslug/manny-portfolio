@@ -938,9 +938,17 @@ button:focus-visible {
   stroke-width: 2.5;
 }
 
+/* All readouts share one grid cell: the block holds the height of the
+   tallest one, so swapping never shifts the layout below the graph. */
+.ig-readouts {
+  display: grid;
+  margin-top: var(--space-3);
+}
+
 .ig-readout {
-  margin: var(--space-3) 0 0;
-  min-height: 2.9em;
+  grid-area: 1 / 1;
+  margin: 0;
+  visibility: hidden;
   font-family: var(--font-mono);
   font-size: var(--fs-xs);
   line-height: 1.45;
@@ -950,20 +958,56 @@ button:focus-visible {
   max-width: 44ch;
 }
 
+.ig-readout.is-shown {
+  visibility: visible;
+  animation: lens-in 280ms var(--ease-out) both;
+}
+
 .ig-readout.is-detail {
   font-family: var(--font-sans);
   font-size: var(--fs-sm);
+  line-height: 1.5;
   letter-spacing: 0;
   text-transform: none;
   color: var(--color-text-muted);
 }
 
 .ig-readout-key {
+  display: block;
+  margin-bottom: 2px;
   font-family: var(--font-mono);
   color: var(--color-accent);
   text-transform: uppercase;
   letter-spacing: 0.08em;
   font-size: var(--fs-xs);
+}
+
+.ig-readout-sub {
+  color: var(--color-text-subtle);
+}
+
+/* Active node: a soft halo settles around the dot */
+.ig-halo {
+  fill: var(--color-accent);
+  opacity: 0.18;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: ig-halo-in 420ms var(--ease-out) both;
+}
+
+@keyframes ig-halo-in {
+  from { transform: scale(0.4); opacity: 0; }
+  60%  { opacity: 0.28; }
+  to   { transform: scale(1); opacity: 0.18; }
+}
+
+.ig-pulse--fast {
+  fill: var(--color-accent);
+  opacity: 0.9;
+}
+
+.ig-pulse--fast.ig-pulse--in {
+  fill: var(--color-text-muted);
 }
 
 /* Phone intro: one sentence on who this is, shown until a node is picked. */
@@ -1434,13 +1478,11 @@ a.btn-ghost:hover {
   .ig-name { font-size: 12.5px; }
   .ig-readout {
     max-width: none;
-    min-height: 5.6em;
     letter-spacing: 0.06em;
     text-wrap: pretty;
   }
   .ig-readout.is-detail {
-    font-size: var(--fs-md);
-    line-height: 1.5;
+    font-size: var(--fs-sm);
   }
   .hero-cta-row {
     display: grid;
