@@ -811,7 +811,7 @@ button:focus-visible {
 }
 
 /* ── Identity graph · the access fabric ───────────
-   Portrait = operator node. Hairline edges, mono labels,
+   Portrait = the person at the center. Hairline edges, mono labels,
    clay pulses. Semantic colors stay out of it: this is
    structure, not state. */
 .ig {
@@ -966,7 +966,22 @@ button:focus-visible {
   font-size: var(--fs-xs);
 }
 
-/* Draw-in on first client paint: edges trace out from the operator,
+/* Phone intro: one sentence on who this is, shown until a node is picked. */
+.ig-readout.is-intro {
+  font-family: var(--font-sans);
+  font-size: var(--fs-md);
+  line-height: 1.5;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--color-text-muted);
+}
+
+.ig-readout-name {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+/* Draw-in on first client paint: edges trace out from the portrait,
    nodes arrive after. Static HTML (prerender) ships fully drawn. */
 .ig.is-live:not(.is-static) .ig-edge:not(.ig-edge--retired) {
   stroke-dasharray: var(--len);
@@ -1396,9 +1411,13 @@ a.btn-ghost:hover {
   .ig-name { font-size: 12.5px; }
   .ig-readout {
     max-width: none;
-    min-height: 2.9em;
+    min-height: 5.6em;
     letter-spacing: 0.06em;
-    text-wrap: balance;
+    text-wrap: pretty;
+  }
+  .ig-readout.is-detail {
+    font-size: var(--fs-md);
+    line-height: 1.5;
   }
   .hero-cta-row {
     display: grid;

@@ -1,10 +1,10 @@
 import React, { useId, useState } from 'react';
 import { useReducedMotion } from 'framer-motion';
-import { fabricNodes, fabricDefaultReadout, lens } from '../content/portfolio';
+import { fabricNodes, fabricDefaultReadout, fabricIntro, lens } from '../content/portfolio';
 import { audit } from '../lib/audit';
 import { useMediaQuery } from '../lib/useMediaQuery';
 
-/* The access fabric. The operator (portrait) sits at the center; every
+/* The access fabric. The portrait sits at the center; every
    system in scope hangs off it. Edges carry small pulses: outward for the
    systems he configures, inward for the identities that request access.
    Hover or focus a node for its one-line brief; click to pin it.
@@ -91,7 +91,10 @@ const IdentityGraph = ({ role = 'engineer', live = false }) => {
 
   const activeId = pinned ?? hovered;
   const active = fabricNodes.find((n) => n.id === activeId);
-  const readout = active ? lens(role, active.detail) : lens(role, fabricDefaultReadout);
+  const intro = compact && !active;
+  const readout = active
+    ? lens(role, active.detail)
+    : lens(role, compact ? fabricIntro : fabricDefaultReadout);
 
   const togglePin = (id) => {
     setPinned((p) => {
@@ -127,7 +130,7 @@ const IdentityGraph = ({ role = 'engineer', live = false }) => {
           aria-label={summary}
           focusable="false"
         >
-          {/* operator ring */}
+          {/* portrait ring */}
           <rect
             className="ig-ring"
             x={L.cx - L.half - 6} y={L.cy - L.half - 6}
@@ -215,8 +218,9 @@ const IdentityGraph = ({ role = 'engineer', live = false }) => {
         />
       </div>
 
-      <p className={`ig-readout ${active ? 'is-detail' : ''}`} aria-live="polite">
+      <p className={`ig-readout ${active ? 'is-detail' : ''} ${intro ? 'is-intro' : ''}`} aria-live="polite">
         {active && <span className="ig-readout-key">{active.label} · </span>}
+        {intro && <span className="ig-readout-name">{fabricIntro.name}. </span>}
         {readout}
       </p>
     </div>

@@ -197,7 +197,7 @@ export const skills = [
 ];
 
 /* Nodes of the access fabric drawn in the hero. Positions are in the
-   graph's 420 x 440 viewBox; the operator (portrait) sits at the center.
+   graph's 420 x 440 viewBox; the portrait sits at the center.
    Every node and relation is a scope row or stack chip elsewhere on the page. */
 /* x/y: full layout (420x440 viewBox). compact: phone layout (360x196),
    portrait on the left and every node fanned into one column on the right. */
@@ -218,7 +218,7 @@ export const fabricNodes = [
     id: 'mna',
     x: 74, y: 96,
     compact: { x: 196, y: 124 },
-    label: 'm&a intake', sub: '6 acquired · idps -> okta',
+    label: 'm&a', sub: '6 acquired · idps -> okta',
     labelPos: 'above',
     flow: 'in',
     detail: {
@@ -288,7 +288,16 @@ export const fabricNodes = [
   },
 ];
 
+/* Under the graph when nothing is selected. Desktop has the name and lede
+   beside the graph, so it only needs the hint. Phones see the graph first,
+   so the intro answers "who is this" before the rest of the page. */
 export const fabricDefaultReadout = {
-  eng: 'operator · sf bay area · since 2024 · pick a node',
+  eng: 'the systems in scope · pick a node',
   plain: 'the systems I run · pick a node to see what it does',
+};
+
+export const fabricIntro = {
+  name: 'Manny Flores',
+  eng: 'Senior Systems Engineer at Robinhood. Ten years in identity: who gets in, what they can touch, how access ends. Now the same rules for AI tools. Tap a node for a system.',
+  plain: 'I run sign-in and access at Robinhood: who gets in, what they can reach, and when it ends, for people and for AI tools. Tap a node to see a system.',
 };
