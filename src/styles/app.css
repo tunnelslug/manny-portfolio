@@ -1010,19 +1010,54 @@ button:focus-visible {
   fill: var(--color-text-muted);
 }
 
-/* Phone intro: one sentence on who this is, shown until a node is picked. */
-.ig-readout.is-intro {
-  font-family: var(--font-sans);
-  font-size: var(--fs-md);
-  line-height: 1.5;
-  letter-spacing: 0;
-  text-transform: none;
-  color: var(--color-text-muted);
+/* Phone brief: a sheet over the page, thumb-side, so the hero holds still. */
+.ig-sheet {
+  position: fixed;
+  left: var(--space-3);
+  right: var(--space-3);
+  bottom: calc(var(--space-3) + env(safe-area-inset-bottom, 0px));
+  z-index: 97;
+  padding: var(--space-4) var(--space-9) var(--space-4) var(--space-5);
+  background: var(--color-bg-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-hover);
 }
 
-.ig-readout-name {
+.ig-sheet.is-open {
+  animation: ig-sheet-in 320ms var(--ease-out) both;
+}
+
+@keyframes ig-sheet-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.ig-sheet .ig-readout-key {
+  margin-bottom: var(--space-1);
+}
+
+.ig-sheet-text {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--fs-sm);
+  line-height: 1.5;
   color: var(--color-text);
-  font-weight: 600;
+  animation: lens-in 280ms var(--ease-out) both;
+}
+
+.ig-sheet-close {
+  position: absolute;
+  top: var(--space-3);
+  right: var(--space-3);
+  width: 32px;
+  height: 32px;
+  background: none;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+  cursor: pointer;
 }
 
 /* Draw-in on first client paint: edges trace out from the portrait,
@@ -1476,14 +1511,6 @@ a.btn-ghost:hover {
   }
   /* SVG text scales with the viewBox; hold the labels legible on phones */
   .ig-name { font-size: 12.5px; }
-  .ig-readout {
-    max-width: none;
-    letter-spacing: 0.06em;
-    text-wrap: pretty;
-  }
-  .ig-readout.is-detail {
-    font-size: var(--fs-sm);
-  }
   .hero-cta-row {
     display: grid;
     grid-template-columns: repeat(3, 1fr);

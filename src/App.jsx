@@ -310,11 +310,12 @@ const App = () => {
               </motion.p>
 
               <motion.p className="hero-lede" variants={faderVariants(shouldReduceMotion)}>
-                Identity has been my whole career: who gets in, what they can touch,
-                and how access ends when they leave. Ten years of that across fintech
-                and healthcare. Lately the newest users on the network are not people,
-                so the job now is making sure AI tools live by the same rules as
-                everyone else: <span className="accent">who, and what, can do what</span>.
+                Identity is what I do: who gets in, what they can touch, and how
+                access ends when they leave. Ten years of building that across fintech
+                and healthcare: sign-in and provisioning, governance and audit, acquired
+                companies folded into one standard, and the rules that hold AI tools to
+                the same bar as everyone else. The question never changes:{' '}
+                <span className="accent">who, and what, can do what</span>.
               </motion.p>
             </motion.div>
 

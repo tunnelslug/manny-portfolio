@@ -288,16 +288,9 @@ export const fabricNodes = [
   },
 ];
 
-/* Under the graph when nothing is selected. Desktop has the name and lede
-   beside the graph, so it only needs the hint. Phones see the graph first,
-   so the intro answers "who is this" before the rest of the page. */
+/* Under the graph when nothing is selected (desktop only; phones show
+   node briefs in a sheet and no idle line). */
 export const fabricDefaultReadout = {
   eng: 'the systems in scope · pick a node',
   plain: 'the systems I run · pick a node to see what it does',
-};
-
-export const fabricIntro = {
-  name: 'Manny Flores',
-  eng: 'Senior Systems Engineer at Robinhood. Ten years in identity: who gets in, what they can touch, how access ends. Now the same rules for AI tools. Tap a node for a system.',
-  plain: 'I run sign-in and access at Robinhood: who gets in, what they can reach, and when it ends, for people and for AI tools. Tap a node to see a system.',
 };

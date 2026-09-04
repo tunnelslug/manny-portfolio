@@ -1,6 +1,6 @@
-import React, { useId, useState } from 'react';
+import React, { useEffect, useId, useRef, useState } from 'react';
 import { useReducedMotion } from 'framer-motion';
-import { fabricNodes, fabricDefaultReadout, fabricIntro, lens } from '../content/portfolio';
+import { fabricNodes, fabricDefaultReadout, lens } from '../content/portfolio';
 import { audit } from '../lib/audit';
 import { useMediaQuery } from '../lib/useMediaQuery';
 
@@ -89,9 +89,28 @@ const IdentityGraph = ({ role = 'engineer', live = false }) => {
   const L = compact ? LAYOUTS.compact : LAYOUTS.full;
   const layoutName = compact ? 'compact' : 'full';
 
+  const rootRef = useRef(null);
+
   const activeId = pinned ?? hovered;
   const active = fabricNodes.find((n) => n.id === activeId);
-  const idle = compact ? fabricIntro : fabricDefaultReadout;
+
+  const clear = () => { setPinned(null); setHovered(null); };
+
+  /* Phones show the brief in a sheet over the page instead of under the
+     graph, so nothing below moves. Tapping elsewhere or scrolling closes it. */
+  useEffect(() => {
+    if (!compact || !activeId) return;
+    const onDown = (e) => {
+      if (rootRef.current && !rootRef.current.contains(e.target)) clear();
+    };
+    const onScroll = () => clear();
+    document.addEventListener('pointerdown', onDown);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      document.removeEventListener('pointerdown', onDown);
+      window.removeEventListener('scroll', onScroll);
+    };
+  }, [compact, activeId]);
 
   const togglePin = (id) => {
     setPinned((p) => {
@@ -118,7 +137,7 @@ const IdentityGraph = ({ role = 'engineer', live = false }) => {
   };
 
   return (
-    <div className={`ig ${live ? 'is-live' : ''} ${reduce ? 'is-static' : ''}`} data-layout={layoutName}>
+    <div className={`ig ${live ? 'is-live' : ''} ${reduce ? 'is-static' : ''}`} data-layout={layoutName} ref={rootRef}>
       <div className="ig-graph">
         <svg
           className="ig-svg"
@@ -230,30 +249,45 @@ const IdentityGraph = ({ role = 'engineer', live = false }) => {
         />
       </div>
 
-      {/* Every readout is rendered in the same grid cell; only the current
-          one is visible. The block is always as tall as its tallest text,
-          so picking a node never moves what sits below the graph. */}
-      <div className="ig-readouts" aria-live="polite">
-        <p
-          className={`ig-readout ${compact ? 'is-intro' : ''} ${active ? '' : 'is-shown'}`}
-          aria-hidden={Boolean(active)}
+      {compact ? (
+        <div
+          className={`ig-sheet ${active ? 'is-open' : ''}`}
+          hidden={!active}
+          role="status"
+          aria-live="polite"
         >
-          {compact && <span className="ig-readout-name">{fabricIntro.name}. </span>}
-          {lens(role, idle)}
-        </p>
-        {fabricNodes.map((n) => (
-          <p
-            key={n.id}
-            className={`ig-readout is-detail ${activeId === n.id ? 'is-shown' : ''}`}
-            aria-hidden={activeId !== n.id}
-          >
-            <span className="ig-readout-key">
-              {n.label}<span className="ig-readout-sub"> · {n.sub}</span>
-            </span>
-            {lens(role, n.detail)}
+          {active && (
+            <>
+              <button type="button" className="ig-sheet-close" onClick={clear} aria-label="Close">✕</button>
+              <span className="ig-readout-key">
+                {active.label}<span className="ig-readout-sub"> · {active.sub}</span>
+              </span>
+              <p className="ig-sheet-text" key={active.id}>{lens(role, active.detail)}</p>
+            </>
+          )}
+        </div>
+      ) : (
+        /* Every readout is rendered in the same grid cell; only the current
+           one is visible. The block is always as tall as its tallest text,
+           so picking a node never moves what sits below the graph. */
+        <div className="ig-readouts" aria-live="polite">
+          <p className={`ig-readout ${active ? '' : 'is-shown'}`} aria-hidden={Boolean(active)}>
+            {lens(role, fabricDefaultReadout)}
           </p>
-        ))}
-      </div>
+          {fabricNodes.map((n) => (
+            <p
+              key={n.id}
+              className={`ig-readout is-detail ${activeId === n.id ? 'is-shown' : ''}`}
+              aria-hidden={activeId !== n.id}
+            >
+              <span className="ig-readout-key">
+                {n.label}<span className="ig-readout-sub"> · {n.sub}</span>
+              </span>
+              {lens(role, n.detail)}
+            </p>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
