@@ -133,25 +133,6 @@ describe('access fabric', () => {
     expect(okta).toHaveAttribute('aria-pressed', 'true')
     expect(screen.getByText(fabricNodes[0].detail.eng, { exact: false })).toBeInTheDocument()
   })
-
-  it('every node carries a compact (phone) position', () => {
-    for (const n of fabricNodes) {
-      expect(n.compact).toEqual({ x: expect.any(Number), y: expect.any(Number) })
-    }
-    const ys = fabricNodes.map(n => n.compact.y).sort((a, b) => a - b)
-    for (let i = 1; i < ys.length; i++) expect(ys[i] - ys[i - 1]).toBeGreaterThanOrEqual(24)
-  })
-
-  it('switches to the compact layout on phone widths', () => {
-    const mm = window.matchMedia
-    window.matchMedia = vi.fn().mockImplementation(query => ({
-      ...mm(query),
-      matches: query === '(max-width: 768px)',
-    }))
-    render(<App />)
-    expect(screen.getByAltText(/portrait of manny flores/i).closest('.ig')).toHaveAttribute('data-layout', 'compact')
-    window.matchMedia = mm
-  })
 })
 
 describe('mobile dock', () => {

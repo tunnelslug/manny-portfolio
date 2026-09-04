@@ -14,6 +14,7 @@ import AuditLog from './components/AuditLog';
 import MobileDock from './components/MobileDock';
 import { audit } from './lib/audit';
 import { useRole, setStoredRole } from './lib/role';
+import { useMediaQuery } from './lib/useMediaQuery';
 import {
   ROLES,
   lens,
@@ -95,6 +96,9 @@ const App = () => {
   const [ctaOnScreen, setCtaOnScreen] = useState(true);
   const role = useRole();
   const shouldReduceMotion = useReducedMotion();
+  // Phones get a plain hero; the access fabric is desktop only. SSR renders
+  // desktop, and CSS hides the fabric below 768px until the client corrects.
+  const phone = useMediaQuery('(max-width: 768px)');
   const lastViewed = useRef(null);
   const sessionIssued = useRef(false);
   const ctaRef = useRef(null);
@@ -302,12 +306,29 @@ const App = () => {
                 <Eyebrow label="IDENTITY & ACCESS MANAGEMENT" />
               </motion.div>
 
-              <motion.h1 id="hero-name" className="hero-name" variants={faderVariants(shouldReduceMotion)}>
-                Manny Flores
-              </motion.h1>
-              <motion.p className="hero-role" variants={faderVariants(shouldReduceMotion)}>
-                Senior Systems Engineer · Corporate Systems lead, Robinhood
-              </motion.p>
+              <div className="hero-id">
+                {phone && (
+                  <motion.img
+                    src="/profile2.png"
+                    alt="Portrait of Manny Flores"
+                    className="hero-portrait"
+                    width="152"
+                    height="152"
+                    loading="eager"
+                    fetchPriority="high"
+                    decoding="async"
+                    variants={faderVariants(shouldReduceMotion)}
+                  />
+                )}
+                <div>
+                  <motion.h1 id="hero-name" className="hero-name" variants={faderVariants(shouldReduceMotion)}>
+                    Manny Flores
+                  </motion.h1>
+                  <motion.p className="hero-role" variants={faderVariants(shouldReduceMotion)}>
+                    Senior Systems Engineer · Corporate Systems lead, Robinhood
+                  </motion.p>
+                </div>
+              </div>
 
               <motion.p className="hero-lede" variants={faderVariants(shouldReduceMotion)}>
                 Identity is what I do: who gets in, what they can touch, and how
@@ -350,9 +371,11 @@ const App = () => {
               </FramerButton>
             </motion.div>
 
-            <motion.figure className="hero-fabric" variants={faderVariants(shouldReduceMotion)}>
-              <IdentityGraph role={role} live={booted} />
-            </motion.figure>
+            {!phone && (
+              <motion.figure className="hero-fabric" variants={faderVariants(shouldReduceMotion)}>
+                <IdentityGraph role={role} live={booted} />
+              </motion.figure>
+            )}
           </div>
         </motion.section>
 

@@ -1010,56 +1010,6 @@ button:focus-visible {
   fill: var(--color-text-muted);
 }
 
-/* Phone brief: a sheet over the page, thumb-side, so the hero holds still. */
-.ig-sheet {
-  position: fixed;
-  left: var(--space-3);
-  right: var(--space-3);
-  bottom: calc(var(--space-3) + env(safe-area-inset-bottom, 0px));
-  z-index: 97;
-  padding: var(--space-4) var(--space-9) var(--space-4) var(--space-5);
-  background: var(--color-bg-2);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-hover);
-}
-
-.ig-sheet.is-open {
-  animation: ig-sheet-in 320ms var(--ease-out) both;
-}
-
-@keyframes ig-sheet-in {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.ig-sheet .ig-readout-key {
-  margin-bottom: var(--space-1);
-}
-
-.ig-sheet-text {
-  margin: 0;
-  font-family: var(--font-sans);
-  font-size: var(--fs-sm);
-  line-height: 1.5;
-  color: var(--color-text);
-  animation: lens-in 280ms var(--ease-out) both;
-}
-
-.ig-sheet-close {
-  position: absolute;
-  top: var(--space-3);
-  right: var(--space-3);
-  width: 32px;
-  height: 32px;
-  background: none;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  color: var(--color-text-muted);
-  font-size: 0.8rem;
-  cursor: pointer;
-}
-
 /* Draw-in on first client paint: edges trace out from the portrait,
    nodes arrive after. Static HTML (prerender) ships fully drawn. */
 .ig.is-live:not(.is-static) .ig-edge:not(.ig-edge--retired) {
@@ -1478,39 +1428,53 @@ a.btn-ghost:hover {
     box-shadow: none;
   }
   .hero {
-    padding: var(--space-7) var(--space-5) var(--space-9);
+    padding: var(--space-7) var(--space-5) var(--space-8);
   }
-  /* Phones: fabric first, actions right under it (both inside the first
-     screen), then the name and lede. */
+  /* Phones: no access fabric. A small portrait beside the name, the lede,
+     then the actions, all inside the first screen. */
   .hero-grid {
     grid-template-columns: minmax(0, 1fr);
     grid-template-areas:
-      "fabric"
-      "cta"
-      "text";
+      "text"
+      "cta";
     gap: var(--space-6);
     text-align: left;
   }
   .hero-fabric {
+    display: none;
+  }
+  .hero-id {
+    display: grid;
+    grid-template-columns: 76px minmax(0, 1fr);
+    gap: var(--space-4);
+    align-items: center;
+    margin-bottom: var(--space-5);
+  }
+  .hero-portrait {
+    display: block;
+    width: 76px;
+    height: 76px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
+    object-fit: cover;
+    object-position: center 15%;
+    background: var(--color-bg-2);
+  }
+  .hero-name {
+    font-size: var(--fs-3xl);
+    line-height: 1;
+    margin: 0 0 var(--space-2);
+    max-width: none;
+  }
+  .hero-role {
+    font-size: var(--fs-xs);
+    line-height: 1.45;
     margin: 0;
-    width: 100%;
   }
-  .hero-text-block {
-    padding-top: var(--space-4);
-    border-top: 1px solid var(--color-border-subtle);
+  .hero-lede {
+    font-size: var(--fs-lg);
+    line-height: 1.55;
   }
-  /* The compact fabric is wide and short. The box is sized here (not from
-     the inline viewBox) so the prerendered desktop SVG, hidden until the
-     client picks the compact layout, never reserves the tall height. */
-  .ig-graph {
-    aspect-ratio: 360 / 196;
-  }
-  .ig[data-layout="full"] .ig-svg,
-  .ig[data-layout="full"] .ig-portrait {
-    visibility: hidden;
-  }
-  /* SVG text scales with the viewBox; hold the labels legible on phones */
-  .ig-name { font-size: 12.5px; }
   .hero-cta-row {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -1570,6 +1534,13 @@ a.btn-ghost:hover {
     min-width: 0;
     padding-left: calc(var(--space-6) + 1.25rem);
     text-indent: -1.25rem;
+  }
+}
+
+@media (max-width: 380px) {
+  /* Narrow phones: keep the actions inside the first screen. */
+  .hero-lede {
+    font-size: var(--fs-md);
   }
 }
 
