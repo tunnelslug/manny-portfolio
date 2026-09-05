@@ -21,12 +21,14 @@ manny-portfolio/
 │   ├── main.jsx         React entry
 │   ├── index.css        Global reset
 │   ├── content/
-│   │   └── portfolio.js Page content as { eng, rec } pairs, plan lines, fabric nodes
+│   │   └── portfolio.js Page content as { eng, rec } pairs: capabilities, plan lines, projects (with proof), fabric nodes
 │   ├── lib/
 │   │   ├── audit.js     Client-side session audit store (useAuditLog, audit())
 │   │   └── role.js      Reader role store (useRole, setStoredRole), localStorage-backed
 │   ├── components/
 │   │   ├── IdentityGraph.jsx  Hero access fabric (SVG, SMIL pulses, hover/pin readout)
+│   │   ├── CaseStudy.jsx      Building-now entry: prose + proof column (artifact link or shape)
+│   │   ├── MobileDock.jsx     Phone-only bottom action bar
 │   │   ├── RoleSwitch.jsx     read as: engineer | recruiter
 │   │   ├── AuditLog.jsx       "access logged · N" toggle + panel
 │   │   └── ...
@@ -70,7 +72,7 @@ Add a new token by extending `tokens.css`. Do not introduce new raw hex values i
 Defined in `src/styles/app.css`:
 
 - `.card`: surface container (border + subtle bg)
-- `.chip`: pill tag for skills / status tags
+- `.chip`: mono rect tag for tools and case-study tags
 - `.btn` / `.btn-ghost`: primary and outline button
 - `.icon-btn`: square icon-only button (44px hit target)
 - `.dot`: status indicator (paired with `.dot--success`)
@@ -100,11 +102,11 @@ Targeting WCAG 2.1 AA.
 
 ## URL state
 
-Nav buttons update the URL hash (`#expertise`, `#skills`, …) via `history.replaceState` so the active section is shareable without triggering a full scroll reset.
+Nav buttons update the URL hash (`#capabilities`, `#plan`, `#building`, `#contact`) via `history.replaceState` so the active section is shareable without triggering a full scroll reset.
 
 ## Reader role, audit log, access fabric
 
-- **Role** (`read as: engineer | recruiter` in the masthead): scopes the language. Stored in `localStorage` under `mf-role`; read through `useSyncExternalStore` in `src/lib/role.js`. Every lensed string is an `{ eng, rec }` pair in `src/content/portfolio.js`, rendered by `<Lens role pair />` in `App.jsx`.
+- **Role** (`read as: engineer | recruiter` in the masthead; in the hero on phones): scopes the language. Stored in `localStorage` under `mf-role`; read through `useSyncExternalStore` in `src/lib/role.js`. Every lensed string is an `{ eng, rec }` pair in `src/content/portfolio.js`, rendered by `<Lens role pair />` in `App.jsx`.
 - **Audit log** (`access logged · N`): a real, client-side list of this tab's events. Call `audit('some.action', 'detail')` from anywhere; `useAuditLog()` subscribes. Nothing is persisted or sent.
 - **Access fabric** (hero): `fabricNodes` in `portfolio.js` drives the SVG in `IdentityGraph.jsx`. Positions are in a 420x440 viewBox. `flow: 'out' | 'in' | 'none'` sets pulse direction; `retired: true` draws the dashed treatment.
 
@@ -122,17 +124,17 @@ Configured in `vercel.json`:
 ## How to add X
 
 **Add a nav section**:
-1. Add `{ id, label }` to `NAV_SECTIONS` in `App.jsx`.
+1. Add `{ id, label, eyebrow }` to `NAV_SECTIONS` in `App.jsx` (one name for nav, eyebrow, and hash).
 2. Add a `<section id={id}>` inside `<main>`.
 3. IntersectionObserver will sync the active state automatically.
 
-**Add a skill group**: append to the `skills` array in `src/content/portfolio.js` (include the one-line `rec` caption).
+**Add a capability**: append to `capabilities` in `src/content/portfolio.js` with `title` and `desc` as `{ eng, rec }` pairs, a `state` (`operating`, `building`, `expanding`, `hardening`), and its `tools` chips. There is no separate skills section.
 
-**Add a project card**: append to the `projects` array in `src/content/portfolio.js` with `title` and `desc` as `{ eng, rec }` pairs.
+**Add a case study**: append to `projects` in `src/content/portfolio.js` with `title` and `desc` as `{ eng, rec }` pairs, `tags`, and a `proof` (`kind`, `lines` as `[key, value]` pairs, optional `link`). No proof, no entry; proof never introduces a number that is not already on the resume.
 
 **Add a plan line**: append to `planLines` in `src/content/portfolio.js`. Every line needs a `gloss`; update `planAriaLabel` to match.
 
-**Add a fabric node**: append to `fabricNodes` in `src/content/portfolio.js`. Only systems already named in a scope row or stack chip; pick `x, y` inside the 420x440 viewBox and a `labelPos` (`above`, `below`, `left`, `right`).
+**Add a fabric node**: append to `fabricNodes` in `src/content/portfolio.js`. Only systems already named in a capability row or its tool chips; pick `x, y` inside the 420x440 viewBox and a `labelPos` (`above`, `below`, `left`, `right`).
 
 ## Polish rubric
 
