@@ -111,6 +111,7 @@ const App = () => {
   const [resumeOpen, setResumeOpen] = useState(false);
   const [live, setLive] = useState(false);
   const [ctaOnScreen, setCtaOnScreen] = useState(true);
+  const [contactOnScreen, setContactOnScreen] = useState(false);
   const shouldReduceMotion = useReducedMotion();
   // Phones get a plain hero; the access fabric is desktop only. SSR renders
   // desktop, and CSS hides the fabric below 768px until the client corrects.
@@ -118,6 +119,7 @@ const App = () => {
   const lastViewed = useRef(null);
   const sessionIssued = useRef(false);
   const ctaRef = useRef(null);
+  const contactRef = useRef(null);
 
   // The fabric draws in once the page has painted.
   useEffect(() => {
@@ -125,13 +127,20 @@ const App = () => {
     return () => clearTimeout(id);
   }, []);
 
-  // The docked bar takes over once the hero CTAs leave the viewport.
+  // The docked bar takes over once the hero CTAs leave the viewport, and
+  // stands down again when the contact section's buttons arrive: they are
+  // the same actions, and two copies on one screen is noise.
   useEffect(() => {
-    const el = ctaRef.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(([entry]) => setCtaOnScreen(entry.isIntersecting));
-    obs.observe(el);
-    return () => obs.disconnect();
+    const watch = (ref, set) => {
+      const el = ref.current;
+      if (!el) return null;
+      const obs = new IntersectionObserver(([entry]) => set(entry.isIntersecting));
+      obs.observe(el);
+      return obs;
+    };
+    const a = watch(ctaRef, setCtaOnScreen);
+    const b = watch(contactRef, setContactOnScreen);
+    return () => { a?.disconnect(); b?.disconnect(); };
   }, []);
 
   // The visitor's reading session: read-only, no login, lives in this tab.
@@ -510,7 +519,7 @@ const App = () => {
           <motion.p className="section-lede" variants={fade}>
             {sectionCopy.contact.lede}
           </motion.p>
-          <motion.div className="contact-row" variants={fade}>
+          <motion.div ref={contactRef} className="contact-row" variants={fade}>
             <FramerButton href="mailto:manny@flores.network" onClick={followed('mailto')}>
               manny@flores.network <IconArrow />
             </FramerButton>
@@ -543,7 +552,7 @@ const App = () => {
       </footer>
 
       <MobileDock
-        visible={!ctaOnScreen && !resumeOpen && !isMenuOpen}
+        visible={!ctaOnScreen && !contactOnScreen && !resumeOpen && !isMenuOpen}
         onResume={openResume}
         onFollow={followed}
       />

@@ -157,3 +157,29 @@ describe('mobile dock', () => {
     window.IntersectionObserver = RealIO
   })
 })
+
+describe('mobile dock vs contact section', () => {
+  it('stands down while the contact buttons are on screen', async () => {
+    const observers = []
+    const RealIO = window.IntersectionObserver
+    window.IntersectionObserver = class {
+      constructor(cb) { this.cb = cb; this.targets = []; observers.push(this) }
+      observe(el) { this.targets.push(el) }
+      unobserve() {}
+      disconnect() {}
+      takeRecords() { return [] }
+    }
+    resetAudit()
+    render(<App />)
+    const find = (cls) => observers.find(o => o.targets.some(t => t.classList?.contains(cls)))
+    const { act } = await import('@testing-library/react')
+    const dock = screen.getByTestId('mobile-dock')
+    act(() => find('hero-cta-row').cb([{ isIntersecting: false }]))
+    expect(dock).toHaveAttribute('aria-hidden', 'false')
+    act(() => find('contact-row').cb([{ isIntersecting: true }]))
+    expect(dock).toHaveAttribute('aria-hidden', 'true')
+    act(() => find('contact-row').cb([{ isIntersecting: false }]))
+    expect(dock).toHaveAttribute('aria-hidden', 'false')
+    window.IntersectionObserver = RealIO
+  })
+})

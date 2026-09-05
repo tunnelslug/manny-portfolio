@@ -1491,8 +1491,7 @@ a.btn-ghost:hover {
     padding: var(--space-8) var(--space-5);
   }
   .colophon {
-    /* room for the docked action bar */
-    padding: var(--space-6) var(--space-5) calc(var(--space-6) + 78px + env(safe-area-inset-bottom, 0px));
+    padding: var(--space-6) var(--space-5) calc(var(--space-6) + env(safe-area-inset-bottom, 0px));
   }
   .hamburger { display: flex; }
   .nav-desktop { display: none !important; }
