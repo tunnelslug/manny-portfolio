@@ -3,7 +3,7 @@ import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import App from '../src/App.jsx'
 import { resetAudit } from '../src/lib/audit.js'
-import { scope, projects, planLines, fabricNodes, skills } from '../src/content/portfolio.js'
+import { capabilities, projects, planLines, fabricNodes, sectionCopy } from '../src/content/portfolio.js'
 
 vi.mock('@vercel/analytics/react', () => ({ Analytics: () => null }))
 vi.mock('@vercel/speed-insights/react', () => ({ SpeedInsights: () => null }))
@@ -11,7 +11,6 @@ vi.mock('@vercel/speed-insights/react', () => ({ SpeedInsights: () => null }))
 describe('reader role lens', () => {
   beforeEach(() => {
     localStorage.clear()
-    sessionStorage.setItem('mf-boot-seen', '1')
     resetAudit()
   })
 
@@ -19,8 +18,8 @@ describe('reader role lens', () => {
     render(<App />)
     const group = screen.getByRole('group', { name: /read as/i })
     expect(within(group).getByRole('button', { name: 'engineer' })).toHaveAttribute('aria-pressed', 'true')
-    expect(screen.getByText(scope[0].title.eng)).toBeInTheDocument()
-    expect(screen.queryByText(scope[0].title.rec)).not.toBeInTheDocument()
+    expect(screen.getByText(capabilities[0].title.eng)).toBeInTheDocument()
+    expect(screen.queryByText(capabilities[0].title.rec)).not.toBeInTheDocument()
   })
 
   it('switches every lensed surface to the recruiter lens and persists the choice', async () => {
@@ -28,7 +27,7 @@ describe('reader role lens', () => {
     render(<App />)
     await user.click(screen.getByRole('button', { name: 'recruiter' }))
 
-    expect(screen.getByText(scope[0].title.rec)).toBeInTheDocument()
+    expect(screen.getByText(capabilities[0].title.rec)).toBeInTheDocument()
     expect(screen.getByText(projects[0].title.rec)).toBeInTheDocument()
     expect(screen.getByText(planLines[1].gloss)).toBeInTheDocument()
     expect(localStorage.getItem('mf-role')).toBe('recruiter')
@@ -38,7 +37,7 @@ describe('reader role lens', () => {
     localStorage.setItem('mf-role', 'recruiter')
     render(<App />)
     expect(screen.getByRole('button', { name: 'recruiter' })).toHaveAttribute('aria-pressed', 'true')
-    expect(screen.getByText(scope[2].title.rec)).toBeInTheDocument()
+    expect(screen.getByText(capabilities[2].title.rec)).toBeInTheDocument()
   })
 
   it('offers the recruiter switch inline in the plan lede', async () => {
@@ -51,11 +50,16 @@ describe('reader role lens', () => {
   })
 
   it('never lets a lens carry a fact the other lacks: every pair has both sides', () => {
-    for (const row of scope) {
+    for (const row of capabilities) {
       expect(row.title.eng.length).toBeGreaterThan(0)
       expect(row.title.rec.length).toBeGreaterThan(0)
       expect(row.desc.eng.length).toBeGreaterThan(0)
       expect(row.desc.rec.length).toBeGreaterThan(0)
+      expect(row.tools.length).toBeGreaterThan(0)
+    }
+    for (const p of projects) {
+      expect(p.proof.kind.length).toBeGreaterThan(0)
+      expect(p.proof.lines.length).toBeGreaterThan(0)
     }
     for (const line of planLines) expect(line.gloss.length).toBeGreaterThan(0)
     for (const n of fabricNodes) {
@@ -66,7 +70,7 @@ describe('reader role lens', () => {
 
   it('keeps the recruiter lens a different text: distinct from the engineer side and free of protocol acronyms', () => {
     const pairs = [
-      ...scope.flatMap(r => [r.title, r.desc]),
+      ...capabilities.flatMap(r => [r.title, r.desc]),
       ...projects.flatMap(p => [p.title, p.desc]),
       ...fabricNodes.map(n => n.detail),
     ]
@@ -74,7 +78,7 @@ describe('reader role lens', () => {
     const recStrings = [
       ...pairs.map(p => p.rec),
       ...planLines.map(l => l.gloss),
-      ...skills.map(s => s.rec),
+      ...Object.values(sectionCopy).flatMap(sec => Object.values(sec).map(pair => pair.rec)),
     ]
     for (const p of pairs) expect(p.rec).not.toBe(p.eng)
     for (const s of recStrings) expect(s).not.toMatch(jargon)
@@ -92,7 +96,6 @@ describe('plan diff integrity', () => {
 describe('session audit log', () => {
   beforeEach(() => {
     localStorage.clear()
-    sessionStorage.setItem('mf-boot-seen', '1')
     resetAudit()
   })
 
@@ -130,7 +133,6 @@ describe('session audit log', () => {
 describe('access fabric', () => {
   beforeEach(() => {
     localStorage.clear()
-    sessionStorage.setItem('mf-boot-seen', '1')
     resetAudit()
   })
 
@@ -157,7 +159,6 @@ describe('mobile dock', () => {
 
   beforeEach(() => {
     localStorage.clear()
-    sessionStorage.setItem('mf-boot-seen', '1')
     resetAudit()
     observers = []
     RealIO = window.IntersectionObserver

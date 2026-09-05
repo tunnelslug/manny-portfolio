@@ -74,7 +74,7 @@ const PULSE = [
   { dur: 3.7, begin: 0.2 },
 ];
 
-/* `live` flips once the page is actually visible (after the boot ceremony),
+/* `live` flips once the page has painted (App sets it shortly after mount),
    which is when the draw-in should run. */
 const IdentityGraph = ({ role = 'engineer', live = false }) => {
   const reduce = useReducedMotion();
@@ -194,7 +194,7 @@ const IdentityGraph = ({ role = 'engineer', live = false }) => {
         </svg>
 
         <img
-          src="/profile2.png"
+          src="/portrait-300.webp"
           alt="Portrait of Manny Flores"
           className="ig-portrait"
           style={portraitBox}

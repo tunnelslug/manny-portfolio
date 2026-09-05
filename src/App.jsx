@@ -4,8 +4,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import ResumeDialog from './components/ResumeDialog';
-import BootCeremony from './components/BootCeremony';
-import ProjectCard from './components/ProjectCard';
+import CaseStudy from './components/CaseStudy';
 import ThemeToggle from './components/ThemeToggle';
 import FramerButton from './components/FramerButton';
 import IdentityGraph from './components/IdentityGraph';
@@ -19,11 +18,10 @@ import {
   ROLES,
   lens,
   sectionCopy,
-  scope,
+  capabilities,
   planLines,
   planAriaLabel,
   projects,
-  skills,
 } from './content/portfolio';
 
 const IconArrow = () => <ArrowRight size={14} strokeWidth={2} aria-hidden="true" />;
@@ -38,13 +36,23 @@ const Eyebrow = ({ label }) => (
    .lens entrance so the swap reads as a deliberate re-render, not a flicker. */
 const Lens = ({ role, pair }) => <span key={role} className="lens">{lens(role, pair)}</span>;
 
+/* One name per section: the nav item, the eyebrow, and the hash all agree. */
 const NAV_SECTIONS = [
-  { id: 'about',    label: 'about' },
-  { id: 'scope',    label: 'scope' },
-  { id: 'plan',     label: 'the plan' },
-  { id: 'projects', label: 'current focus' },
-  { id: 'stack',    label: 'stack' },
+  { id: 'about',        label: 'about',        eyebrow: 'IDENTITY & ACCESS MANAGEMENT' },
+  { id: 'capabilities', label: 'capabilities', eyebrow: 'CAPABILITIES' },
+  { id: 'plan',         label: 'the plan',     eyebrow: 'THE PLAN' },
+  { id: 'building',     label: 'building',     eyebrow: 'BUILDING NOW' },
+  { id: 'contact',      label: 'contact',      eyebrow: 'CONTACT' },
 ];
+const eyebrowFor = (id) => NAV_SECTIONS.find((s) => s.id === id).eyebrow;
+
+/* A plan line is `statement` plus, optionally, a `# comment` after a run of
+   two or more spaces. Splitting them lets phones drop the comment to its
+   own line while desktop keeps the aligned column. */
+const splitPlanLine = (text) => {
+  const i = text.search(/\s{2,}#\s/);
+  return i === -1 ? [text, null] : [text.slice(0, i), text.slice(i)];
+};
 
 const faderVariants = (shouldReduceMotion) => shouldReduceMotion ? {
   hidden: { opacity: 1, y: 0 },
@@ -88,11 +96,28 @@ const planContainer = (shouldReduceMotion) => ({
   }
 });
 
+const Section = ({ id, labelledBy, className = '', shouldReduceMotion, children }) => (
+  <motion.section
+    id={id}
+    className={`section ${className}`}
+    aria-labelledby={labelledBy}
+    variants={staggerContainer(shouldReduceMotion)}
+    initial="hidden"
+    whileInView="visible"
+    viewport={{ once: true, margin: "-10%" }}
+  >
+    <motion.div variants={faderVariants(shouldReduceMotion)}>
+      <Eyebrow label={eyebrowFor(id)} />
+    </motion.div>
+    {children}
+  </motion.section>
+);
+
 const App = () => {
   const [activeSection, setActiveSection] = useState('about');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [resumeOpen, setResumeOpen] = useState(false);
-  const [booted, setBooted] = useState(false);
+  const [live, setLive] = useState(false);
   const [ctaOnScreen, setCtaOnScreen] = useState(true);
   const role = useRole();
   const shouldReduceMotion = useReducedMotion();
@@ -102,6 +127,12 @@ const App = () => {
   const lastViewed = useRef(null);
   const sessionIssued = useRef(false);
   const ctaRef = useRef(null);
+
+  // The fabric draws in once the page has painted.
+  useEffect(() => {
+    const id = setTimeout(() => setLive(true), 220);
+    return () => clearTimeout(id);
+  }, []);
 
   // The docked bar takes over once the hero CTAs leave the viewport.
   useEffect(() => {
@@ -118,14 +149,12 @@ const App = () => {
     setStoredRole(next);
   }, [role]);
 
-  // Issue the visitor's session once, after hydration.
+  // The visitor's reading session: read-only, no login, lives in this tab.
   useEffect(() => {
     if (sessionIssued.current) return;
     sessionIssued.current = true;
-    audit('session.issued', `guest@mannyflo.com · role:${role} · ttl:24h`);
+    audit('session.issued', `read-only · role:${role} · this tab`);
   }, [role]);
-
-  const onBooted = useCallback(() => setBooted(true), []);
 
   // Sync active nav item to scroll position; log each section entered.
   useEffect(() => {
@@ -188,15 +217,12 @@ const App = () => {
 
   const followed = (name) => () => audit('link.followed', name);
 
-  const now = new Date();
-  const year = now.getFullYear();
-  const monthNum = String(now.getMonth() + 1).padStart(2, '0');
+  const year = new Date().getFullYear();
   const recruiter = role === 'recruiter';
+  const fade = faderVariants(shouldReduceMotion);
 
   return (
     <>
-      <BootCeremony oncePerSession onDone={onBooted} />
-
       <a href="#main" className="skip-link">Skip to content</a>
 
       {/* Papel picado stripe · identity mark, matches the favicon, once at the very top */}
@@ -210,18 +236,18 @@ const App = () => {
         <span style={{ background: '#1B1208' }} />
       </div>
 
-      {/* Masthead · the visitor's session: who you are here, what you can read, what got logged */}
-      <div className="masthead">
+      {/* Masthead · the reading session: what this is, which lens, what got logged */}
+      <aside className="masthead" aria-label="Reading session">
         <div className="masthead-session">
           <span className="masthead-dot" aria-hidden="true">●</span>
-          <span>session {year}.{monthNum}</span>
-          <span className="masthead-user">guest@mannyflo.com</span>
+          <span>read-only</span>
+          <span className="masthead-user">no login · this tab</span>
         </div>
         <div className="masthead-controls">
           <RoleSwitch role={role} onChange={setRole} />
           <AuditLog />
         </div>
-      </div>
+      </aside>
 
       {/* Navigation */}
       <header className="nav-shell">
@@ -266,6 +292,11 @@ const App = () => {
 
       {/* Mobile nav drawer */}
       <div
+        className={`nav-scrim ${isMenuOpen ? 'open' : ''}`}
+        onClick={() => setIsMenuOpen(false)}
+        aria-hidden="true"
+      />
+      <div
         id="mobile-nav"
         className={`nav-mobile ${isMenuOpen ? 'open' : ''}`}
         aria-hidden={!isMenuOpen}
@@ -282,9 +313,9 @@ const App = () => {
             {label}
           </button>
         ))}
-        {/* On phones the masthead is hidden; its controls live here. */}
+        {/* On phones the masthead is hidden; the log lives here (the lens is in the hero). */}
         <div className="nav-mobile-tools">
-          <RoleSwitch role={role} onChange={setRole} />
+          <span className="nav-mobile-session"><span className="masthead-dot" aria-hidden="true">●</span> read-only · this tab</span>
           <AuditLog />
         </div>
       </div>
@@ -302,14 +333,14 @@ const App = () => {
         >
           <div className="hero-grid">
             <motion.div className="hero-text-block" variants={staggerContainer(shouldReduceMotion)}>
-              <motion.div variants={faderVariants(shouldReduceMotion)}>
-                <Eyebrow label="IDENTITY & ACCESS MANAGEMENT" />
+              <motion.div variants={fade}>
+                <Eyebrow label={eyebrowFor('about')} />
               </motion.div>
 
               <div className="hero-id">
                 {phone && (
                   <motion.img
-                    src="/profile2.png"
+                    src="/portrait-152.webp"
                     alt="Portrait of Manny Flores"
                     className="hero-portrait"
                     width="152"
@@ -317,30 +348,37 @@ const App = () => {
                     loading="eager"
                     fetchPriority="high"
                     decoding="async"
-                    variants={faderVariants(shouldReduceMotion)}
+                    variants={fade}
                   />
                 )}
                 <div>
-                  <motion.h1 id="hero-name" className="hero-name" variants={faderVariants(shouldReduceMotion)}>
+                  <motion.h1 id="hero-name" className="hero-name" variants={fade}>
                     Manny Flores
                   </motion.h1>
-                  <motion.p className="hero-role" variants={faderVariants(shouldReduceMotion)}>
-                    Senior Systems Engineer · Corporate Systems lead, Robinhood
+                  <motion.p className="hero-role" variants={fade}>
+                    Senior Systems Engineer · Corporate Systems Lead, Robinhood
                   </motion.p>
                 </div>
               </div>
 
-              <motion.p className="hero-lede" variants={faderVariants(shouldReduceMotion)}>
+              {phone && (
+                /* Phones have no masthead; the lens has to be findable in the first screen. */
+                <motion.div className="hero-lens" variants={fade}>
+                  <RoleSwitch role={role} onChange={setRole} compact />
+                </motion.div>
+              )}
+
+              <motion.p className="hero-lede" variants={fade}>
                 Identity is what I do: who gets in, what they can touch, and how
                 access ends when they leave. Ten years of building that across fintech
                 and healthcare: sign-in and provisioning, governance and audit, acquired
                 companies folded into one standard, and the rules that hold AI tools to
                 the same bar as everyone else. The question never changes:{' '}
-                <span className="accent">who, and what, can do what</span>.
+                <span className="accent">who, or what, is asking, what may it do, and can I prove it later</span>.
               </motion.p>
             </motion.div>
 
-            <motion.div ref={ctaRef} className="hero-cta-row" variants={faderVariants(shouldReduceMotion)}>
+            <motion.div ref={ctaRef} className="hero-cta-row" variants={fade}>
               <FramerButton href="mailto:manny@flores.network" onClick={followed('mailto')}>
                 Get in Touch <IconArrow />
               </FramerButton>
@@ -374,7 +412,7 @@ const App = () => {
             {phone && (
               /* The buttons are the last thing in a phone's first screen and
                  read like the end of the page. This says what follows. */
-              <motion.nav className="hero-next" aria-label="Sections below" variants={faderVariants(shouldReduceMotion)}>
+              <motion.nav className="hero-next" aria-label="Sections below" variants={fade}>
                 <span className="hero-next-arrow" aria-hidden="true">↓</span>
                 {NAV_SECTIONS.filter((s) => s.id !== 'about').map((s, i) => (
                   <React.Fragment key={s.id}>
@@ -388,64 +426,47 @@ const App = () => {
             )}
 
             {!phone && (
-              <motion.figure className="hero-fabric" variants={faderVariants(shouldReduceMotion)}>
-                <IdentityGraph role={role} live={booted} />
+              <motion.figure className="hero-fabric" variants={fade}>
+                <IdentityGraph role={role} live={live} />
               </motion.figure>
             )}
           </div>
         </motion.section>
 
-        {/* Scope · Access domains */}
-        <motion.section
-          id="scope"
-          className="section"
-          aria-labelledby="scope-h"
-          variants={staggerContainer(shouldReduceMotion)}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-10%" }}
-        >
-          <motion.div variants={faderVariants(shouldReduceMotion)}>
-            <Eyebrow label="SCOPE" />
-          </motion.div>
-          <motion.h2 id="scope-h" className="section-headline" variants={faderVariants(shouldReduceMotion)}>
-            <Lens role={role} pair={sectionCopy.scope.headline} />
+        {/* Capabilities · what he can own, and the tools it takes */}
+        <Section id="capabilities" labelledBy="capabilities-h" shouldReduceMotion={shouldReduceMotion}>
+          <motion.h2 id="capabilities-h" className="section-headline" variants={fade}>
+            <Lens role={role} pair={sectionCopy.capabilities.headline} />
           </motion.h2>
-          <motion.p className="section-lede" variants={faderVariants(shouldReduceMotion)}>
-            <Lens role={role} pair={sectionCopy.scope.lede} />
+          <motion.p className="section-lede" variants={fade}>
+            <Lens role={role} pair={sectionCopy.capabilities.lede} />
           </motion.p>
 
-          <motion.div className="scope-list" variants={staggerContainer(shouldReduceMotion)}>
-            {scope.map((item, i) => (
-              <motion.div key={i} className="scope-row" variants={faderVariants(shouldReduceMotion)}>
-                <span className="scope-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
-                <div className="scope-body">
-                  <h3><Lens role={role} pair={item.title} /></h3>
+          <motion.div className="cap-list" variants={staggerContainer(shouldReduceMotion)}>
+            {capabilities.map((item, i) => (
+              <motion.div key={i} className="cap-row" variants={fade}>
+                <span className="cap-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                <h3 className="cap-title"><Lens role={role} pair={item.title} /></h3>
+                <div className="cap-body">
                   <p><Lens role={role} pair={item.desc} /></p>
+                  <ul className="cap-tools" aria-label="Tools">
+                    {item.tools.map((tool) => (
+                      <li key={tool} className="chip">{tool}</li>
+                    ))}
+                  </ul>
                 </div>
                 <span className={`pill pill--${item.state}`}>{item.state}</span>
               </motion.div>
             ))}
           </motion.div>
-        </motion.section>
+        </Section>
 
         {/* Plan · career as a plan diff */}
-        <motion.section
-          id="plan"
-          className="section"
-          aria-labelledby="plan-h"
-          variants={staggerContainer(shouldReduceMotion)}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-10%" }}
-        >
-          <motion.div variants={faderVariants(shouldReduceMotion)}>
-            <Eyebrow label="TRAJECTORY" />
-          </motion.div>
-          <motion.h2 id="plan-h" className="section-headline" variants={faderVariants(shouldReduceMotion)}>
+        <Section id="plan" labelledBy="plan-h" shouldReduceMotion={shouldReduceMotion}>
+          <motion.h2 id="plan-h" className="section-headline" variants={fade}>
             <Lens role={role} pair={sectionCopy.plan.headline} />
           </motion.h2>
-          <motion.p className="section-lede" variants={faderVariants(shouldReduceMotion)}>
+          <motion.p className="section-lede" variants={fade}>
             <Lens role={role} pair={sectionCopy.plan.lede} />
             <button className="lede-link" onClick={openResume}>resume</button>.{' '}
             {recruiter ? (
@@ -469,92 +490,81 @@ const App = () => {
               tabIndex={0}
               aria-label={planAriaLabel}
             >
-              {planLines.map((line, i) => (
-                <motion.div
-                  key={i}
-                  className={`plan-line plan-line--${line.type}`}
-                  variants={planLineVariants(shouldReduceMotion)}
-                >
-                  <span className="plan-line-text">{line.text}</span>
-                  {recruiter && <span className="plan-gloss lens">{line.gloss}</span>}
-                </motion.div>
-              ))}
+              {planLines.map((line, i) => {
+                const [statement, comment] = splitPlanLine(line.text);
+                return (
+                  <motion.div
+                    key={i}
+                    className={`plan-line plan-line--${line.type}`}
+                    variants={planLineVariants(shouldReduceMotion)}
+                  >
+                    <span className="plan-line-text">
+                      {statement}
+                      {comment && <span className="plan-comment">{comment}</span>}
+                    </span>
+                    {recruiter && <span className="plan-gloss lens">{line.gloss}</span>}
+                  </motion.div>
+                );
+              })}
             </div>
           </motion.div>
-        </motion.section>
+        </Section>
 
-        {/* Projects · Currently Building */}
-        <motion.section
-          id="projects"
-          className="section"
-          aria-labelledby="projects-h"
-          variants={staggerContainer(shouldReduceMotion)}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-10%" }}
-        >
-          <motion.div variants={faderVariants(shouldReduceMotion)}>
-            <Eyebrow label="SHIPPED & SHIPPING" />
-          </motion.div>
-          <motion.h2 id="projects-h" className="section-headline" variants={faderVariants(shouldReduceMotion)}>
-            <Lens role={role} pair={sectionCopy.projects.headline} />
+        {/* Building now · each with its artifact or shape */}
+        <Section id="building" labelledBy="building-h" shouldReduceMotion={shouldReduceMotion}>
+          <motion.h2 id="building-h" className="section-headline" variants={fade}>
+            <Lens role={role} pair={sectionCopy.building.headline} />
           </motion.h2>
+          <motion.p className="section-lede" variants={fade}>
+            <Lens role={role} pair={sectionCopy.building.lede} />
+          </motion.p>
 
-          <motion.div className="project-list" variants={staggerContainer(shouldReduceMotion)}>
+          <motion.div className="case-list" variants={staggerContainer(shouldReduceMotion)}>
             {projects.map((project, index) => (
-              <motion.div key={index} variants={faderVariants(shouldReduceMotion)}>
-                <ProjectCard
+              <motion.div key={index} variants={fade}>
+                <CaseStudy
                   title={<Lens role={role} pair={project.title} />}
                   status={project.status}
                   description={<Lens role={role} pair={project.desc} />}
                   tags={project.tags}
+                  proof={project.proof}
+                  onFollow={followed}
                 />
               </motion.div>
             ))}
           </motion.div>
-        </motion.section>
+        </Section>
 
-        {/* Stack · Tools */}
-        <motion.section
-          id="stack"
-          className="section"
-          aria-labelledby="stack-h"
-          variants={staggerContainer(shouldReduceMotion)}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-10%" }}
-        >
-          <motion.div variants={faderVariants(shouldReduceMotion)}>
-            <Eyebrow label="CAPABILITY" />
-          </motion.div>
-          <motion.h2 id="stack-h" className="section-headline" variants={faderVariants(shouldReduceMotion)}>
-            <Lens role={role} pair={sectionCopy.stack.headline} />
+        {/* Contact · the page ends on the ask, not on a chip cloud */}
+        <Section id="contact" labelledBy="contact-h" className="section--contact" shouldReduceMotion={shouldReduceMotion}>
+          <motion.h2 id="contact-h" className="section-headline" variants={fade}>
+            <Lens role={role} pair={sectionCopy.contact.headline} />
           </motion.h2>
-
-          <motion.div className="skills-grid" variants={staggerContainer(shouldReduceMotion)}>
-            {skills.map((group, index) => (
-              <motion.div key={index} variants={faderVariants(shouldReduceMotion)}>
-                <div className="skill-group-title">
-                  <span className="skill-group-bar" aria-hidden="true" />
-                  {group.category}
-                </div>
-                {recruiter && <p className="skill-group-note lens">{group.rec}</p>}
-                <motion.div className="flex flex-wrap gap-1" variants={staggerContainer(shouldReduceMotion)}>
-                  {group.items.map((skill, i) => (
-                    <motion.span
-                      key={i}
-                      className="skill-tag"
-                      variants={faderVariants(shouldReduceMotion)}
-                    >
-                      {skill}
-                    </motion.span>
-                  ))}
-                </motion.div>
-              </motion.div>
-            ))}
+          <motion.p className="section-lede" variants={fade}>
+            <Lens role={role} pair={sectionCopy.contact.lede} />
+          </motion.p>
+          <motion.div className="contact-row" variants={fade}>
+            <FramerButton href="mailto:manny@flores.network" onClick={followed('mailto')}>
+              manny@flores.network <IconArrow />
+            </FramerButton>
+            <FramerButton
+              href="https://linkedin.com/in/mannyflores11"
+              target="_blank"
+              rel="noopener noreferrer"
+              variant="ghost"
+              onClick={followed('linkedin')}
+            >
+              LinkedIn
+            </FramerButton>
+            <FramerButton
+              variant="ghost"
+              href="/resume.pdf"
+              onClick={(e) => { e.preventDefault(); openResume(); }}
+            >
+              Resume
+            </FramerButton>
           </motion.div>
-        </motion.section>
-
+        </Section>
       </main>
 
       {/* Footer */}
@@ -566,7 +576,7 @@ const App = () => {
       </footer>
 
       <MobileDock
-        visible={booted && !ctaOnScreen && !resumeOpen && !isMenuOpen}
+        visible={!ctaOnScreen && !resumeOpen && !isMenuOpen}
         onResume={openResume}
         onFollow={followed}
       />
