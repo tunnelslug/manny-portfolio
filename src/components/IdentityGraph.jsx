@@ -1,6 +1,6 @@
 import React, { useId, useState } from 'react';
 import { useReducedMotion } from 'framer-motion';
-import { fabricNodes, fabricDefaultReadout, lens } from '../content/portfolio';
+import { fabricNodes, fabricDefaultReadout } from '../content/portfolio';
 import { audit } from '../lib/audit';
 
 /* The access fabric. The portrait sits at the center; every system in
@@ -76,7 +76,7 @@ const PULSE = [
 
 /* `live` flips once the page has painted (App sets it shortly after mount),
    which is when the draw-in should run. */
-const IdentityGraph = ({ role = 'engineer', live = false }) => {
+const IdentityGraph = ({ live = false }) => {
   const reduce = useReducedMotion();
   const uid = useId().replace(/:/g, '');
   const [hovered, setHovered] = useState(null);
@@ -175,7 +175,7 @@ const IdentityGraph = ({ role = 'engineer', live = false }) => {
                 tabIndex={0}
                 role="button"
                 aria-pressed={pinned === n.id}
-                aria-label={`${n.label}, ${n.sub}. ${lens(role, n.detail)}`}
+                aria-label={`${n.label}, ${n.sub}. ${n.detail}`}
                 onMouseEnter={() => setHovered(n.id)}
                 onMouseLeave={() => setHovered(null)}
                 onFocus={() => setHovered(n.id)}
@@ -211,7 +211,7 @@ const IdentityGraph = ({ role = 'engineer', live = false }) => {
           so picking a node never moves what sits below the graph. */}
       <div className="ig-readouts" aria-live="polite">
         <p className={`ig-readout ${active ? '' : 'is-shown'}`} aria-hidden={Boolean(active)}>
-          {lens(role, fabricDefaultReadout)}
+          {fabricDefaultReadout}
         </p>
         {fabricNodes.map((n) => (
           <p
@@ -222,7 +222,7 @@ const IdentityGraph = ({ role = 'engineer', live = false }) => {
             <span className="ig-readout-key">
               {n.label}<span className="ig-readout-sub"> · {n.sub}</span>
             </span>
-            {lens(role, n.detail)}
+            {n.detail}
           </p>
         ))}
       </div>

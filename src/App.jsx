@@ -1,6 +1,6 @@
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import ResumeDialog from './components/ResumeDialog';
@@ -8,15 +8,11 @@ import CaseStudy from './components/CaseStudy';
 import ThemeToggle from './components/ThemeToggle';
 import FramerButton from './components/FramerButton';
 import IdentityGraph from './components/IdentityGraph';
-import RoleSwitch from './components/RoleSwitch';
 import AuditLog from './components/AuditLog';
 import MobileDock from './components/MobileDock';
 import { audit } from './lib/audit';
-import { useRole, setStoredRole } from './lib/role';
 import { useMediaQuery } from './lib/useMediaQuery';
 import {
-  ROLES,
-  lens,
   sectionCopy,
   capabilities,
   planLines,
@@ -31,10 +27,6 @@ const Eyebrow = ({ label }) => (
     <span>{label}</span>
   </div>
 );
-
-/* Text that changes with the reader's role. The key remount replays the
-   .lens entrance so the swap reads as a deliberate re-render, not a flicker. */
-const Lens = ({ role, pair }) => <span key={role} className="lens">{lens(role, pair)}</span>;
 
 /* One name per section: the nav item, the eyebrow, and the hash all agree. */
 const NAV_SECTIONS = [
@@ -119,7 +111,6 @@ const App = () => {
   const [resumeOpen, setResumeOpen] = useState(false);
   const [live, setLive] = useState(false);
   const [ctaOnScreen, setCtaOnScreen] = useState(true);
-  const role = useRole();
   const shouldReduceMotion = useReducedMotion();
   // Phones get a plain hero; the access fabric is desktop only. SSR renders
   // desktop, and CSS hides the fabric below 768px until the client corrects.
@@ -143,18 +134,12 @@ const App = () => {
     return () => obs.disconnect();
   }, []);
 
-  const setRole = useCallback((next) => {
-    if (!ROLES.includes(next) || next === role) return;
-    audit('role.changed', `${role} -> ${next}`);
-    setStoredRole(next);
-  }, [role]);
-
   // The visitor's reading session: read-only, no login, lives in this tab.
   useEffect(() => {
     if (sessionIssued.current) return;
     sessionIssued.current = true;
-    audit('session.issued', `read-only · role:${role} · this tab`);
-  }, [role]);
+    audit('session.issued', 'read-only · this tab');
+  }, []);
 
   // Sync active nav item to scroll position; log each section entered.
   useEffect(() => {
@@ -218,7 +203,6 @@ const App = () => {
   const followed = (name) => () => audit('link.followed', name);
 
   const year = new Date().getFullYear();
-  const recruiter = role === 'recruiter';
   const fade = faderVariants(shouldReduceMotion);
 
   return (
@@ -236,7 +220,7 @@ const App = () => {
         <span style={{ background: '#1B1208' }} />
       </div>
 
-      {/* Masthead · the reading session: what this is, which lens, what got logged */}
+      {/* Masthead · the reading session: what this is, what got logged */}
       <aside className="masthead" aria-label="Reading session">
         <div className="masthead-session">
           <span className="masthead-dot" aria-hidden="true">●</span>
@@ -244,7 +228,6 @@ const App = () => {
           <span className="masthead-user">no login · this tab</span>
         </div>
         <div className="masthead-controls">
-          <RoleSwitch role={role} onChange={setRole} />
           <AuditLog />
         </div>
       </aside>
@@ -313,14 +296,14 @@ const App = () => {
             {label}
           </button>
         ))}
-        {/* On phones the masthead is hidden; the log lives here (the lens is in the hero). */}
+        {/* On phones the masthead is hidden; the session line and log live here. */}
         <div className="nav-mobile-tools">
           <span className="nav-mobile-session"><span className="masthead-dot" aria-hidden="true">●</span> read-only · this tab</span>
           <AuditLog />
         </div>
       </div>
 
-      <main id="main" data-role={role}>
+      <main id="main">
         {/* Hero / About */}
         <motion.section
           id="about"
@@ -360,13 +343,6 @@ const App = () => {
                   </motion.p>
                 </div>
               </div>
-
-              {phone && (
-                /* Phones have no masthead; the lens has to be findable in the first screen. */
-                <motion.div className="hero-lens" variants={fade}>
-                  <RoleSwitch role={role} onChange={setRole} compact />
-                </motion.div>
-              )}
 
               <motion.p className="hero-lede" variants={fade}>
                 Identity is what I do: who gets in, what they can touch, and how
@@ -427,7 +403,7 @@ const App = () => {
 
             {!phone && (
               <motion.figure className="hero-fabric" variants={fade}>
-                <IdentityGraph role={role} live={live} />
+                <IdentityGraph live={live} />
               </motion.figure>
             )}
           </div>
@@ -436,19 +412,19 @@ const App = () => {
         {/* Capabilities · what he can own, and the tools it takes */}
         <Section id="capabilities" labelledBy="capabilities-h" shouldReduceMotion={shouldReduceMotion}>
           <motion.h2 id="capabilities-h" className="section-headline" variants={fade}>
-            <Lens role={role} pair={sectionCopy.capabilities.headline} />
+            {sectionCopy.capabilities.headline}
           </motion.h2>
           <motion.p className="section-lede" variants={fade}>
-            <Lens role={role} pair={sectionCopy.capabilities.lede} />
+            {sectionCopy.capabilities.lede}
           </motion.p>
 
           <motion.div className="cap-list" variants={staggerContainer(shouldReduceMotion)}>
             {capabilities.map((item, i) => (
               <motion.div key={i} className="cap-row" variants={fade}>
                 <span className="cap-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
-                <h3 className="cap-title"><Lens role={role} pair={item.title} /></h3>
+                <h3 className="cap-title">{item.title}</h3>
                 <div className="cap-body">
-                  <p><Lens role={role} pair={item.desc} /></p>
+                  <p>{item.desc}</p>
                   <ul className="cap-tools" aria-label="Tools">
                     {item.tools.map((tool) => (
                       <li key={tool} className="chip">{tool}</li>
@@ -464,24 +440,16 @@ const App = () => {
         {/* Plan · career as a plan diff */}
         <Section id="plan" labelledBy="plan-h" shouldReduceMotion={shouldReduceMotion}>
           <motion.h2 id="plan-h" className="section-headline" variants={fade}>
-            <Lens role={role} pair={sectionCopy.plan.headline} />
+            {sectionCopy.plan.headline}
           </motion.h2>
           <motion.p className="section-lede" variants={fade}>
-            <Lens role={role} pair={sectionCopy.plan.lede} />
-            <button className="lede-link" onClick={openResume}>resume</button>.{' '}
-            {recruiter ? (
-              <button className="lede-link" onClick={() => setRole('engineer')}>Back to the engineer view.</button>
-            ) : (
-              <button className="lede-link" onClick={() => setRole('recruiter')}>Hiring? Read it as a recruiter.</button>
-            )}
+            {sectionCopy.plan.lede}
+            <button className="lede-link" onClick={openResume}>resume</button>.
           </motion.p>
 
-          <motion.div
-            className={`plan-block ${recruiter ? 'plan-block--annotated' : ''}`}
-            variants={planContainer(shouldReduceMotion)}
-          >
+          <motion.div className="plan-block" variants={planContainer(shouldReduceMotion)}>
             <div className="plan-titlebar" aria-hidden="true">
-              <span>terraform plan{recruiter && <span className="plan-titlebar-flag"> · annotated</span>}</span>
+              <span>terraform plan</span>
               <span className="plan-titlebar-right">career/manny-flores</span>
             </div>
             <div
@@ -502,7 +470,6 @@ const App = () => {
                       {statement}
                       {comment && <span className="plan-comment">{comment}</span>}
                     </span>
-                    {recruiter && <span className="plan-gloss lens">{line.gloss}</span>}
                   </motion.div>
                 );
               })}
@@ -513,19 +480,19 @@ const App = () => {
         {/* Building now · each with its artifact or shape */}
         <Section id="building" labelledBy="building-h" shouldReduceMotion={shouldReduceMotion}>
           <motion.h2 id="building-h" className="section-headline" variants={fade}>
-            <Lens role={role} pair={sectionCopy.building.headline} />
+            {sectionCopy.building.headline}
           </motion.h2>
           <motion.p className="section-lede" variants={fade}>
-            <Lens role={role} pair={sectionCopy.building.lede} />
+            {sectionCopy.building.lede}
           </motion.p>
 
           <motion.div className="case-list" variants={staggerContainer(shouldReduceMotion)}>
             {projects.map((project, index) => (
               <motion.div key={index} variants={fade}>
                 <CaseStudy
-                  title={<Lens role={role} pair={project.title} />}
+                  title={project.title}
                   status={project.status}
-                  description={<Lens role={role} pair={project.desc} />}
+                  description={project.desc}
                   tags={project.tags}
                   proof={project.proof}
                   onFollow={followed}
@@ -538,10 +505,10 @@ const App = () => {
         {/* Contact · the page ends on the ask, not on a chip cloud */}
         <Section id="contact" labelledBy="contact-h" className="section--contact" shouldReduceMotion={shouldReduceMotion}>
           <motion.h2 id="contact-h" className="section-headline" variants={fade}>
-            <Lens role={role} pair={sectionCopy.contact.headline} />
+            {sectionCopy.contact.headline}
           </motion.h2>
           <motion.p className="section-lede" variants={fade}>
-            <Lens role={role} pair={sectionCopy.contact.lede} />
+            {sectionCopy.contact.lede}
           </motion.p>
           <motion.div className="contact-row" variants={fade}>
             <FramerButton href="mailto:manny@flores.network" onClick={followed('mailto')}>

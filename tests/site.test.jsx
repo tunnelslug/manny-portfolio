@@ -3,85 +3,38 @@ import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import App from '../src/App.jsx'
 import { resetAudit } from '../src/lib/audit.js'
-import { capabilities, projects, planLines, fabricNodes, sectionCopy } from '../src/content/portfolio.js'
+import { capabilities, projects, planLines, fabricNodes } from '../src/content/portfolio.js'
 
 vi.mock('@vercel/analytics/react', () => ({ Analytics: () => null }))
 vi.mock('@vercel/speed-insights/react', () => ({ SpeedInsights: () => null }))
 
-describe('reader role lens', () => {
-  beforeEach(() => {
-    localStorage.clear()
-    resetAudit()
-  })
-
-  it('defaults to the engineer lens and renders console copy', () => {
+describe('content', () => {
+  it('renders every capability, case study, and plan line', () => {
     render(<App />)
-    const group = screen.getByRole('group', { name: /read as/i })
-    expect(within(group).getByRole('button', { name: 'engineer' })).toHaveAttribute('aria-pressed', 'true')
-    expect(screen.getByText(capabilities[0].title.eng)).toBeInTheDocument()
-    expect(screen.queryByText(capabilities[0].title.rec)).not.toBeInTheDocument()
+    for (const row of capabilities) expect(screen.getByText(row.title)).toBeInTheDocument()
+    for (const p of projects) expect(screen.getByText(p.title)).toBeInTheDocument()
+    expect(screen.getByRole('img', { name: /career summary formatted as a terraform plan/i })).toBeInTheDocument()
   })
 
-  it('switches every lensed surface to the recruiter lens and persists the choice', async () => {
-    const user = userEvent.setup()
-    render(<App />)
-    await user.click(screen.getByRole('button', { name: 'recruiter' }))
-
-    expect(screen.getByText(capabilities[0].title.rec)).toBeInTheDocument()
-    expect(screen.getByText(projects[0].title.rec)).toBeInTheDocument()
-    expect(screen.getByText(planLines[1].gloss)).toBeInTheDocument()
-    expect(localStorage.getItem('mf-role')).toBe('recruiter')
-  })
-
-  it('restores a stored role on load', () => {
-    localStorage.setItem('mf-role', 'recruiter')
-    render(<App />)
-    expect(screen.getByRole('button', { name: 'recruiter' })).toHaveAttribute('aria-pressed', 'true')
-    expect(screen.getByText(capabilities[2].title.rec)).toBeInTheDocument()
-  })
-
-  it('offers the recruiter switch inline in the plan lede', async () => {
-    const user = userEvent.setup()
-    render(<App />)
-    await user.click(screen.getByRole('button', { name: /read it as a recruiter/i }))
-    expect(screen.getByText(planLines[0].gloss)).toBeInTheDocument()
-    await user.click(screen.getByRole('button', { name: /back to the engineer view/i }))
-    expect(screen.queryByText(planLines[0].gloss)).not.toBeInTheDocument()
-  })
-
-  it('never lets a lens carry a fact the other lacks: every pair has both sides', () => {
+  it('every capability carries tools and every case study carries proof', () => {
     for (const row of capabilities) {
-      expect(row.title.eng.length).toBeGreaterThan(0)
-      expect(row.title.rec.length).toBeGreaterThan(0)
-      expect(row.desc.eng.length).toBeGreaterThan(0)
-      expect(row.desc.rec.length).toBeGreaterThan(0)
+      expect(row.title.length).toBeGreaterThan(0)
+      expect(row.desc.length).toBeGreaterThan(0)
       expect(row.tools.length).toBeGreaterThan(0)
     }
     for (const p of projects) {
       expect(p.proof.kind.length).toBeGreaterThan(0)
       expect(p.proof.lines.length).toBeGreaterThan(0)
+      for (const line of p.proof.lines) expect(line).toHaveLength(2)
     }
-    for (const line of planLines) expect(line.gloss.length).toBeGreaterThan(0)
-    for (const n of fabricNodes) {
-      expect(n.detail.eng.length).toBeGreaterThan(0)
-      expect(n.detail.rec.length).toBeGreaterThan(0)
-    }
+    for (const n of fabricNodes) expect(n.detail.length).toBeGreaterThan(0)
   })
 
-  it('keeps the recruiter lens a different text: distinct from the engineer side and free of protocol acronyms', () => {
-    const pairs = [
-      ...capabilities.flatMap(r => [r.title, r.desc]),
-      ...projects.flatMap(p => [p.title, p.desc]),
-      ...fabricNodes.map(n => n.detail),
-    ]
-    const jargon = /\b(SAML|OIDC|OAuth|SCIM|IdP|IdPs|MCP|DLP|IAM|RBAC|SaaS|IaC)\b/
-    const recStrings = [
-      ...pairs.map(p => p.rec),
-      ...planLines.map(l => l.gloss),
-      ...Object.values(sectionCopy).flatMap(sec => Object.values(sec).map(pair => pair.rec)),
-    ]
-    for (const p of pairs) expect(p.rec).not.toBe(p.eng)
-    for (const s of recStrings) expect(s).not.toMatch(jargon)
+  it('links the one public artifact and nothing else', () => {
+    render(<App />)
+    const links = screen.getAllByRole('link').filter(a => a.className.includes('case-proof-link'))
+    expect(links).toHaveLength(1)
+    expect(links[0]).toHaveAttribute('href', 'https://github.com/tunnelslug/okta-terraform-foundation')
   })
 })
 
@@ -99,24 +52,25 @@ describe('session audit log', () => {
     resetAudit()
   })
 
-  it('issues a session on load and exposes the count in the masthead', () => {
+  it('issues a read-only session on load and exposes the count in the masthead', () => {
     render(<App />)
     const toggle = screen.getByRole('button', { name: /access logged/i })
     expect(toggle).toHaveAttribute('aria-expanded', 'false')
     expect(toggle.textContent).toMatch(/· 1$/)
   })
 
-  it('opens the panel and records role changes', async () => {
+  it('opens the panel and records the session and a resume open', async () => {
     const user = userEvent.setup()
     render(<App />)
-    await user.click(screen.getByRole('button', { name: 'recruiter' }))
+    await user.click(screen.getAllByRole('button', { name: /^resume$/i })[0])
+    await user.keyboard('{Escape}')
     await user.click(screen.getByRole('button', { name: /access logged/i }))
 
     const list = screen.getByRole('list', { name: /session events/i })
     const rows = within(list).getAllByRole('listitem')
     expect(rows[0]).toHaveTextContent('session.issued')
-    expect(rows[rows.length - 1]).toHaveTextContent('role.changed')
-    expect(rows[rows.length - 1]).toHaveTextContent('engineer -> recruiter')
+    expect(rows[0]).toHaveTextContent('read-only · this tab')
+    expect(rows.some(r => r.textContent.includes('resume.opened'))).toBe(true)
   })
 
   it('closes on Escape', async () => {
@@ -149,7 +103,7 @@ describe('access fabric', () => {
     const okta = screen.getByRole('button', { name: /^okta,/i })
     await user.click(okta)
     expect(okta).toHaveAttribute('aria-pressed', 'true')
-    expect(screen.getByText(fabricNodes[0].detail.eng, { exact: false })).toBeInTheDocument()
+    expect(screen.getByText(fabricNodes[0].detail, { exact: false })).toBeInTheDocument()
   })
 })
 
