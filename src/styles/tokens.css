@@ -143,7 +143,7 @@
 
     --color-text: oklch(92% 0.010 75);
     --color-text-muted: oklch(73% 0.010 70);
-    --color-text-subtle: oklch(61.5% 0.010 65);
+    --color-text-subtle: oklch(63% 0.010 65);
     --color-text-on-emphasis: oklch(15.5% 0.010 50);
 
     --color-accent: oklch(70% 0.135 48);
@@ -184,7 +184,7 @@
 
   --color-text: oklch(92% 0.010 75);
   --color-text-muted: oklch(73% 0.010 70);
-  --color-text-subtle: oklch(57% 0.010 65);
+  --color-text-subtle: oklch(63% 0.010 65);
   --color-text-on-emphasis: oklch(15.5% 0.010 50);
 
   --color-accent: oklch(70% 0.135 48);
