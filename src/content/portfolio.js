@@ -1,9 +1,12 @@
 /* Portfolio content, in two lenses.
-   `eng`  the engineering-console voice (default): how it is built.
-   `rec`  the same facts for a recruiter or hiring manager: what was owned,
-          at what scale, with what outcome. Not a simplification; a
-          different question answered. No claim exists in one lens that is
-          not on the resume and present in the other. */
+   `eng`  the engineering-console voice (default): how it is built, in the
+          vocabulary of someone who builds it.
+   `rec`  the same facts for a recruiter or hiring manager who does not
+          write SCIM connectors: plain English, what was owned, how big,
+          what came of it. Product names and numbers stay because they are
+          what gets searched for (Okta, Terraform, Google Cloud, SOX, six
+          acquisitions); protocol acronyms do not. No claim exists in one
+          lens that is not on the resume and present in the other. */
 
 export const ROLES = ['engineer', 'recruiter'];
 export const ROLE_STORAGE_KEY = 'mf-role';
@@ -12,132 +15,132 @@ export const lens = (role, pair) => (role === 'recruiter' ? pair.rec : pair.eng)
 
 export const sectionCopy = {
   scope: {
-    headline: { eng: 'Access domains.', rec: 'Areas of ownership.' },
+    headline: { eng: 'Access domains.', rec: 'What I own.' },
     lede: {
       eng: 'The identity, cloud, and collaboration stack the company runs on. The mandate: harden the foundation, make AI tooling adoptable, keep sprawl down.',
-      rec: 'The identity, cloud, and collaboration stack for a public fintech, owned end to end. Green is running and audited; amber is actively being built or hardened.',
+      rec: 'The systems I am responsible for at a public fintech, and the state each one is in. Green is running and audited; amber is being built or tightened right now.',
     },
   },
   plan: {
-    headline: { eng: 'The access plan.', rec: 'Career, as a change record.' },
+    headline: { eng: 'The access plan.', rec: 'Ten years, as a change plan.' },
     lede: {
       eng: 'A decade of identity work, written the way this audience reads change. Every line is on the ',
-      rec: 'Ten years in identity, formatted as the change plan engineers approve before anything ships. Each line is annotated with the outcome it stands for, and every line is on the '
+      rec: 'A decade of identity work in the format engineers read before approving a change: green lines were added, amber changed, red removed. Each line is explained beneath it, and every line is on the ',
     },
   },
   projects: {
-    headline: { eng: 'Current focus.', rec: 'In flight.' },
+    headline: { eng: 'Current focus.', rec: 'What I am building now.' },
   },
   stack: {
-    headline: { eng: 'Stack.', rec: 'Stack.' },
+    headline: { eng: 'Stack.', rec: 'Tools.' },
   },
 };
 
 export const scope = [
   {
     state: 'operating',
-    title: { eng: 'Identity & Access Architecture', rec: 'Identity platform ownership' },
+    title: { eng: 'Identity & Access Architecture', rec: 'Who gets in, and how' },
     desc: {
       eng: "Authentication flows in Okta: SAML, OAuth 2.0, OIDC, plus SCIM for downstream provisioning. The full user lifecycle: birthright access, joiners, movers, leavers, rehires, service accounts, and the edge cases SCIM can't reach.",
-      rec: 'Owns the company identity provider (Okta) and the full user lifecycle: joiners, movers, leavers, rehires, and service accounts. Single sign-on and automated provisioning across the application stack, including the edge cases automation does not reach.',
+      rec: 'I run the company sign-in system (Okta) for every employee and every app. When someone joins, their accounts are created and they get the access their job calls for; when they change teams it changes with them; when they leave, it ends the same day. The same rules cover people who come back and the accounts that belong to software rather than humans.',
     },
   },
   {
     state: 'operating',
-    title: { eng: 'Identity Governance & Audit', rec: 'Governance and audit' },
+    title: { eng: 'Identity Governance & Audit', rec: 'Proving the access is right' },
     desc: {
       eng: 'Led the Okta Identity Governance rollout: access certification campaigns and policy-driven lifecycle controls. Audit responses across SOX controls, access reviews, and service accounts, working directly with external auditors. Identity changes ship through technical reviews I author.',
-      rec: 'Led the Okta Identity Governance rollout: recurring access certifications and policy-driven lifecycle controls. Point of contact for external auditors on SOX access controls, access reviews, and service accounts. Authors the technical reviews every identity change ships through.',
+      rec: 'On a schedule, managers confirm their people still need what they can reach; I led the company-wide rollout of that process (Okta Identity Governance). When the external auditors ask who could touch what and why, for SOX and beyond, I am the person who answers, with records rather than memory. Every change to how sign-in works gets a written review first, and I write those reviews.',
     },
   },
   {
     state: 'expanding',
-    title: { eng: 'AI Tooling Governance', rec: 'AI tooling governance' },
+    title: { eng: 'AI Tooling Governance', rec: 'Rules for AI tools' },
     desc: {
       eng: 'The identity side of Claude Code, ChatGPT, Cursor, and Gemini Enterprise: rollout review, access controls, and MCP integration enablement across the SaaS stack. Agents get identities, scopes, and an audit trail. Service accounts authenticate through brokered credentials, checked out from the vault programmatically and returned, never held.',
-      rec: 'Identity and access owner for the company rollout of Claude Code, ChatGPT, Cursor, and Gemini Enterprise: rollout review, access controls, and integration enablement across the SaaS stack. Agents get identities, least-privilege scopes, and an audit trail; automated credentials are brokered from a vault, never stored.',
+      rec: 'Claude Code, ChatGPT, Cursor, and Gemini Enterprise are the newest users at the company, and I own the access side of their rollout. Each tool gets its own identity, only the access it needs, and a record of what it did, the same bar as any employee. Passwords for automated accounts are borrowed from a vault for a moment and handed back, never kept.',
     },
   },
   {
     state: 'operating',
-    title: { eng: 'Cloud Governance (GCP)', rec: 'Cloud governance (GCP)' },
+    title: { eng: 'Cloud Governance (GCP)', rec: 'Cloud guardrails' },
     desc: {
       eng: 'Terraform-managed IAM and project structure, so engineers move AI workloads from prototype to production without creating sprawl.',
-      rec: 'Google Cloud IAM and project structure managed as code (Terraform), so engineering teams move AI workloads from prototype to production through a reviewed path instead of one-off exceptions.',
+      rec: 'Engineers can take an AI project from a laptop to production on Google Cloud without asking me for an exception. Permissions and project layout are written as code (Terraform), so the safe path is also the easy one.',
     },
   },
   {
     state: 'hardening',
-    title: { eng: 'Collaboration Security', rec: 'Collaboration security' },
+    title: { eng: 'Collaboration Security', rec: 'Where everyone works' },
     desc: {
       eng: 'The surface where everyone works. Hardened, audited, and watched.',
-      rec: 'Google Workspace and Slack, the surface every employee works in: access policy, data-loss prevention, third-party app governance, and audit coverage.',
+      rec: 'Email, documents, and chat (Google Workspace and Slack): the tools the whole company lives in. I control who and what can reach them, what can leave the company, which outside apps may connect, and keep the record of all of it.',
     },
   },
 ];
 
 /* The career as a plan diff. `text` is the mono line; `gloss` is the
-   outcome it stands for, shown under it in the recruiter lens. */
+   plain-English meaning, shown under it in the recruiter lens. */
 export const planLines = [
   {
     type: 'ctx',
     text: '# career/manny-flores · 10+ years · fintech + healthcare',
-    gloss: 'Ten-plus years in identity and access, across fintech and healthcare.',
+    gloss: 'More than ten years in identity and access, at fintech and healthcare companies.',
   },
   {
     type: 'chg',
     text: '~ role                = "Systems Administrator" -> "Senior Systems Engineer, team lead"',
-    gloss: 'Progressed from systems administrator to senior systems engineer and team lead.',
+    gloss: 'Grew from systems administrator to senior systems engineer leading the team.',
   },
   {
     type: 'add',
     text: '+ okta_identity_governance         # led rollout: certification campaigns, policy lifecycle',
-    gloss: 'Led the Okta Identity Governance rollout: recurring access certifications and policy-driven lifecycle controls, company-wide.',
+    gloss: 'Led the company-wide rollout of Okta Identity Governance: managers now confirm on a schedule that their people still need the access they have, and access follows rules instead of tickets.',
   },
   {
     type: 'add',
     text: '+ okta_tenant.acquisitions[6]      # Say, X1, Bitstamp, TradePMR, Chartr, WonderFi',
-    gloss: 'Integrated six acquisitions into a single Okta tenant.',
+    gloss: 'Brought six acquired companies onto one company-wide sign-in system.',
   },
   {
     type: 'add',
     text: '+ ai_tools.identity_governance[4]  # Claude Code, ChatGPT, Cursor, Gemini Enterprise',
-    gloss: 'Owned identity governance for the company rollout of four AI tools.',
+    gloss: 'Owned who-can-do-what for the company rollout of four AI tools.',
   },
   {
     type: 'add',
     text: '+ okta_config.terraform            # clicks -> code: drift gone, changes reviewed like PRs',
-    gloss: 'Moved Okta configuration into Terraform: no drift, every change peer-reviewed before it lands.',
+    gloss: 'Moved the sign-in system from console clicks to code (Terraform): another person reviews every change before it happens, and nothing drifts from what was approved.',
   },
   {
     type: 'chg',
     text: '~ access_requests     = "manual tickets" -> "automated fulfillment"',
-    gloss: 'Replaced hand-worked access tickets with automated fulfillment.',
+    gloss: 'Access requests that used to be worked by hand are now fulfilled automatically.',
   },
   {
     type: 'chg',
     text: '~ acquisition_intake  = "per-deal" -> "company standard: apps + idp"',
-    gloss: 'Turned acquisition onboarding from a per-deal effort into a repeatable company standard covering applications and identity providers: unify into Okta, merge duplicates of systems already run.',
+    gloss: 'Turned onboarding an acquired company from a one-off scramble into a repeatable playbook: their apps and sign-in move onto the company standard, and anything we already run gets merged.',
   },
   {
     type: 'del',
     text: '- standing_access.unreviewed       # replaced by certification campaigns',
-    gloss: 'Eliminated unreviewed standing access; certification campaigns replaced it.',
+    gloss: 'Removed access that nobody was checking; scheduled reviews replaced it.',
   },
   {
     type: 'del',
     text: '- acquired_idps.standalone         # unified into okta, then retired; entra id the largest',
-    gloss: 'Decommissioned the standalone identity providers that came with acquisitions after unifying them into Okta, Microsoft Entra ID the largest; duplicates of systems already run, such as Google Workspace, were merged instead.',
+    gloss: 'Shut down the separate sign-in systems that came with acquisitions once their people were on ours, Microsoft Entra ID the biggest; where a company already used a tool we run, such as Google Workspace, it was merged instead.',
   },
   {
     type: 'ctx',
     text: '# (unchanged fundamentals hidden: SAML, OAuth 2.0, OIDC, SCIM, Python, Terraform)',
-    gloss: 'Constant throughout: the standard identity protocols, Python, and Terraform.',
+    gloss: 'Constant throughout: the standard sign-in protocols, Python, and Terraform.',
   },
   {
     type: 'out',
     text: 'Plan: 4 to add, 3 to change, 2 to destroy.',
-    gloss: 'Net: four capabilities added, three processes changed, two liabilities removed.',
+    gloss: 'Net: four things built, three ways of working changed, two risks removed.',
   },
 ];
 
@@ -147,28 +150,28 @@ export const planAriaLabel =
 export const projects = [
   {
     status: 'Operating',
-    title: { eng: 'Terraform Okta: Identity as Code', rec: 'Okta managed as code' },
+    title: { eng: 'Terraform Okta: Identity as Code', rec: 'Sign-in settings as code' },
     desc: {
       eng: 'Okta config lives in Terraform now, not in clicks. Config drift is gone, changes get reviewed like code, and policy stays consistent across the tenant.',
-      rec: 'Moved the identity provider from console clicks to Terraform. Outcome: no configuration drift, every change peer-reviewed and traceable, consistent policy across the tenant.',
+      rec: 'The sign-in system (Okta) used to be configured by clicking through an admin console. Now every setting is written down as code (Terraform): a second person reviews each change before it happens, and the system cannot quietly drift from what was approved.',
     },
     tags: ['Okta', 'Terraform', 'IaC', 'Identity Infrastructure'],
   },
   {
     status: 'Operating',
-    title: { eng: 'Secure GCP for AI Workloads', rec: 'Secure cloud path for AI workloads' },
+    title: { eng: 'Secure GCP for AI Workloads', rec: 'A safe path to production for AI tools' },
     desc: {
       eng: 'A paved road from local prototype to hosted service. Project factories, IAM bindings, and access controls all live in Terraform, so shipping an AI-assisted tool to production is a reviewed change, not a hand-built exception.',
-      rec: 'A pre-approved route from prototype to production on Google Cloud, with project structure, IAM, and access controls in Terraform. Outcome: engineering ships AI-assisted tools through a reviewed change, not a security exception.',
+      rec: 'When an engineer builds an AI-assisted tool, there is a ready-made, pre-approved way to run it on Google Cloud. Permissions are right from the start, so shipping is a reviewed change rather than a one-off favor from the security team.',
     },
     tags: ['GCP', 'Terraform', 'IAM', 'AI Enablement'],
   },
   {
     status: 'Building',
-    title: { eng: 'Google Workspace Security Hardening', rec: 'Google Workspace hardening' },
+    title: { eng: 'Google Workspace Security Hardening', rec: 'Locking down email, docs, and chat' },
     desc: {
       eng: "Tightening Google Workspace: access policies, DLP, third-party OAuth, audit coverage. The attack surface gets bigger every time someone installs a new AI tool, and that's the part I'm watching.",
-      rec: 'Tightening access policy, data-loss prevention, third-party OAuth, and audit coverage across the collaboration suite. Driven by the widening surface as employees connect new AI tools.',
+      rec: 'Tightening the tools everyone uses (Google Workspace): who can share what outside the company, which third-party apps may connect, and keeping a complete record. Every new AI tool someone connects widens the surface, and that is the part I watch.',
     },
     tags: ['Google Workspace', 'DLP', 'OAuth Governance', 'Security'],
   },
@@ -177,22 +180,22 @@ export const projects = [
 export const skills = [
   {
     category: 'Identity & Access',
-    rec: 'Identity platforms and the protocols behind single sign-on and provisioning.',
+    rec: 'Sign-in systems and the standards they speak.',
     items: ['Okta OIE', 'OIG', 'Entra ID', 'SAML 2.0', 'OAuth 2.0', 'OIDC', 'SCIM', 'RBAC', 'Zero Trust'],
   },
   {
     category: 'Automation & IaC',
-    rec: 'Automation and infrastructure as code: changes that are repeatable and reviewed.',
+    rec: 'Scripts and code that make changes repeatable and reviewed.',
     items: ['Python', 'Bash', 'Okta Workflows', 'Terraform', 'GCP IAM', 'APIs & Integrations'],
   },
   {
     category: 'Corp Apps Infra',
-    rec: 'Corporate systems owned and operated.',
+    rec: 'The company systems I run day to day.',
     items: ['GCP', 'Google Workspace', 'Okta', 'Slack', 'Jira', 'Workday'],
   },
   {
     category: 'AI & Governance',
-    rec: 'AI tools under governance, and the integration layer agents use.',
+    rec: 'The AI tools I govern, and how they connect to everything else.',
     items: ['MCP', 'Claude Code', 'ChatGPT', 'Cursor', 'Gemini Enterprise', 'LLM Access Controls'],
   },
 ];
@@ -209,7 +212,7 @@ export const fabricNodes = [
     flow: 'out',
     detail: {
       eng: 'Okta: the identity provider. SAML, OIDC, and SCIM to every downstream app. Configuration lives in Terraform.',
-      rec: 'The identity provider, owned end to end: single sign-on and provisioning for every app, configuration managed as reviewed code.',
+      rec: 'Okta: the sign-in system every other system trusts. I own it; its settings are written as code and reviewed.',
     },
   },
   {
@@ -220,7 +223,7 @@ export const fabricNodes = [
     flow: 'in',
     detail: {
       eng: 'Six acquisitions, each with its own IdP and app stack, brought onto the Okta standard. Standalone IdPs retired after, Entra ID the largest; duplicates of systems we already run, merged into ours.',
-      rec: 'Six acquisitions integrated onto the Okta standard, apps and identity providers. Standalone IdPs decommissioned, Entra ID the largest; duplicate systems merged.',
+      rec: 'Six companies we bought, each with its own sign-in system and apps, moved onto ours. Their leftover sign-in systems were shut down (Entra ID the biggest) or merged into tools we already run.',
     },
   },
   {
@@ -231,7 +234,7 @@ export const fabricNodes = [
     flow: 'out',
     detail: {
       eng: 'Google Cloud: IAM bindings and project structure in Terraform. Prototype to production without sprawl.',
-      rec: 'Google Cloud IAM and project structure as code, giving engineering a reviewed path from prototype to production.',
+      rec: 'Google Cloud, where AI projects run. Permissions are written as code, so the safe path is the easy one.',
     },
   },
   {
@@ -242,7 +245,7 @@ export const fabricNodes = [
     flow: 'out',
     detail: {
       eng: 'Google Workspace: provisioning over SCIM, third-party OAuth governed, DLP and audit coverage in progress.',
-      rec: 'Google Workspace: automated provisioning, third-party app governance, data-loss prevention and audit coverage in progress.',
+      rec: 'Email, docs, and chat. Accounts arrive automatically, outside apps are vetted, sharing is watched.',
     },
   },
   {
@@ -253,7 +256,7 @@ export const fabricNodes = [
     flow: 'out',
     detail: {
       eng: 'Slack, Jira, Workday and the rest of the SaaS stack: SAML sign-in, SCIM lifecycle, MCP integrations reviewed.',
-      rec: 'Slack, Jira, Workday and the wider SaaS stack: single sign-on, automated lifecycle, AI integrations reviewed.',
+      rec: 'Slack, Jira, Workday and the other tools people use every day. Accounts open and close in step with the sign-in system.',
     },
   },
   {
@@ -264,7 +267,7 @@ export const fabricNodes = [
     flow: 'in',
     detail: {
       eng: 'Service accounts authenticate through brokered credentials: checked out from the vault programmatically and returned. Never held.',
-      rec: 'Machine identities with brokered credentials: checked out from a vault on demand, never stored. Audit-clean by design.',
+      rec: 'Accounts that belong to software, not people. They borrow a password from a vault for a moment and hand it back.',
     },
   },
   {
@@ -275,7 +278,7 @@ export const fabricNodes = [
     flow: 'in',
     detail: {
       eng: 'Claude Code, ChatGPT, Cursor, Gemini Enterprise: each with an identity, explicit scopes, and an audit trail.',
-      rec: 'Claude Code, ChatGPT, Cursor, Gemini Enterprise: each with an identity, least-privilege scopes, and an audit trail.',
+      rec: 'Claude Code, ChatGPT, Cursor, Gemini Enterprise. Each has its own identity, only the access it needs, and a record of what it did.',
     },
   },
 ];
@@ -283,5 +286,5 @@ export const fabricNodes = [
 /* Under the graph when nothing is selected. */
 export const fabricDefaultReadout = {
   eng: 'the systems in scope · pick a node',
-  rec: 'areas of ownership · pick a node',
+  rec: 'the systems I run · pick a node',
 };

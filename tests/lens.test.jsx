@@ -3,7 +3,7 @@ import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import App from '../src/App.jsx'
 import { resetAudit } from '../src/lib/audit.js'
-import { scope, projects, planLines, fabricNodes } from '../src/content/portfolio.js'
+import { scope, projects, planLines, fabricNodes, skills } from '../src/content/portfolio.js'
 
 vi.mock('@vercel/analytics/react', () => ({ Analytics: () => null }))
 vi.mock('@vercel/speed-insights/react', () => ({ SpeedInsights: () => null }))
@@ -62,6 +62,22 @@ describe('reader role lens', () => {
       expect(n.detail.eng.length).toBeGreaterThan(0)
       expect(n.detail.rec.length).toBeGreaterThan(0)
     }
+  })
+
+  it('keeps the recruiter lens a different text: distinct from the engineer side and free of protocol acronyms', () => {
+    const pairs = [
+      ...scope.flatMap(r => [r.title, r.desc]),
+      ...projects.flatMap(p => [p.title, p.desc]),
+      ...fabricNodes.map(n => n.detail),
+    ]
+    const jargon = /\b(SAML|OIDC|OAuth|SCIM|IdP|IdPs|MCP|DLP|IAM|RBAC|SaaS|IaC)\b/
+    const recStrings = [
+      ...pairs.map(p => p.rec),
+      ...planLines.map(l => l.gloss),
+      ...skills.map(s => s.rec),
+    ]
+    for (const p of pairs) expect(p.rec).not.toBe(p.eng)
+    for (const s of recStrings) expect(s).not.toMatch(jargon)
   })
 })
 
