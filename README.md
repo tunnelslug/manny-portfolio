@@ -101,7 +101,7 @@ Targeting WCAG 2.1 AA.
 
 ## URL state
 
-Nav buttons update the URL hash (`#capabilities`, `#plan`, `#building`, `#contact`) via `history.replaceState` so the active section is shareable without triggering a full scroll reset.
+Nav buttons update the URL hash (`#capabilities`, `#plan`, `#building`) via `history.replaceState` so the active section is shareable without triggering a full scroll reset.
 
 ## Audit log, access fabric
 

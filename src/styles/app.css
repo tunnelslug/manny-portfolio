@@ -1264,17 +1264,6 @@ button:focus-visible {
   min-width: 0;
 }
 
-/* ── Contact · the page ends on the ask ──────────── */
-.section--contact {
-  padding-bottom: var(--space-14);
-}
-
-.contact-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-3);
-}
-
 /* ── Footer ───────────────────────────────────────── */
 .colophon {
   border-top: 1px solid var(--color-border);
@@ -1491,7 +1480,8 @@ a.btn-ghost:hover {
     padding: var(--space-8) var(--space-5);
   }
   .colophon {
-    padding: var(--space-6) var(--space-5) calc(var(--space-6) + env(safe-area-inset-bottom, 0px));
+    /* room for the docked action bar */
+    padding: var(--space-6) var(--space-5) calc(var(--space-6) + 78px + env(safe-area-inset-bottom, 0px));
   }
   .hamburger { display: flex; }
   .nav-desktop { display: none !important; }
@@ -1544,11 +1534,6 @@ a.btn-ghost:hover {
     align-items: center;
     gap: var(--space-2);
   }
-  .contact-row .btn,
-  .contact-row .btn-ghost {
-    width: 100%;
-    justify-content: center;
-  }
 }
 
 @keyframes hero-next-nudge {
@@ -1591,7 +1576,7 @@ a.btn-ghost:hover {
   background: var(--color-bg);
   border-top: 1px solid var(--color-border);
   transform: translateY(110%);
-  transition: transform 360ms var(--ease-out);
+  transition: transform 180ms var(--ease-out);
 }
 
 .dock.is-visible {

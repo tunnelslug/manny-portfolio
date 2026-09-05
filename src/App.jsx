@@ -34,7 +34,6 @@ const NAV_SECTIONS = [
   { id: 'capabilities', label: 'capabilities', eyebrow: 'CAPABILITIES' },
   { id: 'plan',         label: 'the plan',     eyebrow: 'THE PLAN' },
   { id: 'building',     label: 'building',     eyebrow: 'BUILDING NOW' },
-  { id: 'contact',      label: 'contact',      eyebrow: 'CONTACT' },
 ];
 const eyebrowFor = (id) => NAV_SECTIONS.find((s) => s.id === id).eyebrow;
 
@@ -111,7 +110,6 @@ const App = () => {
   const [resumeOpen, setResumeOpen] = useState(false);
   const [live, setLive] = useState(false);
   const [ctaOnScreen, setCtaOnScreen] = useState(true);
-  const [contactOnScreen, setContactOnScreen] = useState(false);
   const shouldReduceMotion = useReducedMotion();
   // Phones get a plain hero; the access fabric is desktop only. SSR renders
   // desktop, and CSS hides the fabric below 768px until the client corrects.
@@ -119,7 +117,6 @@ const App = () => {
   const lastViewed = useRef(null);
   const sessionIssued = useRef(false);
   const ctaRef = useRef(null);
-  const contactRef = useRef(null);
 
   // The fabric draws in once the page has painted.
   useEffect(() => {
@@ -127,20 +124,18 @@ const App = () => {
     return () => clearTimeout(id);
   }, []);
 
-  // The docked bar takes over once the hero CTAs leave the viewport, and
-  // stands down again when the contact section's buttons arrive: they are
-  // the same actions, and two copies on one screen is noise.
+  // The docked bar takes over as soon as the hero CTAs start to leave the
+  // viewport: "on screen" means most of the row is still visible, not a
+  // last sliver, so the dock arrives the moment the buttons go.
   useEffect(() => {
-    const watch = (ref, set) => {
-      const el = ref.current;
-      if (!el) return null;
-      const obs = new IntersectionObserver(([entry]) => set(entry.isIntersecting));
-      obs.observe(el);
-      return obs;
-    };
-    const a = watch(ctaRef, setCtaOnScreen);
-    const b = watch(contactRef, setContactOnScreen);
-    return () => { a?.disconnect(); b?.disconnect(); };
+    const el = ctaRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => setCtaOnScreen(entry.isIntersecting && entry.intersectionRatio >= 0.6),
+      { threshold: [0, 0.6, 1] }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
   }, []);
 
   // The visitor's reading session: read-only, no login, lives in this tab.
@@ -511,36 +506,6 @@ const App = () => {
           </motion.div>
         </Section>
 
-        {/* Contact · the page ends on the ask, not on a chip cloud */}
-        <Section id="contact" labelledBy="contact-h" className="section--contact" shouldReduceMotion={shouldReduceMotion}>
-          <motion.h2 id="contact-h" className="section-headline" variants={fade}>
-            {sectionCopy.contact.headline}
-          </motion.h2>
-          <motion.p className="section-lede" variants={fade}>
-            {sectionCopy.contact.lede}
-          </motion.p>
-          <motion.div ref={contactRef} className="contact-row" variants={fade}>
-            <FramerButton href="mailto:manny@flores.network" onClick={followed('mailto')}>
-              manny@flores.network <IconArrow />
-            </FramerButton>
-            <FramerButton
-              href="https://linkedin.com/in/mannyflores11"
-              target="_blank"
-              rel="noopener noreferrer"
-              variant="ghost"
-              onClick={followed('linkedin')}
-            >
-              LinkedIn
-            </FramerButton>
-            <FramerButton
-              variant="ghost"
-              href="/resume.pdf"
-              onClick={(e) => { e.preventDefault(); openResume(); }}
-            >
-              Resume
-            </FramerButton>
-          </motion.div>
-        </Section>
       </main>
 
       {/* Footer */}
@@ -552,7 +517,7 @@ const App = () => {
       </footer>
 
       <MobileDock
-        visible={!ctaOnScreen && !contactOnScreen && !resumeOpen && !isMenuOpen}
+        visible={!ctaOnScreen && !resumeOpen && !isMenuOpen}
         onResume={openResume}
         onFollow={followed}
       />

@@ -19,10 +19,6 @@ export const sectionCopy = {
     headline: 'Building now.',
     lede: 'Three things in motion, each with the artifact or the shape behind it.',
   },
-  contact: {
-    headline: 'Get in touch.',
-    lede: 'Hiring for identity, or want to compare notes on Okta as code, acquisition intake, or how agents should authenticate? Email is the fastest path.',
-  },
 };
 
 /* What he can own. `tools` are the chips that used to live in a separate

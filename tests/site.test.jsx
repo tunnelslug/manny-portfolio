@@ -136,12 +136,12 @@ describe('mobile dock', () => {
     const io = observerFor('hero-cta-row')
     expect(io).toBeTruthy()
     const { act } = await import('@testing-library/react')
-    act(() => io.cb([{ isIntersecting: false }]))
+    act(() => io.cb([{ isIntersecting: false, intersectionRatio: 0 }]))
     expect(dock).toHaveAttribute('aria-hidden', 'false')
     expect(within(dock).getByRole('link', { name: /get in touch/i })).toHaveAttribute('href', 'mailto:manny@flores.network')
     expect(within(dock).getByRole('button', { name: /resume/i })).toBeInTheDocument()
 
-    act(() => io.cb([{ isIntersecting: true }]))
+    act(() => io.cb([{ isIntersecting: true, intersectionRatio: 1 }]))
     expect(dock).toHaveAttribute('aria-hidden', 'true')
   })
 
@@ -150,36 +150,10 @@ describe('mobile dock', () => {
     render(<App />)
     const io = observerFor('hero-cta-row')
     const { act } = await import('@testing-library/react')
-    act(() => io.cb([{ isIntersecting: false }]))
+    act(() => io.cb([{ isIntersecting: false, intersectionRatio: 0 }]))
     const dock = screen.getByTestId('mobile-dock')
     await user.click(within(dock).getByRole('button', { name: /resume/i }))
     expect(dock).toHaveAttribute('aria-hidden', 'true')
-    window.IntersectionObserver = RealIO
-  })
-})
-
-describe('mobile dock vs contact section', () => {
-  it('stands down while the contact buttons are on screen', async () => {
-    const observers = []
-    const RealIO = window.IntersectionObserver
-    window.IntersectionObserver = class {
-      constructor(cb) { this.cb = cb; this.targets = []; observers.push(this) }
-      observe(el) { this.targets.push(el) }
-      unobserve() {}
-      disconnect() {}
-      takeRecords() { return [] }
-    }
-    resetAudit()
-    render(<App />)
-    const find = (cls) => observers.find(o => o.targets.some(t => t.classList?.contains(cls)))
-    const { act } = await import('@testing-library/react')
-    const dock = screen.getByTestId('mobile-dock')
-    act(() => find('hero-cta-row').cb([{ isIntersecting: false }]))
-    expect(dock).toHaveAttribute('aria-hidden', 'false')
-    act(() => find('contact-row').cb([{ isIntersecting: true }]))
-    expect(dock).toHaveAttribute('aria-hidden', 'true')
-    act(() => find('contact-row').cb([{ isIntersecting: false }]))
-    expect(dock).toHaveAttribute('aria-hidden', 'false')
     window.IntersectionObserver = RealIO
   })
 })
