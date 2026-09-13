@@ -2,7 +2,14 @@ import React from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import FramerButton from './FramerButton';
 
+/* `navigator.pdfViewerEnabled` is the standard signal (Chrome 94+, Firefox
+   99+). Where it is undefined (Safari, older engines) the iframe is the
+   safer default: Safari renders PDFs inline. */
+const inlinePdfSupported = () =>
+  typeof navigator === 'undefined' || navigator.pdfViewerEnabled !== false;
+
 const ResumeDialog = ({ open, onOpenChange }) => {
+  const canInline = inlinePdfSupported();
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
@@ -46,11 +53,22 @@ const ResumeDialog = ({ open, onOpenChange }) => {
               </div>
             </header>
 
-            <iframe 
-              src="/resume.pdf#navpanes=0&toolbar=0" 
-              className="resume-iframe w-full flex-1 border-none" 
-              title="Manny Flores Resume PDF Viewer" 
-            />
+            {canInline ? (
+              <iframe
+                src="/resume.pdf#navpanes=0&toolbar=0"
+                className="resume-iframe w-full flex-1 border-none"
+                title="Manny Flores Resume PDF Viewer"
+              />
+            ) : (
+              /* Browsers without an inline PDF viewer (Android Chrome, most
+                 in-app browsers) would show an empty frame here. */
+              <div className="resume-fallback">
+                <p>This browser opens PDFs in a separate viewer instead of inline.</p>
+                <FramerButton href="/resume.pdf" target="_blank" rel="noopener noreferrer">
+                  Open the resume
+                </FramerButton>
+              </div>
+            )}
           </Dialog.Content>
         </div>
       </Dialog.Portal>

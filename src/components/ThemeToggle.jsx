@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Sun, Moon } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { audit } from '../lib/audit';
 
 export default function ThemeToggle() {
   const [theme, setThemeState] = useState(() => {
@@ -26,6 +27,7 @@ export default function ThemeToggle() {
 
   const toggleTheme = () => {
     const nextTheme = theme === 'light' ? 'dark' : 'light';
+    audit('theme.changed', `${theme} -> ${nextTheme}`);
     setThemeState(nextTheme);
     localStorage.setItem('theme', nextTheme);
     applyTheme(nextTheme);
