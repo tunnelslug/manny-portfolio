@@ -39,11 +39,11 @@ export default {
       "pending-bg": "var(--color-pending-bg)",
       success: "var(--color-success)",
     },
-    // Custom font definitions mapping display, sans, and mono to IBM Plex
+    // Custom font definitions
     fontFamily: {
-      display: ["IBM Plex Sans", "ui-sans-serif", "system-ui", "Segoe UI", "sans-serif"],
-      sans: ["IBM Plex Sans", "ui-sans-serif", "system-ui", "Segoe UI", "sans-serif"],
-      mono: ["IBM Plex Mono", "ui-monospace", "SF Mono", "Menlo", "monospace"],
+      display: ["Source Serif 4", "Iowan Old Style", "Palatino Linotype", "Palatino", "serif"],
+      sans: ["Source Sans 3", "ui-sans-serif", "system-ui", "Segoe UI", "sans-serif"],
+      mono: ["ui-monospace", "SF Mono", "Menlo", "monospace"],
     },
     // Custom radii mapping to design tokens
     borderRadius: {

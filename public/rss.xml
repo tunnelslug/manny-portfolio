@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Manny Flores</title>
+    <link>https://www.mannyflo.com/</link>
+    <description>Notes on identity, access, and the agents now using both.</description>
+    <item>
+      <title>Agents are users</title>
+      <link>https://www.mannyflo.com/writing/agents-are-users</link>
+      <guid>https://www.mannyflo.com/writing/agents-are-users</guid>
+      <pubDate>Tue, 18 Aug 2026 12:00:00 GMT</pubDate>
+      <description>If it can act, it gets an identity, a scope, and a trail.</description>
+    </item>
+    <item>
+      <title>Access reviews still assume a human works here</title>
+      <link>https://www.mannyflo.com/writing/reviews-assume-a-human</link>
+      <guid>https://www.mannyflo.com/writing/reviews-assume-a-human</guid>
+      <pubDate>Wed, 12 Aug 2026 12:00:00 GMT</pubDate>
+      <description>Certification campaigns were built for joiners, movers, and leavers.</description>
+    </item>
+    <item>
+      <title>Unowned, employee-built, already in production</title>
+      <link>https://www.mannyflo.com/writing/unowned-agents</link>
+      <guid>https://www.mannyflo.com/writing/unowned-agents</guid>
+      <pubDate>Sat, 08 Aug 2026 12:00:00 GMT</pubDate>
+      <description>The exception is how estates get built.</description>
+    </item>
+    <item>
+      <title>Vendors ship agents faster than owners do</title>
+      <link>https://www.mannyflo.com/writing/vendors-ship-faster</link>
+      <guid>https://www.mannyflo.com/writing/vendors-ship-faster</guid>
+      <pubDate>Tue, 04 Aug 2026 12:00:00 GMT</pubDate>
+      <description>Every new tool is another grant on the collaboration surface.</description>
+    </item>
+    <item>
+      <title>Credentials that go home</title>
+      <link>https://www.mannyflo.com/writing/credentials-that-leave</link>
+      <guid>https://www.mannyflo.com/writing/credentials-that-leave</guid>
+      <pubDate>Sat, 01 Aug 2026 12:00:00 GMT</pubDate>
+      <description>If a service account can hold a secret forever, it will.</description>
+    </item>
+  </channel>
+</rss>

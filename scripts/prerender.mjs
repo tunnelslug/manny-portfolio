@@ -1,9 +1,9 @@
 // Post-build prerender: injects server-rendered HTML into the built shell so
 // crawlers, link previews, and no-JS clients see real page content.
-// Runs after `vite build` (client) and `vite build --ssr` (server entry).
 import { readFileSync, writeFileSync, mkdirSync, rmSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
+import { ESSAYS, PERSON } from '../src/content/site.js'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const dist = path.join(root, 'dist')
@@ -51,7 +51,49 @@ writeFileSync(
   }),
 )
 
-// The SSR bundle is build tooling, not a deployable asset.
+for (const essay of ESSAYS) {
+  const dir = path.join(dist, 'writing', essay.slug)
+  mkdirSync(dir, { recursive: true })
+  writeFileSync(
+    path.join(dir, 'index.html'),
+    buildPage(`/writing/${essay.slug}`, {
+      title: `${essay.title} · ${PERSON.name}`,
+      description: essay.dek,
+      url: `https://www.mannyflo.com/writing/${essay.slug}`,
+    }),
+  )
+}
+
+const rssItems = ESSAYS.map((essay) => `    <item>
+      <title>${escapeXml(essay.title)}</title>
+      <link>https://www.mannyflo.com/writing/${essay.slug}</link>
+      <guid>https://www.mannyflo.com/writing/${essay.slug}</guid>
+      <pubDate>${new Date(`${essay.date}T12:00:00Z`).toUTCString()}</pubDate>
+      <description>${escapeXml(essay.dek)}</description>
+    </item>`).join('\n')
+
+writeFileSync(
+  path.join(dist, 'rss.xml'),
+  `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Manny Flores</title>
+    <link>https://www.mannyflo.com/</link>
+    <description>Notes on identity, access, and the agents now using both.</description>
+${rssItems}
+  </channel>
+</rss>
+`,
+)
+
 rmSync(path.join(dist, 'server'), { recursive: true, force: true })
 
-console.log('Prerendered: / and /bio')
+console.log(`Prerendered: /, /bio, ${ESSAYS.length} essays, rss.xml`)
+
+function escapeXml(value) {
+  return String(value)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+}

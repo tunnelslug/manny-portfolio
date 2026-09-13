@@ -1,17 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Sun, Moon } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
 
 export default function ThemeToggle() {
   const [theme, setThemeState] = useState(() => {
     if (typeof window !== 'undefined') {
       const stored = localStorage.getItem('theme');
-      if (stored === 'light' || stored === 'dark') {
-        return stored;
-      }
-      return 'dark';
+      if (stored === 'light' || stored === 'dark') return stored;
+      return 'light';
     }
-    return 'dark';
+    return 'light';
   });
 
   const applyTheme = (themeValue) => {
@@ -31,7 +28,7 @@ export default function ThemeToggle() {
     applyTheme(nextTheme);
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     applyTheme(theme);
   }, [theme]);
 
@@ -41,22 +38,11 @@ export default function ThemeToggle() {
       className="icon-btn"
       aria-label={`Toggle theme (currently ${theme} mode)`}
     >
-      <AnimatePresence mode="wait" initial={false}>
-        <motion.span
-          key={theme}
-          initial={{ y: -8, opacity: 0, rotate: -90, scale: 0.8 }}
-          animate={{ y: 0, opacity: 1, rotate: 0, scale: 1 }}
-          exit={{ y: 8, opacity: 0, rotate: 90, scale: 0.8 }}
-          transition={{ duration: 0.2, ease: 'easeOut' }}
-          className="flex items-center justify-center"
-        >
-          {theme === 'light' ? (
-            <Sun className="w-5 h-5 text-accent" />
-          ) : (
-            <Moon className="w-5 h-5 text-accent" />
-          )}
-        </motion.span>
-      </AnimatePresence>
+      {theme === 'light' ? (
+        <Sun className="w-5 h-5" aria-hidden="true" />
+      ) : (
+        <Moon className="w-5 h-5" aria-hidden="true" />
+      )}
     </button>
   );
 }
