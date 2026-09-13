@@ -65,6 +65,12 @@ describe('App', () => {
     expect(screen.getByText(new RegExp(`© ${year} Manny Flores`))).toBeInTheDocument()
   })
 
+  it('puts the X handle next to Resume in the masthead', () => {
+    render(<App />)
+    const x = screen.getByRole('link', { name: '@Mannyflo' })
+    expect(x).toHaveAttribute('href', 'https://x.com/Mannyflo')
+  })
+
   it('opens the resume dialog from the masthead', async () => {
     const user = userEvent.setup()
     render(<App />)

@@ -6,8 +6,8 @@ export const PERSON = {
   name: 'Manny Flores',
   role: 'Identity engineering, SF Bay',
   email: 'manny@flores.network',
-  x: 'https://x.com/tunnelslug',
-  xHandle: '@tunnelslug',
+  x: 'https://x.com/Mannyflo',
+  xHandle: '@Mannyflo',
   github: 'https://github.com/tunnelslug',
   linkedin: 'https://linkedin.com/in/mannyflores11',
   thesis:
