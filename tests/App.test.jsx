@@ -67,6 +67,12 @@ describe('App', () => {
     expect(window.location.hash).toBe('#building')
   })
 
+  it('puts X next to the other hero actions', () => {
+    render(<App />)
+    const x = screen.getAllByRole('link', { name: /^x$/i })[0]
+    expect(x).toHaveAttribute('href', 'https://x.com/Mannyflo')
+  })
+
   it('renders the footer with the current year', () => {
     render(<App />)
     const year = new Date().getFullYear()

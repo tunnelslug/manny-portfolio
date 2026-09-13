@@ -139,6 +139,7 @@ describe('mobile dock', () => {
     act(() => io.cb([{ isIntersecting: false, intersectionRatio: 0 }]))
     expect(dock).toHaveAttribute('aria-hidden', 'false')
     expect(within(dock).getByRole('link', { name: /get in touch/i })).toHaveAttribute('href', 'mailto:manny@flores.network')
+    expect(within(dock).getByRole('link', { name: /^x$/i })).toHaveAttribute('href', 'https://x.com/Mannyflo')
     expect(within(dock).getByRole('button', { name: /resume/i })).toBeInTheDocument()
 
     act(() => io.cb([{ isIntersecting: true, intersectionRatio: 1 }]))

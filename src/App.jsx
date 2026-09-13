@@ -381,6 +381,15 @@ const App = () => {
                 GitHub
               </FramerButton>
               <FramerButton
+                href="https://x.com/Mannyflo"
+                target="_blank"
+                rel="noopener noreferrer"
+                variant="ghost"
+                onClick={followed('x')}
+              >
+                X
+              </FramerButton>
+              <FramerButton
                 variant="ghost"
                 href="/resume.pdf"
                 onClick={(e) => { e.preventDefault(); openResume(); }}
