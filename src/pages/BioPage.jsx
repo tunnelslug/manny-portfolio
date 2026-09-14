@@ -6,9 +6,9 @@ import ThemeToggle from '../components/ThemeToggle';
 import BioLink from '../components/BioLink';
 
 const LINKS = [
+  { href: 'https://mannyflo.com', icon: <Globe size={20} />, label: 'mannyflo.com', sublabel: 'Personal website' },
   { href: 'https://mannyandcelesti.com', icon: <Heart size={20} />, label: 'mannyandcelesti.com', sublabel: 'Family website' },
   { href: 'https://www.amazon.com/baby-reg/1NWHK22CZPH2H', icon: <Baby size={20} />, label: 'Baby Registry', sublabel: 'Amazon' },
-  { href: 'https://mannyflo.com', icon: <Globe size={20} />, label: 'mannyflo.com', sublabel: 'Personal website' },
   { href: 'https://instagram.com/mannyrunning', icon: <InstagramIcon size={20} />, label: '@mannyrunning', sublabel: 'Instagram' },
   { href: 'https://x.com/Mannyflo', icon: <XIcon size={20} />, label: '@Mannyflo', sublabel: 'X' },
   { href: 'https://www.linkedin.com/in/mannyflores11/', icon: <LinkedinIcon size={20} />, label: 'LinkedIn' },
