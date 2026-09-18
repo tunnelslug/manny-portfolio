@@ -73,6 +73,12 @@ describe('App', () => {
     expect(x).toHaveAttribute('href', 'https://x.com/Mannyflo')
   })
 
+  it('Get in Touch mails mannyflores1193@gmail.com', () => {
+    render(<App />)
+    const mail = screen.getAllByRole('link', { name: /get in touch/i })[0]
+    expect(mail).toHaveAttribute('href', 'mailto:mannyflores1193@gmail.com')
+  })
+
   it('hero names AI platforms, not AI tools held to a bar', () => {
     render(<App />)
     expect(screen.getByText(/AI platforms: accounts, scopes, and an offboard like everyone else/i)).toBeInTheDocument()

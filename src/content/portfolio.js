@@ -6,6 +6,12 @@
    the tools it takes. Plan = the history, with the counts and names.
    Building = what is moving now, each with an artifact or a shape. */
 
+/* One public inbox, matching LinkedIn and the resume. Every mailto on the
+   site points here so recruiters, /bio visitors, and schema.org all land
+   in the same place. */
+export const contactEmail = 'mannyflores1193@gmail.com';
+export const contactMailto = `mailto:${contactEmail}`;
+
 export const sectionCopy = {
   capabilities: {
     headline: 'What I can own.',

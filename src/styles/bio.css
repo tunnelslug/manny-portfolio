@@ -56,10 +56,6 @@
   word-break: normal;
 }
 
-.bio-role-nowrap {
-  white-space: nowrap;
-}
-
 @media (max-width: 480px) {
   .bio-role {
     letter-spacing: 0.03em;

@@ -18,6 +18,7 @@ import {
   planLines,
   planAriaLabel,
   projects,
+  contactMailto,
 } from './content/portfolio';
 
 const IconArrow = () => <ArrowRight size={14} strokeWidth={2} aria-hidden="true" />;
@@ -359,7 +360,7 @@ const App = () => {
             </motion.div>
 
             <motion.div ref={ctaRef} className="hero-cta-row" variants={fade}>
-              <FramerButton href="mailto:manny@flores.network" onClick={followed('mailto')}>
+              <FramerButton href={contactMailto} onClick={followed('mailto')}>
                 Get in Touch <IconArrow />
               </FramerButton>
               <FramerButton

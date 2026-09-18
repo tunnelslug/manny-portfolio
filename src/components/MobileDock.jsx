@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowRight, FileText } from 'lucide-react';
 import { GithubIcon, LinkedinIcon, XIcon } from './icons/BrandIcons';
+import { contactMailto } from '../content/portfolio';
 
 /* Phone-only action bar. The hero CTAs live in the first screen; once they
    scroll away this docks the same actions to the bottom edge, inside
@@ -14,7 +15,7 @@ const MobileDock = ({ visible, onResume, onFollow }) => {
       aria-hidden={!visible}
       data-testid="mobile-dock"
     >
-      <a className="dock-primary" href="mailto:manny@flores.network" onClick={onFollow('mailto')} tabIndex={tab}>
+      <a className="dock-primary" href={contactMailto} onClick={onFollow('mailto')} tabIndex={tab}>
         Get in Touch <ArrowRight size={16} aria-hidden="true" />
       </a>
       <a
