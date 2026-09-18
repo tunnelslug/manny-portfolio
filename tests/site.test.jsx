@@ -50,6 +50,24 @@ describe('/bio', () => {
     expect(screen.queryByText(/@mannyrunning/i)).not.toBeInTheDocument()
     expect(screen.queryByText(/kylo_renders/i)).not.toBeInTheDocument()
   })
+
+  it('keeps the Baby Registry and the agreed link order', () => {
+    render(<BioPage />)
+    const registry = screen.getByRole('link', { name: /Baby Registry/i })
+    expect(registry).toHaveAttribute('href', 'https://www.amazon.com/baby-reg/1NWHK22CZPH2H')
+    expect(registry).toHaveAttribute('target', '_blank')
+
+    const hrefs = screen.getAllByRole('link').map((a) => a.getAttribute('href'))
+    expect(hrefs).toEqual([
+      'https://mannyflo.com',
+      'https://mannyandcelesti.com',
+      'https://www.amazon.com/baby-reg/1NWHK22CZPH2H',
+      'https://instagram.com/luciddoomscroll',
+      'https://x.com/Mannyflo',
+      'https://www.linkedin.com/in/mannyflores11/',
+      contactMailto,
+    ])
+  })
 })
 
 describe('content', () => {
