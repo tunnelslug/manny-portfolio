@@ -41,8 +41,10 @@ describe('public contact', () => {
 
 describe('/bio', () => {
   it('is husband and soon-to-be dad, with the current link set', () => {
-    render(<BioPage />)
-    expect(screen.getByText(/Engineer · Runner · Husband · Soon-to-be Dad · SF Bay Area/i)).toBeInTheDocument()
+    const { container } = render(<BioPage />)
+    const role = container.querySelector('.bio-role')
+    expect(role).toHaveTextContent(/^Engineer · Runner · Husband · Soon-to-be Dad · SF Bay Area$/)
+    expect(role.querySelector('.bio-role-nowrap')).toHaveTextContent('Soon-to-be Dad')
     expect(screen.getByRole('link', { name: /@luciddoomscroll/i })).toHaveAttribute('href', 'https://instagram.com/luciddoomscroll')
     expect(screen.getByRole('link', { name: /@Mannyflo/i })).toHaveAttribute('href', 'https://x.com/Mannyflo')
     expect(screen.queryByRole('link', { name: /GitHub/i })).not.toBeInTheDocument()
