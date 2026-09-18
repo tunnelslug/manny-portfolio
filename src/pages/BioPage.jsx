@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import { Globe, Heart, Baby, Mail } from 'lucide-react';
+import { Globe, Heart, Mail } from 'lucide-react';
 import { LinkedinIcon, XIcon, InstagramIcon } from '../components/icons/BrandIcons';
 import ThemeToggle from '../components/ThemeToggle';
 import BioLink from '../components/BioLink';
@@ -9,8 +9,6 @@ import { contactEmail, contactMailto } from '../content/portfolio';
 const LINKS = [
   { href: 'https://mannyflo.com', icon: <Globe size={20} />, label: 'mannyflo.com', sublabel: 'Personal website' },
   { href: 'https://mannyandcelesti.com', icon: <Heart size={20} />, label: 'mannyandcelesti.com', sublabel: 'Family website' },
-  { href: 'https://www.amazon.com/baby-reg/1NWHK22CZPH2H', icon: <Baby size={20} />, label: 'Baby Registry', sublabel: 'Amazon' },
-  { href: 'https://www.instagram.com/kylo_renders?igsh=NTc4MTIwNjQ2YQ==', icon: <InstagramIcon size={20} />, label: '@kylo_renders', sublabel: 'SF Baby Shower Photos' },
   { href: 'https://instagram.com/luciddoomscroll', icon: <InstagramIcon size={20} />, label: '@luciddoomscroll', sublabel: 'Instagram' },
   { href: 'https://x.com/Mannyflo', icon: <XIcon size={20} />, label: '@Mannyflo', sublabel: 'X' },
   { href: 'https://www.linkedin.com/in/mannyflores11/', icon: <LinkedinIcon size={20} />, label: 'LinkedIn' },
@@ -64,7 +62,7 @@ const BioPage = () => {
           Manny Flores
         </motion.h1>
         <motion.p className="bio-role" variants={faderVariants(shouldReduceMotion)}>
-          Engineer · Runner · Husband · <span className="bio-role-nowrap">Soon-to-be Dad</span> · SF&nbsp;Bay&nbsp;Area
+          Engineer · Runner · Husband · Dad · SF&nbsp;Bay&nbsp;Area
         </motion.p>
 
         <motion.div className="bio-link-list" variants={staggerContainer(shouldReduceMotion)}>
