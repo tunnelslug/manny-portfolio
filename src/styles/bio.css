@@ -56,6 +56,7 @@
   word-break: normal;
 }
 
+/* Hyphens are break opportunities; keep "Soon-to-be Dad" on one line. */
 .bio-role-nowrap {
   white-space: nowrap;
 }

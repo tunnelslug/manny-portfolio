@@ -6,6 +6,12 @@
    the tools it takes. Plan = the history, with the counts and names.
    Building = what is moving now, each with an artifact or a shape. */
 
+/* One public inbox, matching LinkedIn and the resume. Every mailto on the
+   site points here so recruiters, /bio visitors, and schema.org all land
+   in the same place. */
+export const contactEmail = 'mannyflores1193@gmail.com';
+export const contactMailto = `mailto:${contactEmail}`;
+
 export const sectionCopy = {
   capabilities: {
     headline: 'What I can own.',
@@ -44,8 +50,8 @@ export const capabilities = [
   },
   {
     state: 'expanding',
-    title: 'AI tooling governance',
-    desc: 'Every AI tool the company adopts goes through the same gate as a new hire: SSO, group-based entitlement, offboarding. Each agent gets its own identity and an explicit scope list, so an MCP server touching Jira or Slack acts as itself, not as whoever installed it. Automation never holds a secret: service-account credentials are checked out of the vault at runtime and returned.',
+    title: 'AI platform identity',
+    desc: 'Claude, Cursor, ChatGPT, and Gemini Enterprise get accounts, SCIM, roles, and an offboard like everyone else. An MCP server touching Jira or Slack acts as itself, not as whoever installed it. Service-account credentials are checked out of the vault at runtime and returned. Identity, not model safety.',
     tools: ['MCP', 'Claude Code', 'ChatGPT', 'Cursor', 'Gemini Enterprise'],
   },
   {
@@ -57,7 +63,7 @@ export const capabilities = [
   {
     state: 'hardening',
     title: 'Collaboration security',
-    desc: 'Google Workspace and Slack, where every employee and every new AI tool lands first. Who can share what outside the company, which third-party apps may connect, and what lands in the audit trail.',
+    desc: 'Google Workspace and Slack, where every employee and every new AI platform lands first. Who can share what outside the company, which third-party apps may connect, and what lands in the audit trail.',
     tools: ['Google Workspace', 'Slack', 'DLP', 'OAuth app governance'],
   },
 ];
@@ -84,7 +90,7 @@ export const planLines = [
   },
   {
     type: 'add',
-    text: '+ ai_tools.identity_governance[4]  # Claude Code, ChatGPT, Cursor, Gemini Enterprise',
+    text: '+ ai_platform.identity[4]          # Claude Code, ChatGPT, Cursor, Gemini Enterprise: accounts, SCIM, roles',
   },
   {
     type: 'add',
@@ -117,7 +123,7 @@ export const planLines = [
 ];
 
 export const planAriaLabel =
-  'Career summary formatted as a Terraform plan: role changed from Systems Administrator to Senior Systems Engineer and team lead; added Okta Identity Governance rollout, six acquisitions merged into one Okta tenant, identity governance for four AI tools, and Okta configuration managed as Terraform code; access requests changed from manual tickets to automated fulfillment; acquisition intake changed from per-deal to a company standard covering apps and identity providers, merging duplicates of systems already run; unreviewed standing access removed; standalone acquired identity providers, Entra ID the largest, unified into Okta and retired.';
+  'Career summary formatted as a Terraform plan: role changed from Systems Administrator to Senior Systems Engineer and team lead; added Okta Identity Governance rollout, six acquisitions merged into one Okta tenant, identity for four AI platforms, and Okta configuration managed as Terraform code; access requests changed from manual tickets to automated fulfillment; acquisition intake changed from per-deal to a company standard covering apps and identity providers, merging duplicates of systems already run; unreviewed standing access removed; standalone acquired identity providers, Entra ID the largest, unified into Okta and retired.';
 
 /* What is moving now. Each entry carries a `proof`: an artifact with a
    link, or the shape of the thing in mono lines. No proof, no entry. */
@@ -159,7 +165,7 @@ export const projects = [
   {
     status: 'Building',
     title: 'Google Workspace hardening',
-    desc: "Tightening Google Workspace: access policies, DLP, third-party OAuth, audit coverage. The attack surface gets bigger every time someone installs a new AI tool, and that's the part I'm watching.",
+    desc: "Tightening Google Workspace: access policies, DLP, third-party OAuth, audit coverage. The attack surface gets bigger every time someone connects a new AI platform, and that's the part I'm watching.",
     tags: ['Google Workspace', 'DLP', 'OAuth'],
     proof: {
       kind: 'surface',
@@ -226,12 +232,12 @@ export const fabricNodes = [
     detail: 'Service accounts authenticate through brokered credentials: checked out from the vault programmatically and returned. Never held.',
   },
   {
-    id: 'agents',
+    id: 'platforms',
     x: 310, y: 388,
-    label: 'ai agents', sub: 'scoped · audited',
+    label: 'ai platforms', sub: 'accounts · scoped',
     labelPos: 'below',
     flow: 'in',
-    detail: 'Claude Code, ChatGPT, Cursor, Gemini Enterprise: each with an identity, explicit scopes, and an audit trail.',
+    detail: 'Claude Code, ChatGPT, Cursor, Gemini Enterprise: accounts, SCIM, roles, explicit scopes, and an audit trail.',
   },
 ];
 
