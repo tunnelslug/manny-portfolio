@@ -46,7 +46,7 @@ writeFileSync(
   buildPage('/bio', {
     title: 'Manny Flores · Links',
     description:
-      'Links for Manny Flores: personal site, LinkedIn, GitHub, Instagram, and more.',
+      'Links for Manny Flores: personal site, LinkedIn, X, Instagram, and more.',
     url: 'https://www.mannyflo.com/bio',
   }),
 )

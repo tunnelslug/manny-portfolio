@@ -10,7 +10,7 @@ Mixed audience landing on mannyflo.com: hiring managers and recruiters scanning 
 
 ## Product Purpose
 
-mannyflo.com is the brand surface for Manny Flores. Senior Systems Engineer at Robinhood. Owns identity and corporate apps infrastructure: Okta, GCP, Google Workspace. Current focus: making AI tooling adoptable across the company without losing control of who can do what.
+mannyflo.com is the brand surface for Manny Flores. Senior Systems Engineer at Robinhood. Owns identity and corporate apps infrastructure: Okta, GCP, Google Workspace. Current focus: AI platform identity, so the company can adopt Claude, Cursor, ChatGPT, and Gemini without losing control of who can do what.
 
 The site exists to leave one impression: *"I understand what he does, and he clearly knows it cold."* Design IS the product. The way it looks and reads is the work, and the work is the proof.
 

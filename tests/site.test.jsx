@@ -2,11 +2,55 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import App from '../src/App.jsx'
+import BioPage from '../src/pages/BioPage.jsx'
 import { resetAudit } from '../src/lib/audit.js'
-import { capabilities, projects, planLines, fabricNodes } from '../src/content/portfolio.js'
+import { capabilities, projects, planLines, fabricNodes, planAriaLabel, contactEmail, contactMailto } from '../src/content/portfolio.js'
 
 vi.mock('@vercel/analytics/react', () => ({ Analytics: () => null }))
 vi.mock('@vercel/speed-insights/react', () => ({ SpeedInsights: () => null }))
+
+describe('AI platform identity', () => {
+  it('uses that phrase everywhere, not tooling governance or AI agents', () => {
+    const ai = capabilities.find((c) => /AI/i.test(c.title))
+    expect(ai.title).toBe('AI platform identity')
+    expect(ai.desc).toMatch(/Identity, not model safety/)
+    expect(planLines.some((l) => l.text.includes('+ ai_platform.identity[4]'))).toBe(true)
+    expect(planAriaLabel).toMatch(/identity for four AI platforms/)
+    const node = fabricNodes.find((n) => n.id === 'platforms')
+    expect(node.label).toBe('ai platforms')
+    expect(node.sub).toBe('accounts · scoped')
+  })
+})
+
+describe('public contact', () => {
+  it('is the Gmail on LinkedIn and the resume, not flores.network', () => {
+    expect(contactEmail).toBe('mannyflores1193@gmail.com')
+    expect(contactMailto).toBe('mailto:mannyflores1193@gmail.com')
+  })
+
+  it('hero Get in Touch and /bio Email both open that inbox', () => {
+    const { unmount } = render(<App />)
+    const heroMail = screen.getAllByRole('link', { name: /get in touch/i })[0]
+    expect(heroMail).toHaveAttribute('href', contactMailto)
+    unmount()
+
+    render(<BioPage />)
+    expect(screen.getByRole('link', { name: /mannyflores1193@gmail\.com/i })).toHaveAttribute('href', contactMailto)
+  })
+})
+
+describe('/bio', () => {
+  it('is husband and dad, with the current link set', () => {
+    render(<BioPage />)
+    expect(screen.getByText(/Engineer · Runner · Husband · Dad/i)).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: /@luciddoomscroll/i })).toHaveAttribute('href', 'https://instagram.com/luciddoomscroll')
+    expect(screen.getByRole('link', { name: /@Mannyflo/i })).toHaveAttribute('href', 'https://x.com/Mannyflo')
+    expect(screen.queryByRole('link', { name: /GitHub/i })).not.toBeInTheDocument()
+    expect(screen.queryByText(/Soon-to-be/i)).not.toBeInTheDocument()
+    expect(screen.queryByText(/@mannyrunning/i)).not.toBeInTheDocument()
+    expect(screen.queryByText(/kylo_renders/i)).not.toBeInTheDocument()
+  })
+})
 
 describe('content', () => {
   it('renders every capability, case study, and plan line', () => {
@@ -138,7 +182,7 @@ describe('mobile dock', () => {
     const { act } = await import('@testing-library/react')
     act(() => io.cb([{ isIntersecting: false, intersectionRatio: 0 }]))
     expect(dock).toHaveAttribute('aria-hidden', 'false')
-    expect(within(dock).getByRole('link', { name: /get in touch/i })).toHaveAttribute('href', 'mailto:manny@flores.network')
+    expect(within(dock).getByRole('link', { name: /get in touch/i })).toHaveAttribute('href', contactMailto)
     expect(within(dock).getByRole('link', { name: /^x$/i })).toHaveAttribute('href', 'https://x.com/Mannyflo')
     expect(within(dock).getByRole('button', { name: /resume/i })).toBeInTheDocument()
 
