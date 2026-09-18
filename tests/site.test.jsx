@@ -3,10 +3,23 @@ import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import App from '../src/App.jsx'
 import { resetAudit } from '../src/lib/audit.js'
-import { capabilities, projects, planLines, fabricNodes } from '../src/content/portfolio.js'
+import { capabilities, projects, planLines, fabricNodes, planAriaLabel } from '../src/content/portfolio.js'
 
 vi.mock('@vercel/analytics/react', () => ({ Analytics: () => null }))
 vi.mock('@vercel/speed-insights/react', () => ({ SpeedInsights: () => null }))
+
+describe('AI platform identity', () => {
+  it('uses that phrase everywhere, not tooling governance or AI agents', () => {
+    const ai = capabilities.find((c) => /AI/i.test(c.title))
+    expect(ai.title).toBe('AI platform identity')
+    expect(ai.desc).toMatch(/Identity, not model safety/)
+    expect(planLines.some((l) => l.text.includes('+ ai_platform.identity[4]'))).toBe(true)
+    expect(planAriaLabel).toMatch(/identity for four AI platforms/)
+    const node = fabricNodes.find((n) => n.id === 'platforms')
+    expect(node.label).toBe('ai platforms')
+    expect(node.sub).toBe('accounts · scoped')
+  })
+})
 
 describe('content', () => {
   it('renders every capability, case study, and plan line', () => {

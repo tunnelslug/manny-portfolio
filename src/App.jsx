@@ -352,8 +352,8 @@ const App = () => {
                 Identity is what I do: who gets in, what they can touch, and how
                 access ends when they leave. Ten years of building that across fintech
                 and healthcare: sign-in and provisioning, governance and audit, acquired
-                companies folded into one standard, and the rules that hold AI tools to
-                the same bar as everyone else. The question never changes:{' '}
+                companies folded into one standard, and AI platforms: accounts,
+                scopes, and an offboard like everyone else. The question never changes:{' '}
                 <span className="accent">who, or what, is asking, what may it do, and can I prove it later</span>.
               </motion.p>
             </motion.div>

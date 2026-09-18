@@ -73,6 +73,13 @@ describe('App', () => {
     expect(x).toHaveAttribute('href', 'https://x.com/Mannyflo')
   })
 
+  it('hero names AI platforms, not AI tools held to a bar', () => {
+    render(<App />)
+    expect(screen.getByText(/AI platforms: accounts, scopes, and an offboard like everyone else/i)).toBeInTheDocument()
+    expect(screen.queryByText(/hold AI tools to the same bar/i)).not.toBeInTheDocument()
+    expect(screen.getByText(/Senior Systems Engineer · Corporate Systems Lead, Robinhood/)).toBeInTheDocument()
+  })
+
   it('renders the footer with the current year', () => {
     render(<App />)
     const year = new Date().getFullYear()
