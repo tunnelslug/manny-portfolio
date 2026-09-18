@@ -40,28 +40,28 @@ describe('public contact', () => {
 })
 
 describe('/bio', () => {
-  it('is husband and dad, with the current link set', () => {
+  it('is husband and soon-to-be dad, with the current link set', () => {
     render(<BioPage />)
-    expect(screen.getByText(/Engineer · Runner · Husband · Dad/i)).toBeInTheDocument()
+    expect(screen.getByText(/Engineer · Runner · Husband · Soon-to-be Dad · SF Bay Area/i)).toBeInTheDocument()
     expect(screen.getByRole('link', { name: /@luciddoomscroll/i })).toHaveAttribute('href', 'https://instagram.com/luciddoomscroll')
     expect(screen.getByRole('link', { name: /@Mannyflo/i })).toHaveAttribute('href', 'https://x.com/Mannyflo')
     expect(screen.queryByRole('link', { name: /GitHub/i })).not.toBeInTheDocument()
-    expect(screen.queryByText(/Soon-to-be/i)).not.toBeInTheDocument()
     expect(screen.queryByText(/@mannyrunning/i)).not.toBeInTheDocument()
-    expect(screen.queryByText(/kylo_renders/i)).not.toBeInTheDocument()
   })
 
-  it('keeps the Baby Registry and the agreed link order', () => {
+  it('keeps the Baby Registry, the shower photos, and the agreed link order', () => {
     render(<BioPage />)
     const registry = screen.getByRole('link', { name: /Baby Registry/i })
     expect(registry).toHaveAttribute('href', 'https://www.amazon.com/baby-reg/1NWHK22CZPH2H')
     expect(registry).toHaveAttribute('target', '_blank')
+    expect(screen.getByRole('link', { name: /@kylo_renders/i })).toHaveTextContent(/SF Baby Shower Photos/)
 
     const hrefs = screen.getAllByRole('link').map((a) => a.getAttribute('href'))
     expect(hrefs).toEqual([
       'https://mannyflo.com',
       'https://mannyandcelesti.com',
       'https://www.amazon.com/baby-reg/1NWHK22CZPH2H',
+      'https://www.instagram.com/kylo_renders?igsh=NTc4MTIwNjQ2YQ==',
       'https://instagram.com/luciddoomscroll',
       'https://x.com/Mannyflo',
       'https://www.linkedin.com/in/mannyflores11/',
