@@ -4,6 +4,7 @@ import { Globe, Heart, Baby, Mail } from 'lucide-react';
 import { GithubIcon, LinkedinIcon, InstagramIcon } from '../components/icons/BrandIcons';
 import ThemeToggle from '../components/ThemeToggle';
 import BioLink from '../components/BioLink';
+import { contactEmail, contactMailto } from '../content/portfolio';
 
 const LINKS = [
   { href: 'https://mannyflo.com', icon: <Globe size={20} />, label: 'mannyflo.com', sublabel: 'Personal website' },
@@ -13,7 +14,7 @@ const LINKS = [
   { href: 'https://www.linkedin.com/in/mannyflores11/', icon: <LinkedinIcon size={20} />, label: 'LinkedIn' },
   { href: 'https://github.com/tunnelslug', icon: <GithubIcon size={20} />, label: 'GitHub' },
   { href: 'https://instagram.com/mannyrunning', icon: <InstagramIcon size={20} />, label: '@mannyrunning', sublabel: 'Instagram' },
-  { href: 'mailto:mannyflores1193@gmail.com', icon: <Mail size={20} />, label: 'Email' },
+  { href: contactMailto, icon: <Mail size={20} />, label: contactEmail, sublabel: 'Email' },
 ];
 
 const faderVariants = (shouldReduceMotion) => shouldReduceMotion ? {

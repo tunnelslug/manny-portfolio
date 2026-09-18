@@ -149,6 +149,7 @@ Each axis scored 0–5; targeting ≥ 4.
 
 ## Contact
 
+- Email: [manny@mannyflo.com](mailto:manny@mannyflo.com)
 - [LinkedIn](https://linkedin.com/in/mannyflores11)
 
 ## License

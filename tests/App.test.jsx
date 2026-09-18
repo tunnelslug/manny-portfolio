@@ -73,6 +73,12 @@ describe('App', () => {
     expect(x).toHaveAttribute('href', 'https://x.com/Mannyflo')
   })
 
+  it('Get in Touch mails manny@mannyflo.com', () => {
+    render(<App />)
+    const mail = screen.getAllByRole('link', { name: /get in touch/i })[0]
+    expect(mail).toHaveAttribute('href', 'mailto:manny@mannyflo.com')
+  })
+
   it('renders the footer with the current year', () => {
     render(<App />)
     const year = new Date().getFullYear()
