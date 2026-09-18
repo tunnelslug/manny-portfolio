@@ -10,9 +10,9 @@ vi.mock('@vercel/analytics/react', () => ({ Analytics: () => null }))
 vi.mock('@vercel/speed-insights/react', () => ({ SpeedInsights: () => null }))
 
 describe('public contact', () => {
-  it('is the mannyflo.com inbox, not gmail or flores.network', () => {
-    expect(contactEmail).toBe('manny@mannyflo.com')
-    expect(contactMailto).toBe('mailto:manny@mannyflo.com')
+  it('is the Gmail on LinkedIn and the resume, not flores.network or mannyflo.com', () => {
+    expect(contactEmail).toBe('mannyflores1193@gmail.com')
+    expect(contactMailto).toBe('mailto:mannyflores1193@gmail.com')
   })
 
   it('hero Get in Touch and /bio Email both open that inbox', () => {
@@ -22,7 +22,7 @@ describe('public contact', () => {
     unmount()
 
     render(<BioPage />)
-    expect(screen.getByRole('link', { name: /manny@mannyflo\.com/i })).toHaveAttribute('href', contactMailto)
+    expect(screen.getByRole('link', { name: /mannyflores1193@gmail\.com/i })).toHaveAttribute('href', contactMailto)
   })
 })
 
