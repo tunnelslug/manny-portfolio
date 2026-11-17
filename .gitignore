@@ -22,6 +22,7 @@ REFACTOR.md
 task.md
 .claude/
 .agents/
+skills-lock.json
 
 # Editor directories and files
 .vscode/*
