@@ -15,7 +15,7 @@ export const contactMailto = `mailto:${contactEmail}`;
 export const sectionCopy = {
   capabilities: {
     headline: 'What I can own.',
-    lede: 'Okta, Google Cloud, and Google Workspace at a public fintech: every login, permission, and offboarding runs through these. Green rows are in production and audited; amber rows are being built or hardened right now.',
+    lede: 'Okta, Google Cloud, and Google Workspace at a public fintech: every login, permission, and offboarding runs through these. Operating means in production and audited; expanding and hardening are being built or tightened right now.',
   },
   plan: {
     headline: 'The access plan.',

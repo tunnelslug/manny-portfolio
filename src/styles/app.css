@@ -32,38 +32,13 @@
   initial-value: -2%;
 }
 
-/* ── Scroll-driven text reveal ───────────────────── */
-@keyframes text-rise {
-  from { opacity: 0; transform: translateY(14px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-@supports (animation-timeline: view()) {
-  .hero-lede,
-  .section-lede,
-  .case-body p,
-  .cap-body p {
-    animation: text-rise linear both;
-    animation-timeline: view();
-    animation-range: entry 0% entry 40%;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .btn, .btn-ghost {
-    transition: none !important;
-  }
-  .hero-lede,
-  .section-lede,
-  .case-body p,
-  .cap-body p {
-    animation: none !important;
-  }
-}
-
+/* ── Reduced motion kill switch ──────────────────────
+   Framer Motion owns every entrance reveal (one engine per element);
+   CSS keeps only transitions and the scroll hairline. */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
@@ -393,8 +368,6 @@ button:focus-visible {
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  transition: opacity 320ms var(--ease-out),
-              transform 320ms var(--ease-out);
 }
 
 .btn-ghost {
@@ -414,16 +387,9 @@ button:focus-visible {
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  transition: border-color var(--motion-base) var(--ease-out),
-              opacity 320ms var(--ease-out),
-              transform 320ms var(--ease-out);
-}
-
-@starting-style {
-  .btn, .btn-ghost {
-    opacity: 0;
-    transform: translateY(8px);
-  }
+  /* Framer owns transform (whileTap) and the hover ink; CSS only eases
+     the border. Buttons paint in place on first load. */
+  transition: border-color var(--motion-base) var(--ease-out);
 }
 
 .icon-btn {
@@ -433,7 +399,7 @@ button:focus-visible {
   width: 44px;
   height: 44px;
   background: transparent;
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-border-control);
   border-radius: var(--radius-md);
   color: var(--color-text-muted);
   cursor: pointer;
@@ -515,6 +481,12 @@ button:focus-visible {
   padding: var(--space-4) var(--space-9);
   max-width: 1280px;
   margin: 0 auto;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
 }
 
 /* Reading progress: a clay hairline that fills as the page is read.
@@ -609,7 +581,7 @@ button:focus-visible {
   height: 44px;
   padding: 0;
   background: transparent;
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-border-control);
   border-radius: var(--radius-md);
   cursor: pointer;
   transition: border-color var(--motion-fast) var(--ease-out);
@@ -715,6 +687,12 @@ button:focus-visible {
   margin: 0;
   /* line the top node up with the eyebrow row */
   margin-top: calc(-1 * var(--space-2));
+}
+
+/* The phone portrait ships in the prerendered HTML so the hero-id grid
+   is right before hydration; desktop shows the fabric portrait instead. */
+.hero-portrait {
+  display: none;
 }
 
 .hero-name {
@@ -1296,7 +1274,6 @@ a:hover {
 }
 
 /* nav + control links override default underline */
-.icon-btn,
 .nav-item,
 .wordmark,
 .skip-link {
@@ -1430,12 +1407,16 @@ a.btn-ghost:hover {
     gap: var(--space-2);
     width: 100%;
   }
+  /* Four ghost buttons share one row; side padding stays tight so
+     "LinkedIn" fits a 360px phone without spilling into the padding. */
   .hero-cta-row .btn,
   .hero-cta-row .btn-ghost {
-    padding: 12px 16px;
+    min-height: 44px;
+    padding: 12px 8px;
     font-size: var(--fs-sm);
     justify-content: center;
     width: 100%;
+    white-space: nowrap;
   }
   .hero-cta-row .btn {
     grid-column: 1 / -1;

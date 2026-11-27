@@ -16,6 +16,7 @@
   --color-border: oklch(20.5% 0.012 50 / 16%);
   --color-border-subtle: oklch(20.5% 0.012 50 / 9%);
   --color-border-strong: oklch(20.5% 0.012 50);
+  --color-border-control: oklch(20.5% 0.012 50 / 48%); /* control outlines: 3:1 on bg (WCAG 1.4.11) */
 
   --color-text: oklch(21% 0.012 50);           /* warm ink */
   --color-text-muted: oklch(41% 0.012 50);
@@ -140,6 +141,7 @@
     --color-border: oklch(92% 0.010 75 / 18%);
     --color-border-subtle: oklch(92% 0.010 75 / 10%);
     --color-border-strong: oklch(92% 0.010 75);
+    --color-border-control: oklch(92% 0.010 75 / 40%);
 
     --color-text: oklch(92% 0.010 75);
     --color-text-muted: oklch(73% 0.010 70);
@@ -181,6 +183,7 @@
   --color-border: oklch(92% 0.010 75 / 18%);
   --color-border-subtle: oklch(92% 0.010 75 / 10%);
   --color-border-strong: oklch(92% 0.010 75);
+  --color-border-control: oklch(92% 0.010 75 / 40%);
 
   --color-text: oklch(92% 0.010 75);
   --color-text-muted: oklch(73% 0.010 70);

@@ -150,10 +150,18 @@ describe('access fabric', () => {
   })
 
   it('renders one focusable node per system in scope, plus the portrait', () => {
-    render(<App />)
+    const { container } = render(<App />)
     const nodes = screen.getAllByRole('button', { pressed: false }).filter(b => b.classList.contains('ig-node'))
     expect(nodes).toHaveLength(fabricNodes.length)
-    expect(screen.getByAltText(/portrait of manny flores/i)).toBeInTheDocument()
+    const fabric = container.querySelector('.hero-fabric')
+    expect(within(fabric).getByAltText(/portrait of manny flores/i)).toBeInTheDocument()
+  })
+
+  it('ships the phone portrait in the markup so the layout is right before hydration', () => {
+    const { container } = render(<App />)
+    const portrait = container.querySelector('.hero-id img.hero-portrait')
+    expect(portrait).not.toBeNull()
+    expect(portrait).toHaveAttribute('src', '/portrait-152.webp')
   })
 
   it('pins a node on click and shows its brief in the readout', async () => {

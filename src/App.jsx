@@ -1,7 +1,7 @@
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { LazyMotion, domAnimation, m, useReducedMotion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import ResumeDialog from './components/ResumeDialog';
 import CaseStudy from './components/CaseStudy';
@@ -89,7 +89,7 @@ const planContainer = (shouldReduceMotion) => ({
 });
 
 const Section = ({ id, labelledBy, className = '', shouldReduceMotion, children }) => (
-  <motion.section
+  <m.section
     id={id}
     className={`section ${className}`}
     aria-labelledby={labelledBy}
@@ -98,11 +98,11 @@ const Section = ({ id, labelledBy, className = '', shouldReduceMotion, children 
     whileInView="visible"
     viewport={{ once: true, margin: "-10%" }}
   >
-    <motion.div variants={faderVariants(shouldReduceMotion)}>
+    <m.div variants={faderVariants(shouldReduceMotion)}>
       <Eyebrow label={eyebrowFor(id)} />
-    </motion.div>
+    </m.div>
     {children}
-  </motion.section>
+  </m.section>
 );
 
 const App = () => {
@@ -211,7 +211,7 @@ const App = () => {
   const fade = faderVariants(shouldReduceMotion);
 
   return (
-    <>
+    <LazyMotion features={domAnimation} strict>
       <a href="#main" className="skip-link">Skip to content</a>
 
       {/* Papel picado stripe · identity mark, matches the favicon, once at the very top */}
@@ -248,7 +248,7 @@ const App = () => {
             mannyflo<span className="wordmark-dot">.</span>
           </button>
 
-          <div className="flex items-center gap-4">
+          <div className="nav-actions">
             <div className="nav-desktop">
               {NAV_SECTIONS.map(({ id, label }) => (
                 <button
@@ -309,57 +309,57 @@ const App = () => {
       </div>
 
       <main id="main">
-        {/* Hero / About */}
-        <motion.section
+        {/* Hero / About. No entrance animation: the prerendered hero is
+            already painted, and fading it out on hydrate would hide the
+            first paint. The first paint is the page. */}
+        <m.section
           id="about"
           className="hero"
           aria-labelledby="hero-name"
           variants={staggerContainer(shouldReduceMotion)}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-10%" }}
+          initial={false}
+          animate="visible"
         >
           <div className="hero-grid">
-            <motion.div className="hero-text-block" variants={staggerContainer(shouldReduceMotion)}>
-              <motion.div variants={fade}>
+            <m.div className="hero-text-block" variants={staggerContainer(shouldReduceMotion)}>
+              <m.div variants={fade}>
                 <Eyebrow label={eyebrowFor('about')} />
-              </motion.div>
+              </m.div>
 
               <div className="hero-id">
-                {phone && (
-                  <motion.img
-                    src="/portrait-152.webp"
-                    alt="Portrait of Manny Flores"
-                    className="hero-portrait"
-                    width="152"
-                    height="152"
-                    loading="eager"
-                    fetchPriority="high"
-                    decoding="async"
-                    variants={fade}
-                  />
-                )}
+                {/* Always in the markup so the phone layout is right before
+                    hydration; CSS shows it only under 768px. */}
+                <m.img
+                  src="/portrait-152.webp"
+                  alt="Portrait of Manny Flores"
+                  className="hero-portrait"
+                  width="152"
+                  height="152"
+                  loading="eager"
+                  decoding="async"
+                  variants={fade}
+                />
                 <div>
-                  <motion.h1 id="hero-name" className="hero-name" variants={fade}>
+                  <m.h1 id="hero-name" className="hero-name" variants={fade}>
                     Manny Flores
-                  </motion.h1>
-                  <motion.p className="hero-role" variants={fade}>
+                  </m.h1>
+                  <m.p className="hero-role" variants={fade}>
                     Senior Systems Engineer · Corporate Systems Lead, Robinhood
-                  </motion.p>
+                  </m.p>
                 </div>
               </div>
 
-              <motion.p className="hero-lede" variants={fade}>
+              <m.p className="hero-lede" variants={fade}>
                 Identity is what I do: who gets in, what they can touch, and how
                 access ends when they leave. Ten years of building that across fintech
                 and healthcare: sign-in and provisioning, governance and audit, acquired
                 companies folded into one standard, and AI platforms: accounts,
                 scopes, and an offboard like everyone else. The question never changes:{' '}
                 <span className="accent">who, or what, is asking, what may it do, and can I prove it later</span>.
-              </motion.p>
-            </motion.div>
+              </m.p>
+            </m.div>
 
-            <motion.div ref={ctaRef} className="hero-cta-row" variants={fade}>
+            <m.div ref={ctaRef} className="hero-cta-row" variants={fade}>
               <FramerButton href={contactMailto} onClick={followed('mailto')}>
                 Get in Touch <IconArrow />
               </FramerButton>
@@ -397,12 +397,12 @@ const App = () => {
               >
                 Resume
               </FramerButton>
-            </motion.div>
+            </m.div>
 
             {phone && (
               /* The buttons are the last thing in a phone's first screen and
                  read like the end of the page. This says what follows. */
-              <motion.nav className="hero-next" aria-label="Sections below" variants={fade}>
+              <m.nav className="hero-next" aria-label="Sections below" variants={fade}>
                 <span className="hero-next-arrow" aria-hidden="true">↓</span>
                 {NAV_SECTIONS.filter((s) => s.id !== 'about').map((s, i) => (
                   <React.Fragment key={s.id}>
@@ -412,29 +412,29 @@ const App = () => {
                     </button>
                   </React.Fragment>
                 ))}
-              </motion.nav>
+              </m.nav>
             )}
 
             {!phone && (
-              <motion.figure className="hero-fabric" variants={fade}>
+              <m.figure className="hero-fabric" variants={fade}>
                 <IdentityGraph live={live} />
-              </motion.figure>
+              </m.figure>
             )}
           </div>
-        </motion.section>
+        </m.section>
 
         {/* Capabilities · what he can own, and the tools it takes */}
         <Section id="capabilities" labelledBy="capabilities-h" shouldReduceMotion={shouldReduceMotion}>
-          <motion.h2 id="capabilities-h" className="section-headline" variants={fade}>
+          <m.h2 id="capabilities-h" className="section-headline" variants={fade}>
             {sectionCopy.capabilities.headline}
-          </motion.h2>
-          <motion.p className="section-lede" variants={fade}>
+          </m.h2>
+          <m.p className="section-lede" variants={fade}>
             {sectionCopy.capabilities.lede}
-          </motion.p>
+          </m.p>
 
-          <motion.div className="cap-list" variants={staggerContainer(shouldReduceMotion)}>
+          <m.div className="cap-list" variants={staggerContainer(shouldReduceMotion)}>
             {capabilities.map((item, i) => (
-              <motion.div key={i} className="cap-row" variants={fade}>
+              <m.div key={item.title} className="cap-row" variants={fade}>
                 <span className="cap-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
                 <h3 className="cap-title">{item.title}</h3>
                 <div className="cap-body">
@@ -446,22 +446,22 @@ const App = () => {
                   </ul>
                 </div>
                 <span className={`pill pill--${item.state}`}>{item.state}</span>
-              </motion.div>
+              </m.div>
             ))}
-          </motion.div>
+          </m.div>
         </Section>
 
         {/* Plan · career as a plan diff */}
         <Section id="plan" labelledBy="plan-h" shouldReduceMotion={shouldReduceMotion}>
-          <motion.h2 id="plan-h" className="section-headline" variants={fade}>
+          <m.h2 id="plan-h" className="section-headline" variants={fade}>
             {sectionCopy.plan.headline}
-          </motion.h2>
-          <motion.p className="section-lede" variants={fade}>
+          </m.h2>
+          <m.p className="section-lede" variants={fade}>
             {sectionCopy.plan.lede}
             <button className="lede-link" onClick={openResume}>resume</button>.
-          </motion.p>
+          </m.p>
 
-          <motion.div className="plan-block" variants={planContainer(shouldReduceMotion)}>
+          <m.div className="plan-block" variants={planContainer(shouldReduceMotion)}>
             <div className="plan-titlebar" aria-hidden="true">
               <span>terraform plan</span>
               <span className="plan-titlebar-right">career/manny-flores</span>
@@ -472,37 +472,38 @@ const App = () => {
               tabIndex={0}
               aria-label={planAriaLabel}
             >
-              {planLines.map((line, i) => {
+              {planLines.map((line) => {
                 const [statement, comment] = splitPlanLine(line.text);
                 return (
-                  <motion.div
-                    key={i}
+                  <m.div
+                    key={line.text}
                     className={`plan-line plan-line--${line.type}`}
+                    aria-hidden="true"
                     variants={planLineVariants(shouldReduceMotion)}
                   >
                     <span className="plan-line-text">
                       {statement}
                       {comment && <span className="plan-comment">{comment}</span>}
                     </span>
-                  </motion.div>
+                  </m.div>
                 );
               })}
             </div>
-          </motion.div>
+          </m.div>
         </Section>
 
         {/* Building now · each with its artifact or shape */}
         <Section id="building" labelledBy="building-h" shouldReduceMotion={shouldReduceMotion}>
-          <motion.h2 id="building-h" className="section-headline" variants={fade}>
+          <m.h2 id="building-h" className="section-headline" variants={fade}>
             {sectionCopy.building.headline}
-          </motion.h2>
-          <motion.p className="section-lede" variants={fade}>
+          </m.h2>
+          <m.p className="section-lede" variants={fade}>
             {sectionCopy.building.lede}
-          </motion.p>
+          </m.p>
 
-          <motion.div className="case-list" variants={staggerContainer(shouldReduceMotion)}>
-            {projects.map((project, index) => (
-              <motion.div key={index} variants={fade}>
+          <m.div className="case-list" variants={staggerContainer(shouldReduceMotion)}>
+            {projects.map((project) => (
+              <m.div key={project.title} variants={fade}>
                 <CaseStudy
                   title={project.title}
                   status={project.status}
@@ -511,9 +512,9 @@ const App = () => {
                   proof={project.proof}
                   onFollow={followed}
                 />
-              </motion.div>
+              </m.div>
             ))}
-          </motion.div>
+          </m.div>
         </Section>
 
       </main>
@@ -535,7 +536,7 @@ const App = () => {
       <Analytics />
       <SpeedInsights />
       <ResumeDialog open={resumeOpen} onOpenChange={setResumeOpen} />
-    </>
+    </LazyMotion>
   );
 };
 
