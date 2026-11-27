@@ -16,15 +16,13 @@ dist-ssr
 .env
 .env.*
 
-# Local-only: session state, strategy notes, Claude local config
+# Local-only: session state, planning notes, agent tooling (public repo)
 STATE.md
 REFACTOR.md
-.claude/settings.local.json
-.claude/worktrees/
-
-# Third-party skill packs (impeccable stays tracked)
-.agents/skills/*
-!.agents/skills/impeccable
+task.md
+.claude/
+.agents/
+skills-lock.json
 
 # Editor directories and files
 .vscode/*
