@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Sun, Moon } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { audit } from '../lib/audit';
 
 export default function ThemeToggle() {
@@ -44,7 +44,7 @@ export default function ThemeToggle() {
       aria-label={`Toggle theme (currently ${theme} mode)`}
     >
       <AnimatePresence mode="wait" initial={false}>
-        <motion.span
+        <m.span
           key={theme}
           initial={{ y: -8, opacity: 0, rotate: -90, scale: 0.8 }}
           animate={{ y: 0, opacity: 1, rotate: 0, scale: 1 }}
@@ -57,7 +57,7 @@ export default function ThemeToggle() {
           ) : (
             <Moon className="w-5 h-5 text-accent" />
           )}
-        </motion.span>
+        </m.span>
       </AnimatePresence>
     </button>
   );

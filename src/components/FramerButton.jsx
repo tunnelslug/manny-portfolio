@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { m, useReducedMotion } from 'framer-motion';
 
 const FramerButton = ({ 
   href, 
@@ -12,7 +12,7 @@ const FramerButton = ({
   const shouldReduceMotion = useReducedMotion();
   const [isHovered, setIsHovered] = useState(false);
   
-  const Component = href ? motion.a : motion.button;
+  const Component = href ? m.a : m.button;
   const isGhost = variant === 'ghost';
   const baseClass = isGhost ? 'btn-ghost' : 'btn';
   const combinedClass = `${baseClass} ${className} relative overflow-hidden`;
@@ -31,7 +31,7 @@ const FramerButton = ({
       {...props}
     >
       {/* Background ink overlay */}
-      <motion.span
+      <m.span
         className="absolute inset-0 z-0 origin-bottom pointer-events-none"
         style={{
           backgroundColor: isGhost ? 'var(--color-text)' : 'var(--color-accent-strong)',
@@ -49,7 +49,7 @@ const FramerButton = ({
       />
       
       {/* Content wrapper with higher z-index to stay above the ink fill */}
-      <motion.span
+      <m.span
         className="relative z-10 flex items-center gap-2 w-full justify-center pointer-events-none"
         animate={
           isGhost
@@ -63,7 +63,7 @@ const FramerButton = ({
         }
       >
         {children}
-      </motion.span>
+      </m.span>
     </Component>
   );
 };
